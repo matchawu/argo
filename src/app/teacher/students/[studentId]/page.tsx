@@ -3,6 +3,7 @@ import Link from "next/link";
 import { notFound, redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import TeacherStudentNote from "@/components/TeacherStudentNote";
+import TeacherLessonHistory from "@/components/TeacherLessonHistory";
 
 export const metadata: Metadata = {
   title: "學生詳情",
@@ -80,7 +81,8 @@ export default async function TeacherStudentDetailPage({ params }: Props) {
       lesson_date,
       lesson_time,
       price,
-      status
+      status,
+      lesson_note
     `,
       )
       .eq("student_id", numericStudentId)
@@ -187,42 +189,10 @@ export default async function TeacherStudentDetailPage({ params }: Props) {
               目前沒有課程紀錄
             </div>
           ) : (
-            <div className="overflow-hidden rounded-2xl border border-zinc-800">
-              {studentLessons.map((lesson) => (
-                <div
-                  key={lesson.id}
-                  className={
-                    lesson.status === "cancelled"
-                      ? "flex flex-col gap-3 border-b border-zinc-800 bg-zinc-950/40 p-5 opacity-60 last:border-b-0 sm:flex-row sm:items-center sm:justify-between"
-                      : "flex flex-col gap-3 border-b border-zinc-800 p-5 last:border-b-0 sm:flex-row sm:items-center sm:justify-between"
-                  }
-                >
-                  <div>
-                    <div className="flex items-center gap-3">
-                      <span className="font-medium">{lesson.lesson_date}</span>
-
-                      <span className="text-sm text-zinc-400">
-                        {lesson.lesson_time.slice(0, 5)}
-                      </span>
-                    </div>
-
-                    <div className="mt-1 text-sm text-zinc-500">
-                      {lesson.course}
-                    </div>
-                  </div>
-
-                  <span
-                    className={`w-fit rounded-full px-2.5 py-1 text-xs font-medium ${
-                      statusClassName[
-                        lesson.status as keyof typeof statusClassName
-                      ]
-                    }`}
-                  >
-                    {statusLabel[lesson.status as keyof typeof statusLabel]}
-                  </span>
-                </div>
-              ))}
-            </div>
+            <TeacherLessonHistory
+              studentName={student.name}
+              initialLessons={studentLessons}
+            />
           )}
         </section>
       </div>

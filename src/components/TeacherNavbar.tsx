@@ -10,6 +10,10 @@ const navItems = [
     href: "/teacher",
   },
   {
+    label: "本週課表",
+    href: "/teacher/week",
+  },
+  {
     label: "我的學生",
     href: "/teacher/students",
   },
