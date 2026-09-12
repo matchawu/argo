@@ -24,6 +24,10 @@ const navItems = [
     label: "老師",
     href: "/teachers",
   },
+  {
+    label: "月結",
+    href: "/settlement",
+  }
 ];
 
 export default function Navbar() {
