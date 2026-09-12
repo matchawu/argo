@@ -1,0 +1,56 @@
+import EnrollmentList from "@/components/EnrollmentList";
+import { supabase } from "@/lib/supabase";
+
+export default async function EnrollmentsPage() {
+  const [
+    { data: enrollments, error: enrollmentsError },
+    { data: students, error: studentsError },
+    { data: teachers, error: teachersError },
+  ] = await Promise.all([
+    supabase
+      .from("enrollments")
+      .select(`
+        *,
+        students (
+          name
+        ),
+        teachers (
+          name,
+          teacher_share
+        )
+      `)
+      .eq("active", true),
+
+    supabase
+      .from("students")
+      .select("id, name")
+      .eq("active", true)
+      .order("name"),
+
+    supabase
+      .from("teachers")
+      .select("id, name, teacher_share")
+      .eq("active", true)
+      .order("name"),
+  ]);
+
+  if (
+    enrollmentsError ||
+    studentsError ||
+    teachersError
+  ) {
+    return (
+      <main className="p-10">
+        <h1>讀取資料失敗</h1>
+      </main>
+    );
+  }
+
+  return (
+    <EnrollmentList
+      enrollments={enrollments ?? []}
+      students={students ?? []}
+      teachers={teachers ?? []}
+    />
+  );
+}
