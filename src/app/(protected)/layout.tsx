@@ -1,5 +1,6 @@
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
+import Navbar from "@/components/Navbar";
 
 export default async function ProtectedLayout({
   children,
@@ -16,5 +17,24 @@ export default async function ProtectedLayout({
     redirect("/login");
   }
 
-  return children;
+  const { data: profile, error } = await supabase
+    .from("profiles")
+    .select("role")
+    .eq("id", user.id)
+    .single();
+
+  if (error || !profile) {
+    redirect("/login");
+  }
+
+  if (profile.role !== "admin") {
+    redirect("/unauthorized");
+  }
+
+  return (
+    <>
+      <Navbar />
+      {children}
+    </>
+  );
 }

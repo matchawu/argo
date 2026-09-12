@@ -1,5 +1,10 @@
+import type { Metadata } from "next";
 import EnrollmentList from "@/components/EnrollmentList";
 import { createClient } from "@/lib/supabase/server";
+
+export const metadata: Metadata = {
+  title: "固定課程",
+};
 
 export default async function EnrollmentsPage() {
 

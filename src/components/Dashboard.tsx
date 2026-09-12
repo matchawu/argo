@@ -57,8 +57,14 @@ export default function Dashboard({ initialLessons, selectedDate }: Props) {
     const { data, error } = await supabase
       .from("lessons")
       .insert({
+        student_id: lesson.studentId,
+        teacher_id: lesson.teacherId,
+
         student: lesson.student,
         teacher: lesson.teacher,
+
+        teacher_share: lesson.teacherShare,
+
         course: lesson.course,
         lesson_date: lesson.date,
         lesson_time: lesson.time,
@@ -76,8 +82,14 @@ export default function Dashboard({ initialLessons, selectedDate }: Props) {
 
     const newLesson: Lesson = {
       id: data.id,
+
+      studentId: data.student_id,
+      teacherId: data.teacher_id,
+      teacherShare: data.teacher_share,
+
       student: data.student,
       teacher: data.teacher,
+
       course: data.course,
       date: data.lesson_date,
       time: data.lesson_time.slice(0, 5),
@@ -283,6 +295,7 @@ export default function Dashboard({ initialLessons, selectedDate }: Props) {
             <AddLessonForm
               onAddLesson={addLesson}
               onCancel={() => setShowForm(false)}
+              initialDate={selectedDate}
             />
           )}
 

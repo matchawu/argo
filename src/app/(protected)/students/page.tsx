@@ -1,5 +1,10 @@
+import type { Metadata } from "next";
 import StudentManager from "@/components/StudentManager";
 import { createClient } from "@/lib/supabase/server";
+
+export const metadata: Metadata = {
+  title: "學生",
+};
 
 export default async function StudentsPage() {
   

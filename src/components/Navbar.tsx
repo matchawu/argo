@@ -13,6 +13,7 @@ const navItems = [
   { label: "學生", href: "/students" },
   { label: "老師", href: "/teachers" },
   { label: "月結", href: "/settlement" },
+  { label: "健檢", href: "/health" },
 ];
 
 export default function Navbar() {

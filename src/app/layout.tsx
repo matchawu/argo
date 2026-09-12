@@ -28,7 +28,6 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       className={`${geistSans.variable} ${geistMono.variable} h-full bg-zinc-950 antialiased`}
     >
       <body className="min-h-screen bg-zinc-950 text-zinc-100">
-        <Navbar />
         {children}
       </body>
     </html>

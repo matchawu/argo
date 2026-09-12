@@ -1,15 +1,11 @@
 import { createClient } from "@/lib/supabase/client";
-import {
-  parseLocalDate,
-  formatLocalDate,
-} from "@/lib/date";
+import { parseLocalDate, formatLocalDate } from "@/lib/date";
 import type { Enrollment } from "@/types/enrollment";
 
 export async function generateLessonsForEnrollment(
   enrollment: Enrollment,
   numberOfWeeks = 4,
 ) {
-  
   const supabase = createClient();
 
   const startDate = parseLocalDate(enrollment.start_date);
@@ -45,6 +41,8 @@ export async function generateLessonsForEnrollment(
 
   const lessonsToInsert = dates.map((date) => ({
     enrollment_id: enrollment.id,
+    student_id: enrollment.student_id,
+    teacher_id: enrollment.teacher_id,
     student: enrollment.students.name,
     teacher: enrollment.teachers.name,
     course: enrollment.course,

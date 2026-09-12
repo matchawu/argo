@@ -1,6 +1,11 @@
+import type { Metadata } from "next";
 import SettlementView from "@/components/SettlementView";
 import { createClient } from "@/lib/supabase/server";
 import { formatLocalDate } from "@/lib/date";
+
+export const metadata: Metadata = {
+  title: "月結",
+};
 
 type Props = {
   searchParams: Promise<{
@@ -31,7 +36,6 @@ function getMonthRange(month: string) {
 export default async function SettlementPage({
   searchParams,
 }: Props) {
-  
   const supabase = await createClient();
 
   const params = await searchParams;
@@ -46,12 +50,14 @@ export default async function SettlementPage({
     .from("lessons")
     .select(`
       id,
+      student_id,
+      teacher_id,
+      student,
       teacher,
       price,
       teacher_share,
       lesson_date,
-      course,
-      student
+      course
     `)
     .eq("status", "completed")
     .gte("lesson_date", start)

@@ -25,12 +25,22 @@ export default function LoginPage() {
     });
 
     if (error) {
-      setErrorMessage("登入失敗，請確認 Email 與密碼");
+      setError(error.message);
       setLoading(false);
       return;
     }
 
-    router.push("/");
+    const { data: profile } = await supabase
+      .from("profiles")
+      .select("role")
+      .single();
+
+    if (profile?.role === "teacher") {
+      router.push("/teacher");
+    } else {
+      router.push("/");
+    }
+
     router.refresh();
   }
 
@@ -42,9 +52,7 @@ export default function LoginPage() {
       >
         <h1 className="mb-2 text-3xl font-bold">Argo</h1>
 
-        <p className="mb-6 text-sm text-zinc-500">
-          工作室管理系統登入
-        </p>
+        <p className="mb-6 text-sm text-zinc-500">工作室管理系統登入</p>
 
         <div className="space-y-4">
           <input
@@ -66,9 +74,7 @@ export default function LoginPage() {
           />
 
           {errorMessage && (
-            <p className="text-sm text-red-400">
-              {errorMessage}
-            </p>
+            <p className="text-sm text-red-400">{errorMessage}</p>
           )}
 
           <button

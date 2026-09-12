@@ -1,11 +1,12 @@
+import type { Metadata } from "next";
 import { createClient } from "@/lib/supabase/server";
 import type { Lesson } from "@/types/lesson";
 import WeekView from "@/components/WeekView";
-import {
-  addDays,
-  formatLocalDate,
-  parseLocalDate,
-} from "@/lib/date";
+import { addDays, formatLocalDate, parseLocalDate } from "@/lib/date";
+
+export const metadata: Metadata = {
+  title: "本週課程",
+};
 
 function getMonday(date: Date) {
   const result = new Date(date);
@@ -25,20 +26,14 @@ type Props = {
   }>;
 };
 
-export default async function WeekPage({
-  searchParams,
-}: Props) {
-  
+export default async function WeekPage({ searchParams }: Props) {
   const supabase = await createClient();
 
   const params = await searchParams;
 
-  const selectedDate =
-    params.date ?? formatLocalDate(new Date());
+  const selectedDate = params.date ?? formatLocalDate(new Date());
 
-  const monday = getMonday(
-    parseLocalDate(selectedDate)
-  );
+  const monday = getMonday(parseLocalDate(selectedDate));
 
   const startDate = formatLocalDate(monday);
   const endDate = addDays(startDate, 6);
@@ -66,8 +61,14 @@ export default async function WeekPage({
 
   const lessons: Lesson[] = data.map((lesson) => ({
     id: lesson.id,
+
+    studentId: lesson.student_id,
+    teacherId: lesson.teacher_id,
+    teacherShare: lesson.teacher_share,
+
     student: lesson.student,
     teacher: lesson.teacher,
+
     course: lesson.course,
     date: lesson.lesson_date,
     time: lesson.lesson_time.slice(0, 5),
@@ -75,11 +76,5 @@ export default async function WeekPage({
     status: lesson.status,
   }));
 
-  return (
-    <WeekView
-      lessons={lessons}
-      startDate={startDate}
-      endDate={endDate}
-    />
-  );
+  return <WeekView lessons={lessons} startDate={startDate} endDate={endDate} />;
 }
