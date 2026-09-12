@@ -137,7 +137,7 @@ export default function Dashboard({ initialLessons, selectedDate }: Props) {
     <main className="min-h-screen text-zinc-100">
       <div className="mx-auto max-w-5xl px-6 py-10">
         <header className="mb-10">
-          <p className="mb-2 text-sm text-zinc-400">Studio Management</p>
+          <p className="mb-2 text-sm text-zinc-400">Studio Management System</p>
 
           <h1 className="text-4xl font-bold tracking-tight">Argo</h1>
 
