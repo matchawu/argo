@@ -1,4 +1,4 @@
-import { supabase } from "@/lib/supabase";
+import { createClient } from "@/lib/supabase/server";
 import type { Lesson } from "@/types/lesson";
 import WeekView from "@/components/WeekView";
 import {
@@ -28,6 +28,9 @@ type Props = {
 export default async function WeekPage({
   searchParams,
 }: Props) {
+  
+  const supabase = await createClient();
+
   const params = await searchParams;
 
   const selectedDate =

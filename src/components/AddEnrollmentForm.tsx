@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { supabase } from "@/lib/supabase";
+import { createClient } from "@/lib/supabase/client";
 import { generateLessonsForEnrollment } from "@/lib/generateLessons";
 
 type Student = {
@@ -36,6 +36,9 @@ export default function AddEnrollmentForm({
   teachers,
   onCreated,
 }: Props) {
+
+  const supabase = createClient();
+  
   const [form, setForm] = useState({
     studentId: "",
     teacherId: "",

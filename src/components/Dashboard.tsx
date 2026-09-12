@@ -4,7 +4,7 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import AddLessonForm from "@/components/AddLessonForm";
 import type { Lesson } from "@/types/lesson";
-import { supabase } from "@/lib/supabase";
+import { createClient } from "@/lib/supabase/client";
 
 import {
   addDays,
@@ -17,6 +17,9 @@ type Props = {
 };
 
 export default function Dashboard({ initialLessons, selectedDate }: Props) {
+
+  const supabase = createClient();
+  
   const [lessons, setLessons] = useState<Lesson[]>(initialLessons);
   const [showForm, setShowForm] = useState(false);
   useEffect(() => {

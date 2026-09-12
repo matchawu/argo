@@ -1,5 +1,5 @@
 import SettlementView from "@/components/SettlementView";
-import { supabase } from "@/lib/supabase";
+import { createClient } from "@/lib/supabase/server";
 import { formatLocalDate } from "@/lib/date";
 
 type Props = {
@@ -31,6 +31,9 @@ function getMonthRange(month: string) {
 export default async function SettlementPage({
   searchParams,
 }: Props) {
+  
+  const supabase = await createClient();
+
   const params = await searchParams;
 
   const selectedMonth =

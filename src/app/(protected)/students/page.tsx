@@ -1,7 +1,10 @@
 import StudentManager from "@/components/StudentManager";
-import { supabase } from "@/lib/supabase";
+import { createClient } from "@/lib/supabase/server";
 
 export default async function StudentsPage() {
+  
+  const supabase = await createClient();
+  
   const { data, error } = await supabase
     .from("students")
     .select("id, name, active")

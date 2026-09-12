@@ -1,4 +1,4 @@
-import { supabase } from "@/lib/supabase";
+import { createClient } from "@/lib/supabase/client";
 import {
   parseLocalDate,
   formatLocalDate,
@@ -9,6 +9,9 @@ export async function generateLessonsForEnrollment(
   enrollment: Enrollment,
   numberOfWeeks = 4,
 ) {
+  
+  const supabase = createClient();
+
   const startDate = parseLocalDate(enrollment.start_date);
 
   const dates: string[] = [];

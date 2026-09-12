@@ -1,7 +1,10 @@
 import TeacherManager from "@/components/TeacherManager";
-import { supabase } from "@/lib/supabase";
+import { createClient } from "@/lib/supabase/server";
 
 export default async function TeachersPage() {
+
+  const supabase = await createClient();
+  
   const { data, error } = await supabase
     .from("teachers")
     .select("id, name, teacher_share, active")

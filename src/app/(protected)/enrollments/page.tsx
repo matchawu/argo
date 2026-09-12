@@ -1,7 +1,10 @@
 import EnrollmentList from "@/components/EnrollmentList";
-import { supabase } from "@/lib/supabase";
+import { createClient } from "@/lib/supabase/server";
 
 export default async function EnrollmentsPage() {
+
+  const supabase = await createClient();
+  
   const [
     { data: enrollments, error: enrollmentsError },
     { data: students, error: studentsError },

@@ -4,7 +4,7 @@ import { useState } from "react";
 import AddEnrollmentForm from "@/components/AddEnrollmentForm";
 import { generateLessonsForEnrollment } from "@/lib/generateLessons";
 import type { Enrollment } from "@/types/enrollment";
-import { supabase } from "@/lib/supabase";
+import { createClient } from "@/lib/supabase/client";
 import { formatLocalDate } from "@/lib/date";
 import EditEnrollmentForm from "@/components/EditEnrollmentForm";
 
@@ -32,6 +32,9 @@ export default function EnrollmentList({
   students,
   teachers,
 }: Props) {
+
+  const supabase = createClient();
+  
   const [showForm, setShowForm] = useState(false);
   const [editingId, setEditingId] = useState<number | null>(null);
 

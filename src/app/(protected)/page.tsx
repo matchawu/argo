@@ -1,6 +1,8 @@
 import Dashboard from "@/components/Dashboard";
-import { supabase } from "@/lib/supabase";
+import { createClient } from "@/lib/supabase/server";
 import type { Lesson } from "@/types/lesson";
+import { redirect } from "next/navigation";
+import { formatLocalDate } from "@/lib/date";
 
 type Props = {
   searchParams: Promise<{
@@ -8,17 +10,11 @@ type Props = {
   }>;
 };
 
-function formatLocalDate(date: Date) {
-  const year = date.getFullYear();
-  const month = String(date.getMonth() + 1).padStart(2, "0");
-  const day = String(date.getDate()).padStart(2, "0");
-
-  return `${year}-${month}-${day}`;
-}
-
 export default async function Home({
   searchParams,
 }: Props) {
+  const supabase = await createClient();
+
   const params = await searchParams;
 
   const selectedDate =

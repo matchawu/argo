@@ -2,6 +2,9 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { useEffect, useState } from "react";
+import { createClient } from "@/lib/supabase/client";
+import LogoutButton from "@/components/LogoutButton";
 
 const navItems = [
   {
@@ -27,20 +30,38 @@ const navItems = [
   {
     label: "月結",
     href: "/settlement",
-  }
+  },
 ];
 
 export default function Navbar() {
   const pathname = usePathname();
+  const [email, setEmail] = useState<string | null>(null);
+
+  useEffect(() => {
+    const supabase = createClient();
+
+    async function loadUser() {
+      const {
+        data: { user },
+      } = await supabase.auth.getUser();
+
+      setEmail(user?.email ?? null);
+    }
+
+    loadUser();
+  }, []);
 
   return (
     <nav className="border-b border-zinc-800 bg-zinc-950 text-zinc-100">
-      <div className="mx-auto flex max-w-5xl items-center justify-between px-6 py-4">
-        <Link href="/" className="text-xl font-bold tracking-tight">
+      <div className="mx-auto flex max-w-5xl items-center justify-between gap-4 px-6 py-4">
+        <Link
+          href="/"
+          className="shrink-0 text-xl font-bold tracking-tight"
+        >
           Argo
         </Link>
 
-        <div className="flex gap-2">
+        <div className="flex items-center gap-2">
           {navItems.map((item) => {
             const isActive =
               item.href === "/"
@@ -61,6 +82,14 @@ export default function Navbar() {
               </Link>
             );
           })}
+
+          {email && (
+            <span className="ml-3 hidden max-w-44 truncate text-xs text-zinc-500 lg:block">
+              {email}
+            </span>
+          )}
+
+          <LogoutButton />
         </div>
       </div>
     </nav>

@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { supabase } from "@/lib/supabase";
+import { createClient } from "@/lib/supabase/client";
 
 type Student = {
   id: number;
@@ -16,6 +16,9 @@ type Props = {
 export default function StudentManager({
   initialStudents,
 }: Props) {
+
+  const supabase = createClient();
+  
   const [students, setStudents] =
     useState<Student[]>(initialStudents);
 
