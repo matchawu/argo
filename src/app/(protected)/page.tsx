@@ -3,7 +3,12 @@ import Dashboard from "@/components/Dashboard";
 import { createClient } from "@/lib/supabase/server";
 import type { Lesson } from "@/types/lesson";
 import { redirect } from "next/navigation";
-import { formatLocalDate } from "@/lib/date";
+import {
+  addDays,
+  formatLocalDate,
+  parseLocalDate,
+  getTodayInTaiwan,
+} from "@/lib/date";
 
 export const metadata: Metadata = {
   title: "今日課程",
@@ -20,7 +25,7 @@ export default async function Home({ searchParams }: Props) {
 
   const params = await searchParams;
 
-  const selectedDate = params.date ?? formatLocalDate(new Date());
+  const selectedDate = params.date ?? getTodayInTaiwan();
 
   const { data, error } = await supabase
     .from("lessons")

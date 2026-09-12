@@ -1,7 +1,7 @@
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import TeacherTodayView from "@/components/TeacherTodayView";
-import { addDays, formatLocalDate, parseLocalDate } from "@/lib/date";
+import { addDays, formatLocalDate, parseLocalDate, getTodayInTaiwan } from "@/lib/date";
 
 export const metadata = {
   title: "我的課程",
@@ -52,7 +52,7 @@ export default async function TeacherPage({ searchParams }: Props) {
 
   const params = await searchParams;
 
-  const selectedDate = params.date ?? formatLocalDate(new Date());
+  const selectedDate = params.date ?? getTodayInTaiwan();
 
   const monday = getMonday(parseLocalDate(selectedDate));
 

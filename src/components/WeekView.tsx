@@ -6,6 +6,7 @@ import {
   addDays,
   formatLocalDate,
   parseLocalDate,
+  getTodayInTaiwan
 } from "@/lib/date";
 import {
   lessonStatusClassName,
@@ -41,7 +42,7 @@ export default function WeekView({
   const previousWeek = addDays(startDate, -7);
   const nextWeek = addDays(startDate, 7);
 
-  const today = formatLocalDate(new Date());
+  const today = getTodayInTaiwan();
 
   return (
     <main className="min-h-screen text-zinc-100">

@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 import AddLessonForm from "@/components/AddLessonForm";
 import type { Lesson } from "@/types/lesson";
 import { createClient } from "@/lib/supabase/client";
-import { addDays, formatLocalDate } from "@/lib/date";
+import { addDays, getTodayInTaiwan } from "@/lib/date";
 import { lessonStatusClassName, lessonStatusLabel } from "@/lib/lessonStatus";
 import RescheduleModal from "@/components/RescheduleModal";
 import CancelLessonModal from "@/components/CancelLessonModal";
@@ -34,7 +34,7 @@ export default function Dashboard({ initialLessons, selectedDate }: Props) {
 
   const previousDate = addDays(selectedDate, -1);
   const nextDate = addDays(selectedDate, 1);
-  const today = formatLocalDate(new Date());
+  const today = getTodayInTaiwan();
 
   const completedLessons = lessons.filter(
     (lesson) => lesson.status === "completed",

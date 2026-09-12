@@ -5,7 +5,7 @@ import AddEnrollmentForm from "@/components/AddEnrollmentForm";
 import { generateLessonsForEnrollment } from "@/lib/generateLessons";
 import type { Enrollment } from "@/types/enrollment";
 import { createClient } from "@/lib/supabase/client";
-import { formatLocalDate } from "@/lib/date";
+import { formatLocalDate, getTodayInTaiwan } from "@/lib/date";
 import EditEnrollmentForm from "@/components/EditEnrollmentForm";
 
 type Student = {
@@ -93,7 +93,7 @@ export default function EnrollmentList({
     }
 
     if (values.updateFutureLessons) {
-      const today = formatLocalDate(new Date());
+      const today = getTodayInTaiwan();
 
       const { error: lessonsError } = await supabase
         .from("lessons")
@@ -143,7 +143,7 @@ export default function EnrollmentList({
       window.confirm("是否一起取消未來尚未完成的課程？");
 
     if (cancelFutureLessons) {
-      const today = formatLocalDate(new Date());
+      const today = getTodayInTaiwan();
 
       const { error: lessonsError } = await supabase
         .from("lessons")

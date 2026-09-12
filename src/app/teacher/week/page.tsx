@@ -6,6 +6,7 @@ import {
   addDays,
   formatLocalDate,
   parseLocalDate,
+  getTodayInTaiwan
 } from "@/lib/date";
 
 export const metadata: Metadata = {
@@ -70,7 +71,7 @@ export default async function TeacherWeekPage({
 
   const selectedDate =
     params.date ??
-    formatLocalDate(new Date());
+    getTodayInTaiwan();
 
   const monday = getMonday(
     parseLocalDate(selectedDate),

@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import SettlementView from "@/components/SettlementView";
 import { createClient } from "@/lib/supabase/server";
-import { formatLocalDate } from "@/lib/date";
+import { formatLocalDate, getTodayInTaiwan } from "@/lib/date";
 
 export const metadata: Metadata = {
   title: "月結",
@@ -14,7 +14,7 @@ type Props = {
 };
 
 function getCurrentMonth() {
-  return formatLocalDate(new Date()).slice(0, 7);
+  return getTodayInTaiwan().slice(0, 7);
 }
 
 function getMonthRange(month: string) {

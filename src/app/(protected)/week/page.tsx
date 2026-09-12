@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { createClient } from "@/lib/supabase/server";
 import type { Lesson } from "@/types/lesson";
 import WeekView from "@/components/WeekView";
-import { addDays, formatLocalDate, parseLocalDate } from "@/lib/date";
+import { addDays, formatLocalDate, parseLocalDate, getTodayInTaiwan } from "@/lib/date";
 
 export const metadata: Metadata = {
   title: "本週課程",
@@ -31,7 +31,7 @@ export default async function WeekPage({ searchParams }: Props) {
 
   const params = await searchParams;
 
-  const selectedDate = params.date ?? formatLocalDate(new Date());
+  const selectedDate = params.date ?? getTodayInTaiwan();
 
   const monday = getMonday(parseLocalDate(selectedDate));
 

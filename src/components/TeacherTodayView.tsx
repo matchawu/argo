@@ -9,7 +9,7 @@ import RescheduleModal from "@/components/RescheduleModal";
 import CancelLessonModal from "@/components/CancelLessonModal";
 
 import Link from "next/link";
-import { addDays, formatLocalDate, parseLocalDate } from "@/lib/date";
+import { addDays, formatLocalDate, parseLocalDate, getTodayInTaiwan } from "@/lib/date";
 
 type TeacherLesson = Lesson & {
   lessonNote?: string | null;
@@ -41,7 +41,7 @@ export default function TeacherTodayView({
     setLessons(initialLessons);
   }, [initialLessons]);
 
-  const today = formatLocalDate(new Date());
+  const today = getTodayInTaiwan();
 
   const weekdayNames = ["週日", "週一", "週二", "週三", "週四", "週五", "週六"];
 
