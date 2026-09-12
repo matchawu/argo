@@ -9,6 +9,10 @@ const navItems = [
     href: "/",
   },
   {
+    label: "本週課表",
+    href: "/week",
+  },
+  {
     label: "固定課程",
     href: "/enrollments",
   },
@@ -28,10 +32,7 @@ export default function Navbar() {
   return (
     <nav className="border-b border-zinc-800 bg-zinc-950 text-zinc-100">
       <div className="mx-auto flex max-w-5xl items-center justify-between px-6 py-4">
-        <Link
-          href="/"
-          className="text-xl font-bold tracking-tight"
-        >
+        <Link href="/" className="text-xl font-bold tracking-tight">
           Argo
         </Link>
 
