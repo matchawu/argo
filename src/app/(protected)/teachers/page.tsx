@@ -7,12 +7,11 @@ export const metadata: Metadata = {
 };
 
 export default async function TeachersPage() {
-
   const supabase = await createClient();
-  
+
   const { data, error } = await supabase
     .from("teachers")
-    .select("id, name, email, teacher_share, active")
+    .select("id, name, email, teacher_share, active, invite_status, invited_at")
     .order("name");
 
   if (error) {
@@ -24,9 +23,5 @@ export default async function TeachersPage() {
     );
   }
 
-  return (
-    <TeacherManager
-      initialTeachers={data ?? []}
-    />
-  );
+  return <TeacherManager initialTeachers={data ?? []} />;
 }
