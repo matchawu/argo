@@ -21,7 +21,7 @@ export default async function ProtectedLayout({
     .from("profiles")
     .select("role")
     .eq("id", user.id)
-    .single();
+    .maybeSingle();
 
   if (error || !profile) {
     redirect("/login");

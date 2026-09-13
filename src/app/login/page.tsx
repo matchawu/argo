@@ -13,34 +13,54 @@ export default function LoginPage() {
   const [errorMessage, setErrorMessage] = useState("");
   const [loading, setLoading] = useState(false);
 
-  const [error, setError] = useState<string | null>(null);
-
   async function handleLogin(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
 
     setLoading(true);
     setErrorMessage("");
 
-    const { error } = await supabase.auth.signInWithPassword({
+    const { data, error: loginError } = await supabase.auth.signInWithPassword({
       email,
       password,
     });
 
-    if (error) {
-      setError(error.message);
+    if (loginError) {
+      setErrorMessage(loginError.message);
       setLoading(false);
       return;
     }
 
-    const { data: profile } = await supabase
+    if (!data.user) {
+      setErrorMessage("登入失敗，找不到使用者資料");
+      setLoading(false);
+      return;
+    }
+
+    const { data: profile, error: profileError } = await supabase
       .from("profiles")
       .select("role")
-      .single();
+      .eq("id", data.user.id)
+      .maybeSingle();
 
-    if (profile?.role === "teacher") {
+    if (profileError) {
+      console.error(profileError);
+      setErrorMessage("讀取使用者權限失敗");
+      setLoading(false);
+      return;
+    }
+
+    if (!profile) {
+      setErrorMessage("這個帳號尚未建立使用者權限");
+      setLoading(false);
+      return;
+    }
+
+    if (profile.role === "teacher") {
       router.push("/teacher");
-    } else {
+    } else if (profile.role === "admin") {
       router.push("/");
+    } else {
+      router.push("/unauthorized");
     }
 
     router.refresh();
