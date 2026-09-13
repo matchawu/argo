@@ -12,7 +12,7 @@ export default async function TeachersPage() {
   
   const { data, error } = await supabase
     .from("teachers")
-    .select("id, name, teacher_share, active")
+    .select("id, name, email, teacher_share, active")
     .order("name");
 
   if (error) {
