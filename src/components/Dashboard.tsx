@@ -57,6 +57,8 @@ export default function Dashboard({ initialLessons, selectedDate }: Props) {
     const { data, error } = await supabase
       .from("lessons")
       .insert({
+        enrollment_id: lesson.enrollmentId ?? null,
+        is_extra: true,
         student_id: lesson.studentId,
         teacher_id: lesson.teacherId,
 
@@ -76,7 +78,11 @@ export default function Dashboard({ initialLessons, selectedDate }: Props) {
 
     if (error) {
       console.error(error);
-      alert("新增課程失敗");
+      alert(
+        error.code === "23505"
+          ? "這門課當天已經有一堂課了，請改其他日期，或直接改期原本那堂"
+          : "新增課程失敗",
+      );
       return;
     }
 

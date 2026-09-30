@@ -1,13 +1,17 @@
 import { cookies } from "next/headers";
 import { NextRequest, NextResponse } from "next/server";
-import { createClient } from "@/lib/supabase/server";
 import { createAdminClient } from "@/lib/supabase/admin";
 import {
   LINE_OAUTH_COOKIE,
   getLineUserFromCode,
   type LineOAuthCookie,
 } from "@/lib/line";
-import { hashInviteToken } from "@/lib/teacherInvite";
+import { findInvite } from "@/lib/invite";
+import {
+  createLoginProfile,
+  homeForRole,
+  signInAsUser,
+} from "@/lib/authSession";
 
 type AdminClient = ReturnType<typeof createAdminClient>;
 
@@ -28,74 +32,76 @@ function redirectToLogin(
 }
 
 /*
- * 用邀請 token 把 LINE 帳號綁到老師。
+ * 用邀請 token 把 LINE 帳號綁到老師或學生。
  *
  * 回傳錯誤代碼，成功則回傳 null。
  */
-async function bindTeacherInvite(
+async function bindInvite(
   admin: AdminClient,
   inviteToken: string,
   lineUserId: string,
 ): Promise<string | null> {
-  const tokenHash = hashInviteToken(inviteToken);
+  const invite = await findInvite(admin, inviteToken);
 
-  const { data: teacher } = await admin
-    .from("teachers")
-    .select("id, name, email, active, invite_expires_at")
-    .eq("invite_token_hash", tokenHash)
-    .maybeSingle();
-
-  if (
-    !teacher ||
-    !teacher.invite_expires_at ||
-    new Date(teacher.invite_expires_at) < new Date()
-  ) {
+  if (!invite) {
     return "invite_invalid";
   }
 
-  if (!teacher.active) {
-    return "teacher_inactive";
+  if (!invite.active) {
+    return invite.kind === "teacher"
+      ? "teacher_inactive"
+      : "student_inactive";
   }
+
+  const idColumn =
+    invite.kind === "teacher" ? "teacher_id" : "student_id";
 
   /*
    * 這個 LINE 帳號不能已經綁在別人身上
    */
   const { data: boundProfile } = await admin
     .from("profiles")
-    .select("id, teacher_id")
+    .select("id, role, teacher_id, student_id")
     .eq("line_user_id", lineUserId)
     .maybeSingle();
 
+  /*
+   * 老師可能已被升級成 admin（老闆也是老師），role 為 admin 也算同一人
+   */
+  const allowedRoles =
+    invite.kind === "teacher" ? ["teacher", "admin"] : ["student"];
+
   if (
     boundProfile &&
-    boundProfile.teacher_id !== teacher.id
+    (!allowedRoles.includes(boundProfile.role) ||
+      boundProfile[idColumn] !== invite.id)
   ) {
     return "line_already_bound";
   }
 
-  const { data: teacherProfile, error: teacherProfileError } =
+  const { data: existingProfile, error: existingProfileError } =
     await admin
       .from("profiles")
       .select("id")
-      .eq("teacher_id", teacher.id)
-      .eq("role", "teacher")
+      .eq(idColumn, invite.id)
+      .in("role", allowedRoles)
       .maybeSingle();
 
-  if (teacherProfileError) {
-    console.error(teacherProfileError);
+  if (existingProfileError) {
+    console.error(existingProfileError);
     return "invite_failed";
   }
 
-  if (teacherProfile) {
+  if (existingProfile) {
     /*
-     * A. 已有登入身份（例如舊的 Email 邀請帳號）
+     * A. 已有登入身份
      *
      * 直接換綁 LINE。
      */
     const { error: updateProfileError } = await admin
       .from("profiles")
       .update({ line_user_id: lineUserId })
-      .eq("id", teacherProfile.id);
+      .eq("id", existingProfile.id);
 
     if (updateProfileError) {
       console.error(updateProfileError);
@@ -107,38 +113,19 @@ async function bindTeacherInvite(
      *
      * 建 Auth user（不寄信）+ profile。
      */
-    if (!teacher.email) {
+    if (!invite.email) {
       return "invite_failed";
     }
 
-    const { data: created, error: createUserError } =
-      await admin.auth.admin.createUser({
-        email: teacher.email,
-        email_confirm: true,
-        user_metadata: {
-          name: teacher.name,
-          role: "teacher",
-        },
-      });
+    const profileId = await createLoginProfile(admin, {
+      kind: invite.kind,
+      id: invite.id,
+      name: invite.name,
+      email: invite.email,
+      lineUserId,
+    });
 
-    if (createUserError || !created.user) {
-      console.error(createUserError);
-      return "invite_failed";
-    }
-
-    const { error: insertProfileError } = await admin
-      .from("profiles")
-      .insert({
-        id: created.user.id,
-        role: "teacher",
-        teacher_id: teacher.id,
-        student_id: null,
-        line_user_id: lineUserId,
-      });
-
-    if (insertProfileError) {
-      console.error(insertProfileError);
-      await admin.auth.admin.deleteUser(created.user.id);
+    if (!profileId) {
       return "invite_failed";
     }
   }
@@ -146,17 +133,26 @@ async function bindTeacherInvite(
   /*
    * 邀請用過即失效
    */
-  const { error: updateTeacherError } = await admin
-    .from("teachers")
-    .update({
-      invite_status: "active",
-      invite_token_hash: null,
-      invite_expires_at: null,
-    })
-    .eq("id", teacher.id);
+  const { error: consumeInviteError } =
+    invite.kind === "teacher"
+      ? await admin
+          .from("teachers")
+          .update({
+            invite_status: "active",
+            invite_token_hash: null,
+            invite_expires_at: null,
+          })
+          .eq("id", invite.id)
+      : await admin
+          .from("students")
+          .update({
+            invite_token_hash: null,
+            invite_expires_at: null,
+          })
+          .eq("id", invite.id);
 
-  if (updateTeacherError) {
-    console.error(updateTeacherError);
+  if (consumeInviteError) {
+    console.error(consumeInviteError);
   }
 
   return null;
@@ -215,7 +211,7 @@ export async function GET(request: NextRequest) {
    * 1. 如果是從邀請連結來，先綁定
    */
   if (oauth.invite) {
-    const bindError = await bindTeacherInvite(
+    const bindError = await bindInvite(
       admin,
       oauth.invite,
       lineUserId,
@@ -231,7 +227,7 @@ export async function GET(request: NextRequest) {
    */
   const { data: profile, error: profileError } = await admin
     .from("profiles")
-    .select("id, role, teacher_id")
+    .select("id, role, teacher_id, student_id")
     .eq("line_user_id", lineUserId)
     .maybeSingle();
 
@@ -258,50 +254,26 @@ export async function GET(request: NextRequest) {
     }
   }
 
+  if (profile.role === "student") {
+    const { data: student } = await admin
+      .from("students")
+      .select("active")
+      .eq("id", profile.student_id)
+      .maybeSingle();
+
+    if (!student?.active) {
+      return redirectToLogin(request, "student_inactive");
+    }
+  }
+
   /*
    * 3. 建立 Supabase session
-   *
-   * 產生 magic link token（不寄信），
-   * 直接在伺服器端 verify，session 會寫進 cookie。
    */
-  const { data: authUser, error: authUserError } =
-    await admin.auth.admin.getUserById(profile.id);
-
-  if (authUserError || !authUser.user?.email) {
-    console.error(authUserError);
+  if (!(await signInAsUser(admin, profile.id))) {
     return redirectToLogin(request, "login_failed");
   }
 
-  const { data: link, error: linkError } =
-    await admin.auth.admin.generateLink({
-      type: "magiclink",
-      email: authUser.user.email,
-    });
-
-  if (linkError || !link.properties?.hashed_token) {
-    console.error(linkError);
-    return redirectToLogin(request, "login_failed");
-  }
-
-  const supabase = await createClient();
-
-  const { error: verifyError } =
-    await supabase.auth.verifyOtp({
-      type: "magiclink",
-      token_hash: link.properties.hashed_token,
-    });
-
-  if (verifyError) {
-    console.error(verifyError);
-    return redirectToLogin(request, "login_failed");
-  }
-
-  const home =
-    profile.role === "admin"
-      ? "/"
-      : profile.role === "teacher"
-        ? "/teacher"
-        : "/unauthorized";
-
-  return NextResponse.redirect(new URL(home, request.url));
+  return NextResponse.redirect(
+    new URL(homeForRole(profile.role), request.url),
+  );
 }

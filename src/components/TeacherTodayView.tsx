@@ -13,6 +13,7 @@ import { addDays, formatLocalDate, parseLocalDate, getTodayInTaiwan } from "@/li
 
 type TeacherLesson = Lesson & {
   lessonNote?: string | null;
+  studentNote?: string | null;
 };
 
 type Props = {
@@ -58,7 +59,11 @@ export default function TeacherTodayView({
     (lesson) => lesson.status !== "cancelled",
   ).length;
 
-  function handleCompleted(lessonId: number, lessonNote: string) {
+  function handleCompleted(
+    lessonId: number,
+    lessonNote: string,
+    studentNote: string,
+  ) {
     setLessons((current) =>
       current.map((lesson) =>
         lesson.id === lessonId
@@ -66,6 +71,7 @@ export default function TeacherTodayView({
               ...lesson,
               status: "completed",
               lessonNote,
+              studentNote,
             }
           : lesson,
       ),
@@ -260,11 +266,23 @@ export default function TeacherTodayView({
                 {lesson.lessonNote && (
                   <div className="mt-4 rounded-xl bg-zinc-950 px-4 py-3">
                     <p className="text-xs font-medium text-zinc-600">
-                      教學紀錄
+                      教學紀錄（內部）
                     </p>
 
                     <p className="mt-2 whitespace-pre-wrap text-sm leading-6 text-zinc-300">
                       {lesson.lessonNote}
+                    </p>
+                  </div>
+                )}
+
+                {lesson.studentNote && (
+                  <div className="mt-3 rounded-xl bg-zinc-950 px-4 py-3">
+                    <p className="text-xs font-medium text-zinc-600">
+                      給學生的紀錄
+                    </p>
+
+                    <p className="mt-2 whitespace-pre-wrap text-sm leading-6 text-zinc-300">
+                      {lesson.studentNote}
                     </p>
                   </div>
                 )}

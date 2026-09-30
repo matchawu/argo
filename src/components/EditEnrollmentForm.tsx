@@ -17,6 +17,7 @@ type Props = {
     course: string;
     price: number;
     weekday: number;
+    intervalWeeks: number;
     time: string;
     updateFutureLessons: boolean;
   }) => Promise<void>;
@@ -33,6 +34,11 @@ const weekdayOptions = [
   { value: 6, label: "星期六" },
 ];
 
+const intervalOptions = [
+  { value: 1, label: "每週" },
+  { value: 2, label: "隔週" },
+];
+
 export default function EditEnrollmentForm({
   enrollment,
   teachers,
@@ -47,6 +53,9 @@ export default function EditEnrollmentForm({
   const [price, setPrice] = useState(enrollment.price.toString());
   const [weekday, setWeekday] = useState(
     enrollment.default_weekday.toString(),
+  );
+  const [intervalWeeks, setIntervalWeeks] = useState(
+    (enrollment.interval_weeks ?? 1).toString(),
   );
   const [time, setTime] = useState(
     enrollment.default_time.slice(0, 5),
@@ -65,6 +74,7 @@ export default function EditEnrollmentForm({
       course,
       price: Number(price),
       weekday: Number(weekday),
+      intervalWeeks: Number(intervalWeeks),
       time,
       updateFutureLessons,
     });
@@ -121,6 +131,21 @@ export default function EditEnrollmentForm({
         ))}
       </select>
 
+      <select
+        value={intervalWeeks}
+        onChange={(e) => setIntervalWeeks(e.target.value)}
+        className="rounded-xl bg-zinc-800 px-4 py-3"
+      >
+        {intervalOptions.map((option) => (
+          <option
+            key={option.value}
+            value={option.value}
+          >
+            {option.label}
+          </option>
+        ))}
+      </select>
+
       <input
         type="time"
         value={time}
@@ -139,6 +164,14 @@ export default function EditEnrollmentForm({
 
         同步更新未來尚未完成課程
       </label>
+
+      {Number(intervalWeeks) !==
+        (enrollment.interval_weeks ?? 1) && (
+        <p className="text-xs text-amber-300 md:col-span-2">
+          已經產生的未來課程不會因為改頻率而自動增減，請到課表手動取消多出來的課；之後按「生成未來
+          4 週」會用新的頻率產生。
+        </p>
+      )}
 
       <div className="flex gap-3 md:col-span-2">
         <button

@@ -31,6 +31,11 @@ const weekdayOptions = [
   { value: 6, label: "星期六" },
 ];
 
+const intervalOptions = [
+  { value: 1, label: "每週" },
+  { value: 2, label: "隔週" },
+];
+
 export default function AddEnrollmentForm({
   students,
   teachers,
@@ -45,6 +50,7 @@ export default function AddEnrollmentForm({
     course: "",
     price: "",
     weekday: "0",
+    intervalWeeks: "1",
     time: "",
     startDate: "",
   });
@@ -75,6 +81,7 @@ export default function AddEnrollmentForm({
         course: form.course,
         price: Number(form.price),
         default_weekday: Number(form.weekday),
+        interval_weeks: Number(form.intervalWeeks),
         default_time: form.time,
         start_date: form.startDate,
         active: true,
@@ -111,6 +118,7 @@ export default function AddEnrollmentForm({
       course: "",
       price: "",
       weekday: "0",
+      intervalWeeks: "1",
       time: "",
       startDate: "",
     });
@@ -208,6 +216,23 @@ export default function AddEnrollmentForm({
         ))}
       </select>
 
+      <select
+        value={form.intervalWeeks}
+        onChange={(e) =>
+          setForm({
+            ...form,
+            intervalWeeks: e.target.value,
+          })
+        }
+        className="rounded-xl bg-zinc-800 px-4 py-3"
+      >
+        {intervalOptions.map((option) => (
+          <option key={option.value} value={option.value}>
+            {option.label}
+          </option>
+        ))}
+      </select>
+
       <input
         type="time"
         value={form.time}
@@ -223,6 +248,7 @@ export default function AddEnrollmentForm({
 
       <input
         type="date"
+        title="開課日（隔週課程以這天之後的第一堂為基準）"
         value={form.startDate}
         onChange={(e) =>
           setForm({

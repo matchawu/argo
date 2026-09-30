@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
 
 type Teacher = {
@@ -15,6 +16,8 @@ type Teacher = {
 
 type Props = {
   initialTeachers: Teacher[];
+  initialMyTeacherId: number | null;
+  teacherIdsWithLogin: number[];
 };
 
 function getInviteStatusLabel(status: Teacher["invite_status"]) {
@@ -48,8 +51,18 @@ function formatTaiwanDateTime(value: string) {
   return `${get("year")}/${get("month")}/${get("day")} ${get("hour")}:${get("minute")}:${get("second")}`;
 }
 
-export default function TeacherManager({ initialTeachers }: Props) {
+export default function TeacherManager({
+  initialTeachers,
+  initialMyTeacherId,
+  teacherIdsWithLogin,
+}: Props) {
   const supabase = createClient();
+  const router = useRouter();
+
+  const [myTeacherId, setMyTeacherId] = useState(initialMyTeacherId);
+  const [linkingTeacherId, setLinkingTeacherId] = useState<number | null>(
+    null,
+  );
 
   const [teachers, setTeachers] = useState<Teacher[]>(initialTeachers);
 
@@ -210,6 +223,57 @@ export default function TeacherManager({ initialTeachers }: Props) {
       showInviteLink(teacher.name, result.inviteUrl);
     } finally {
       setResendingTeacherId(null);
+    }
+  }
+
+  /*
+   * 老闆也是老師：把老師綁到自己的 admin 帳號，或解除綁定
+   */
+  async function linkSelf(teacher: Teacher, link: boolean) {
+    const message = link
+      ? `把「${teacher.name}」綁定到你的帳號？綁定後可以從上方「老師模式」查看與簽到這位老師的課。`
+      : `解除「${teacher.name}」與你的帳號的綁定？`;
+
+    if (!confirm(message)) {
+      return;
+    }
+
+    setLinkingTeacherId(teacher.id);
+
+    try {
+      const response = await fetch("/api/admin/teachers/link-self", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          teacherId: link ? teacher.id : null,
+        }),
+      });
+
+      const result = await parseResponse(response);
+
+      if (!response.ok) {
+        alert(result.error ?? `綁定失敗（HTTP ${response.status}）`);
+        return;
+      }
+
+      setMyTeacherId(link ? teacher.id : null);
+
+      if (result.teacher) {
+        setTeachers((currentTeachers) =>
+          currentTeachers.map((currentTeacher) =>
+            currentTeacher.id === teacher.id
+              ? { ...currentTeacher, ...result.teacher }
+              : currentTeacher,
+          ),
+        );
+      }
+
+      // 重新整理 navbar 的「老師模式」連結
+      router.refresh();
+    } finally {
+      setLinkingTeacherId(null);
     }
   }
 
@@ -456,7 +520,13 @@ export default function TeacherManager({ initialTeachers }: Props) {
                     {getInviteStatusLabel(teacher.invite_status)}
                   </span>
 
-                  {teacher.invited_at && (
+                  {teacher.id === myTeacherId && (
+                    <span className="rounded-full bg-purple-950 px-2.5 py-1 text-xs text-purple-300">
+                      你的帳號
+                    </span>
+                  )}
+
+                  {teacher.invited_at && teacher.id !== myTeacherId && (
                     <span className="text-xs text-zinc-600">
                       最近邀請：
                       {formatTaiwanDateTime(teacher.invited_at)}
@@ -466,7 +536,30 @@ export default function TeacherManager({ initialTeachers }: Props) {
               </div>
 
               <div className="flex shrink-0 flex-wrap gap-2">
-                {teacher.email && (
+                {teacher.id === myTeacherId ? (
+                  <button
+                    type="button"
+                    onClick={() => linkSelf(teacher, false)}
+                    disabled={linkingTeacherId === teacher.id}
+                    className="rounded-xl bg-zinc-800 px-4 py-2 text-sm text-zinc-300 hover:bg-zinc-700 disabled:cursor-not-allowed disabled:opacity-50"
+                  >
+                    解除綁定
+                  </button>
+                ) : (
+                  !myTeacherId &&
+                  !teacherIdsWithLogin.includes(teacher.id) && (
+                    <button
+                      type="button"
+                      onClick={() => linkSelf(teacher, true)}
+                      disabled={linkingTeacherId === teacher.id}
+                      className="rounded-xl bg-purple-950 px-4 py-2 text-sm text-purple-300 hover:bg-purple-900 disabled:cursor-not-allowed disabled:opacity-50"
+                    >
+                      綁定到我的帳號
+                    </button>
+                  )
+                )}
+
+                {teacher.email && teacher.id !== myTeacherId && (
                   <button
                     type="button"
                     onClick={() => resendInvite(teacher)}

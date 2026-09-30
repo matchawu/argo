@@ -27,13 +27,31 @@ export default async function TeacherStudentsPage() {
   if (
     profileError ||
     !profile ||
-    profile.role !== "teacher" ||
+    // 老師，或有綁定老師身份的 admin（老闆也是老師）
+    !["teacher", "admin"].includes(profile.role) ||
     !profile.teacher_id
   ) {
     redirect("/");
   }
 
-  const { data: students, error } = await supabase
+  /*
+   * 明確篩選和這位老師有課的學生。
+   * 老師本來就會被 RLS 過濾，但 admin 可以讀全部學生，老師模式下要自己篩。
+   */
+  const { data: teacherLessons, error: lessonsError } = await supabase
+    .from("lessons")
+    .select("student_id")
+    .eq("teacher_id", profile.teacher_id);
+
+  const studentIds = [
+    ...new Set(
+      (teacherLessons ?? [])
+        .map((lesson) => lesson.student_id)
+        .filter((id): id is number => id !== null),
+    ),
+  ];
+
+  const { data: students, error: studentsError } = await supabase
     .from("students")
     .select(
       `
@@ -42,8 +60,11 @@ export default async function TeacherStudentsPage() {
       active
     `,
     )
+    .in("id", studentIds)
     .eq("active", true)
     .order("name");
+
+  const error = lessonsError ?? studentsError;
 
   if (error) {
     return (

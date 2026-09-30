@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { createClient } from "@/lib/supabase/server";
 import type { Lesson } from "@/types/lesson";
 import WeekView from "@/components/WeekView";
+import { parseWeekView } from "@/components/WeekCalendar";
 import { addDays, formatLocalDate, parseLocalDate, getTodayInTaiwan } from "@/lib/date";
 
 export const metadata: Metadata = {
@@ -23,6 +24,7 @@ function getMonday(date: Date) {
 type Props = {
   searchParams: Promise<{
     date?: string;
+    view?: string;
   }>;
 };
 
@@ -76,5 +78,12 @@ export default async function WeekPage({ searchParams }: Props) {
     status: lesson.status,
   }));
 
-  return <WeekView lessons={lessons} startDate={startDate} endDate={endDate} />;
+  return (
+    <WeekView
+      lessons={lessons}
+      startDate={startDate}
+      endDate={endDate}
+      view={parseWeekView(params.view)}
+    />
+  );
 }

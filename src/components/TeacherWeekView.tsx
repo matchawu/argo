@@ -7,6 +7,7 @@ import {
   parseLocalDate,
   getTodayInTaiwan,
 } from "@/lib/date";
+import WeekCalendar, { WeekViewToggle } from "@/components/WeekCalendar";
 
 type TeacherLesson = {
   id: number;
@@ -21,6 +22,7 @@ type Props = {
   lessons: TeacherLesson[];
   startDate: string;
   endDate: string;
+  view: "list" | "calendar";
 };
 
 const weekdayNames = ["週日", "週一", "週二", "週三", "週四", "週五", "週六"];
@@ -41,6 +43,7 @@ export default function TeacherWeekView({
   lessons,
   startDate,
   endDate,
+  view,
 }: Props) {
   const days = Array.from({ length: 7 }, (_, index) =>
     addDays(startDate, index),
@@ -48,6 +51,16 @@ export default function TeacherWeekView({
 
   const previousWeek = addDays(startDate, -7);
   const nextWeek = addDays(startDate, 7);
+
+  const viewQuery = view === "list" ? "view=list" : "";
+
+  function weekHref(date?: string) {
+    const query = [date ? `date=${date}` : "", viewQuery]
+      .filter(Boolean)
+      .join("&");
+
+    return query ? `/teacher/week?${query}` : "/teacher/week";
+  }
 
   const today = getTodayInTaiwan();
 
@@ -63,23 +76,29 @@ export default function TeacherWeekView({
             </p>
           </div>
 
-          <div className="flex flex-wrap gap-2">
+          <div className="flex flex-wrap items-center gap-2">
+            <WeekViewToggle
+              basePath="/teacher/week"
+              date={startDate}
+              view={view}
+            />
+
             <Link
-              href={`/teacher/week?date=${previousWeek}`}
+              href={weekHref(previousWeek)}
               className="rounded-xl bg-zinc-800 px-3 py-2 text-sm text-zinc-300 hover:bg-zinc-700"
             >
               ← 上週
             </Link>
 
             <Link
-              href="/teacher/week"
+              href={weekHref()}
               className="rounded-xl bg-zinc-800 px-3 py-2 text-sm text-zinc-300 hover:bg-zinc-700"
             >
               本週
             </Link>
 
             <Link
-              href={`/teacher/week?date=${nextWeek}`}
+              href={weekHref(nextWeek)}
               className="rounded-xl bg-zinc-800 px-3 py-2 text-sm text-zinc-300 hover:bg-zinc-700"
             >
               下週 →
@@ -87,6 +106,20 @@ export default function TeacherWeekView({
           </div>
         </div>
 
+        {view === "calendar" ? (
+          <WeekCalendar
+            startDate={startDate}
+            lessons={lessons.map((lesson) => ({
+              id: lesson.id,
+              date: lesson.date,
+              time: lesson.time,
+              title: lesson.student,
+              subtitle: lesson.course,
+              status: lesson.status,
+              href: `/teacher?date=${lesson.date}`,
+            }))}
+          />
+        ) : (
         <div className="space-y-4">
           {days.map((date) => {
             const lessonsForDay = lessons.filter(
@@ -183,6 +216,7 @@ export default function TeacherWeekView({
             );
           })}
         </div>
+        )}
       </div>
     </main>
   );

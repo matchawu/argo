@@ -5,6 +5,7 @@ export type Enrollment = {
   course: string;
   price: number;
   default_weekday: number;
+  interval_weeks: number;
   default_time: string;
   start_date: string;
   end_date: string | null;

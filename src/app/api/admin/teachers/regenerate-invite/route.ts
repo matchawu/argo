@@ -4,7 +4,7 @@ import { createAdminClient } from "@/lib/supabase/admin";
 import {
   buildInviteUrl,
   createInviteToken,
-} from "@/lib/teacherInvite";
+} from "@/lib/invite";
 
 /*
  * 重新產生老師邀請連結
@@ -95,6 +95,29 @@ export async function POST(request: Request) {
     return NextResponse.json(
       { error: "這位老師沒有 Email" },
       { status: 400 },
+    );
+  }
+
+  /*
+   * 老師綁定的是 admin 帳號（老闆也是老師），而且那個帳號已經綁了 LINE，
+   * 就不能再產生邀請連結，否則拿到連結的人會把自己的 LINE 綁進 admin 帳號。
+   * 還沒綁 LINE 的 admin 帳號（例如剛把老師升級成 admin）可以用邀請連結完成綁定。
+   */
+  const { data: adminProfile } = await admin
+    .from("profiles")
+    .select("id")
+    .eq("teacher_id", teacher.id)
+    .eq("role", "admin")
+    .not("line_user_id", "is", null)
+    .maybeSingle();
+
+  if (adminProfile) {
+    return NextResponse.json(
+      {
+        error:
+          "這位老師已綁定管理員帳號，直接用「老師模式」即可，不需要邀請連結",
+      },
+      { status: 409 },
     );
   }
 

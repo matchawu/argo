@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Link from "next/link";
 import { createClient } from "@/lib/supabase/client";
 
 type Student = {
@@ -124,14 +125,24 @@ export default function StudentManager({
               className="flex items-center justify-between rounded-2xl border border-zinc-800 bg-zinc-900 p-5"
             >
               <div>
-                <div className="font-medium">
+                <Link
+                  href={`/students/${student.id}`}
+                  className="font-medium hover:underline"
+                >
                   {student.name}
-                </div>
+                </Link>
 
                 <div className="mt-1 text-sm text-zinc-500">
                   {student.active
                     ? "使用中"
                     : "已停用"}
+                  {" · "}
+                  <Link
+                    href={`/students/${student.id}`}
+                    className="text-zinc-400 underline hover:text-zinc-200"
+                  >
+                    繳費 / 登入設定
+                  </Link>
                 </div>
               </div>
 

@@ -1,3 +1,5 @@
+import { isDevLoginEnabled } from "@/lib/devLogin";
+
 const ERROR_MESSAGES: Record<string, string> = {
   line_cancelled: "已取消 LINE 登入",
   line_state: "登入逾時或連線異常，請重新登入",
@@ -8,6 +10,7 @@ const ERROR_MESSAGES: Record<string, string> = {
   invite_failed: "綁定 LINE 失敗，請稍後再試或聯絡管理員",
   line_already_bound: "這個 LINE 帳號已綁定其他使用者",
   teacher_inactive: "這個老師帳號已停用",
+  student_inactive: "這個學生帳號已停用",
 };
 
 type Props = {
@@ -50,6 +53,15 @@ export default async function LoginPage({ searchParams }: Props) {
           >
             使用 LINE 登入
           </a>
+
+          {isDevLoginEnabled() && (
+            <a
+              href="/dev/login"
+              className="block text-center text-xs text-amber-300 underline"
+            >
+              開發用：切換身份登入
+            </a>
+          )}
         </div>
       </div>
     </main>

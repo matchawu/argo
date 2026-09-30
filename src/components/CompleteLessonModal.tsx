@@ -10,6 +10,7 @@ type Lesson = {
   date: string;
   time: string;
   lessonNote?: string | null;
+  studentNote?: string | null;
 };
 
 type Props = {
@@ -18,6 +19,7 @@ type Props = {
   onCompleted: (
     lessonId: number,
     lessonNote: string,
+    studentNote: string,
   ) => void;
 };
 
@@ -28,6 +30,10 @@ export default function CompleteLessonModal({
 }: Props) {
   const [note, setNote] = useState(
     lesson.lessonNote ?? "",
+  );
+
+  const [studentNote, setStudentNote] = useState(
+    lesson.studentNote ?? "",
   );
 
   const [saving, setSaving] = useState(false);
@@ -42,6 +48,7 @@ export default function CompleteLessonModal({
       .update({
         status: "completed",
         lesson_note: note,
+        student_note: studentNote,
       })
       .eq("id", lesson.id);
 
@@ -53,7 +60,7 @@ export default function CompleteLessonModal({
       return;
     }
 
-    onCompleted(lesson.id, note);
+    onCompleted(lesson.id, note, studentNote);
     onClose();
   }
 
@@ -76,7 +83,7 @@ export default function CompleteLessonModal({
 
         <div>
           <label className="mb-2 block text-sm text-zinc-400">
-            本堂教學紀錄
+            本堂教學紀錄（內部，學生看不到）
           </label>
 
           <textarea
@@ -89,15 +96,30 @@ export default function CompleteLessonModal({
             className="w-full resize-y rounded-xl border border-zinc-700 bg-zinc-950 px-4 py-3 text-sm leading-6 text-zinc-100 outline-none placeholder:text-zinc-600 focus:border-zinc-500"
           />
 
+        </div>
+
+        <div className="mt-4">
+          <label className="mb-2 block text-sm text-zinc-400">
+            給學生的紀錄（學生登入後看得到）
+          </label>
+
+          <textarea
+            value={studentNote}
+            onChange={(event) =>
+              setStudentNote(event.target.value)
+            }
+            rows={4}
+            placeholder="例如：今天進度很好！回家請練習主歌 riff，每天 15 分鐘。"
+            className="w-full resize-y rounded-xl border border-zinc-700 bg-zinc-950 px-4 py-3 text-sm leading-6 text-zinc-100 outline-none placeholder:text-zinc-600 focus:border-zinc-500"
+          />
+
           <p className="mt-2 text-xs text-zinc-600">
-            教學紀錄可以留空，之後也能在學生頁補寫。
+            兩個紀錄都可以留空，之後也能在學生頁補寫。
           </p>
         </div>
 
         <div className="mt-6 flex items-center justify-between gap-4">
-          <span className="text-xs text-zinc-600">
-            {note.length} 字
-          </span>
+          <span />
 
           <div className="flex gap-2">
             <button

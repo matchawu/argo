@@ -19,7 +19,7 @@ export default async function ProtectedLayout({
 
   const { data: profile, error } = await supabase
     .from("profiles")
-    .select("role")
+    .select("role, teacher_id")
     .eq("id", user.id)
     .maybeSingle();
 
@@ -33,7 +33,7 @@ export default async function ProtectedLayout({
 
   return (
     <>
-      <Navbar />
+      <Navbar showTeacherLink={Boolean(profile.teacher_id)} />
       {children}
     </>
   );

@@ -11,6 +11,7 @@ type LessonHistoryItem = {
   price: number;
   status: "scheduled" | "completed" | "cancelled";
   lesson_note: string | null;
+  student_note: string | null;
 };
 
 type Props = {
@@ -46,6 +47,7 @@ export default function TeacherLessonHistory({
   function updateLessonNote(
     lessonId: number,
     note: string,
+    studentNote: string,
   ) {
     setLessons((current) =>
       current.map((lesson) =>
@@ -53,6 +55,7 @@ export default function TeacherLessonHistory({
           ? {
               ...lesson,
               lesson_note: note,
+              student_note: studentNote,
             }
           : lesson,
       ),
@@ -104,7 +107,7 @@ export default function TeacherLessonHistory({
                   }
                   className="rounded-xl bg-zinc-800 px-3 py-2 text-sm text-zinc-300 hover:bg-zinc-700 hover:text-white"
                 >
-                  {lesson.lesson_note
+                  {lesson.lesson_note || lesson.student_note
                     ? "編輯教學紀錄"
                     : "新增教學紀錄"}
                 </button>
@@ -114,11 +117,23 @@ export default function TeacherLessonHistory({
             {lesson.lesson_note && (
               <div className="mt-4 rounded-xl bg-zinc-950 px-4 py-3">
                 <p className="text-xs font-medium text-zinc-600">
-                  教學紀錄
+                  教學紀錄（內部）
                 </p>
 
                 <p className="mt-2 whitespace-pre-wrap text-sm leading-6 text-zinc-300">
                   {lesson.lesson_note}
+                </p>
+              </div>
+            )}
+
+            {lesson.student_note && (
+              <div className="mt-3 rounded-xl bg-zinc-950 px-4 py-3">
+                <p className="text-xs font-medium text-zinc-600">
+                  給學生的紀錄
+                </p>
+
+                <p className="mt-2 whitespace-pre-wrap text-sm leading-6 text-zinc-300">
+                  {lesson.student_note}
                 </p>
               </div>
             )}
@@ -134,13 +149,17 @@ export default function TeacherLessonHistory({
           initialNote={
             editingLesson.lesson_note ?? ""
           }
+          initialStudentNote={
+            editingLesson.student_note ?? ""
+          }
           onClose={() =>
             setEditingLesson(null)
           }
-          onSaved={(note) =>
+          onSaved={(note, studentNote) =>
             updateLessonNote(
               editingLesson.id,
               note,
+              studentNote,
             )
           }
         />

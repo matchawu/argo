@@ -40,9 +40,13 @@ export default function EnrollmentList({
 
   async function handleGenerate(enrollment: Enrollment) {
     try {
-      await generateLessonsForEnrollment(enrollment, 4);
+      const created = await generateLessonsForEnrollment(enrollment, 4);
 
-      alert("未來 4 週課程已建立");
+      alert(
+        created.length > 0
+          ? `已新增 ${created.length} 堂課`
+          : "接下來 4 週的課都已經排好了",
+      );
     } catch (error) {
       console.error(error);
       alert("生成課程失敗");
@@ -62,6 +66,7 @@ export default function EnrollmentList({
       course: string;
       price: number;
       weekday: number;
+      intervalWeeks: number;
       time: string;
       updateFutureLessons: boolean;
     },
@@ -82,6 +87,7 @@ export default function EnrollmentList({
         course: values.course,
         price: values.price,
         default_weekday: values.weekday,
+        interval_weeks: values.intervalWeeks,
         default_time: values.time,
       })
       .eq("id", enrollment.id);
@@ -205,7 +211,7 @@ export default function EnrollmentList({
                   </div>
 
                   <div className="mt-2 text-sm text-zinc-500">
-                    每週
+                    {enrollment.interval_weeks === 2 ? "隔週" : "每週"}
                     {weekdayLabels[enrollment.default_weekday]}{" "}
                     {enrollment.default_time.slice(0, 5)}
                     {" · "}${enrollment.price}

@@ -16,7 +16,11 @@ const navItems = [
   { label: "健檢", href: "/health" },
 ];
 
-export default function Navbar() {
+export default function Navbar({
+  showTeacherLink = false,
+}: {
+  showTeacherLink?: boolean;
+}) {
   const pathname = usePathname();
   const [email, setEmail] = useState<string | null>(null);
   const [menuOpen, setMenuOpen] = useState(false);
@@ -51,7 +55,7 @@ export default function Navbar() {
           </Link>
 
           {/* Desktop */}
-          <div className="hidden items-center gap-2 md:flex">
+          <div className="hidden items-center gap-2 lg:flex">
             {navItems.map((item) => {
               const isActive =
                 item.href === "/"
@@ -73,6 +77,15 @@ export default function Navbar() {
               );
             })}
 
+            {showTeacherLink && (
+              <Link
+                href="/teacher"
+                className="ml-2 whitespace-nowrap rounded-xl border border-zinc-700 px-4 py-2 text-sm text-zinc-300 hover:bg-zinc-900 hover:text-white"
+              >
+                老師模式
+              </Link>
+            )}
+
             {email && (
               <span className="ml-2 max-w-40 truncate text-xs text-zinc-500">
                 {email}
@@ -86,7 +99,7 @@ export default function Navbar() {
           <button
             type="button"
             onClick={() => setMenuOpen((open) => !open)}
-            className="flex h-10 w-10 items-center justify-center rounded-xl border border-zinc-800 text-zinc-300 hover:bg-zinc-900 md:hidden"
+            className="flex h-10 w-10 items-center justify-center rounded-xl border border-zinc-800 text-zinc-300 hover:bg-zinc-900 lg:hidden"
             aria-label={menuOpen ? "關閉選單" : "開啟選單"}
             aria-expanded={menuOpen}
           >
@@ -100,7 +113,7 @@ export default function Navbar() {
 
         {/* Mobile menu */}
         {menuOpen && (
-          <div className="border-t border-zinc-800 pb-4 pt-3 md:hidden">
+          <div className="border-t border-zinc-800 pb-4 pt-3 lg:hidden">
             <div className="flex flex-col gap-1">
               {navItems.map((item) => {
                 const isActive =
@@ -124,6 +137,15 @@ export default function Navbar() {
               })}
 
               <div className="mt-3 border-t border-zinc-800 pt-3">
+                {showTeacherLink && (
+                  <Link
+                    href="/teacher"
+                    className="mb-2 block rounded-xl px-4 py-3 text-sm text-zinc-300 hover:bg-zinc-900 hover:text-white"
+                  >
+                    老師模式 →
+                  </Link>
+                )}
+
                 {email && (
                   <p className="mb-2 truncate px-4 text-xs text-zinc-500">
                     {email}

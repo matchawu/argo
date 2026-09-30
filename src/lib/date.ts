@@ -40,3 +40,16 @@ export function getTodayInTaiwan() {
 
   return `${year}-${month}-${day}`;
 }
+/*
+ * 回傳該日期所在那一週的週一（YYYY-MM-DD）
+ */
+export function getWeekStart(dateString: string) {
+  const date = parseLocalDate(dateString);
+
+  const day = date.getDay();
+  const diff = day === 0 ? -6 : 1 - day;
+
+  date.setDate(date.getDate() + diff);
+
+  return formatLocalDate(date);
+}

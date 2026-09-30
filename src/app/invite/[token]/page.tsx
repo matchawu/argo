@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
 import { createAdminClient } from "@/lib/supabase/admin";
-import { hashInviteToken } from "@/lib/teacherInvite";
+import { findInvite } from "@/lib/invite";
 
 export const metadata: Metadata = {
-  title: "老師邀請",
+  title: "邀請",
 };
 
 type Props = {
@@ -15,21 +15,9 @@ type Props = {
 export default async function InvitePage({ params }: Props) {
   const { token } = await params;
 
-  const admin = createAdminClient();
+  const invite = await findInvite(createAdminClient(), token);
 
-  const { data: teacher } = await admin
-    .from("teachers")
-    .select("name, active, invite_expires_at")
-    .eq("invite_token_hash", hashInviteToken(token))
-    .maybeSingle();
-
-  const valid =
-    teacher &&
-    teacher.active &&
-    teacher.invite_expires_at &&
-    new Date(teacher.invite_expires_at) > new Date();
-
-  if (!valid) {
+  if (!invite || !invite.active) {
     return (
       <main className="flex min-h-screen items-center justify-center bg-zinc-950 px-4 text-zinc-100">
         <div className="w-full max-w-md rounded-2xl border border-red-900 bg-zinc-900 p-8 text-center">
@@ -53,11 +41,16 @@ export default async function InvitePage({ params }: Props) {
         <p className="text-sm text-zinc-500">Argo</p>
 
         <h1 className="mt-2 text-2xl font-bold">
-          {teacher.name} 老師，歡迎加入
+          {invite.kind === "teacher"
+            ? `${invite.name} 老師，歡迎加入`
+            : `${invite.name}，歡迎使用 Argo`}
         </h1>
 
         <p className="mt-3 text-sm leading-6 text-zinc-400">
-          請用你的 LINE 帳號完成綁定，之後就可以直接用 LINE 登入 Argo。
+          請用你的 LINE 帳號完成綁定，之後就可以直接用 LINE 登入 Argo
+          {invite.kind === "student" &&
+            "，查看課表、剩餘堂數與上課紀錄"}
+          。
         </p>
 
         <a

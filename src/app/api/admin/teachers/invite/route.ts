@@ -4,7 +4,7 @@ import { createAdminClient } from "@/lib/supabase/admin";
 import {
   buildInviteUrl,
   createInviteToken,
-} from "@/lib/teacherInvite";
+} from "@/lib/invite";
 
 export async function POST(request: Request) {
   const supabase = await createClient();

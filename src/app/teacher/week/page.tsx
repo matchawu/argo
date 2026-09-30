@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import TeacherWeekView from "@/components/TeacherWeekView";
+import { parseWeekView } from "@/components/WeekCalendar";
 import {
   addDays,
   formatLocalDate,
@@ -16,6 +17,7 @@ export const metadata: Metadata = {
 type Props = {
   searchParams: Promise<{
     date?: string;
+    view?: string;
   }>;
 };
 
@@ -60,7 +62,8 @@ export default async function TeacherWeekPage({
   if (
     profileError ||
     !profile ||
-    profile.role !== "teacher" ||
+    // 老師，或有綁定老師身份的 admin（老闆也是老師）
+    !["teacher", "admin"].includes(profile.role) ||
     !profile.teacher_id
   ) {
     redirect("/");
@@ -144,6 +147,7 @@ export default async function TeacherWeekPage({
       )}
       startDate={startDate}
       endDate={endDate}
+      view={parseWeekView(params.view)}
     />
   );
 }

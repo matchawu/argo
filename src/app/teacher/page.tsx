@@ -44,7 +44,8 @@ export default async function TeacherPage({ searchParams }: Props) {
   if (
     profileError ||
     !profile ||
-    profile.role !== "teacher" ||
+    // 老師，或有綁定老師身份的 admin（老闆也是老師）
+    !["teacher", "admin"].includes(profile.role) ||
     !profile.teacher_id
   ) {
     redirect("/");
@@ -75,7 +76,8 @@ export default async function TeacherPage({ searchParams }: Props) {
       lesson_time,
       price,
       status,
-      lesson_note
+      lesson_note,
+      student_note
     `,
       )
       .eq("teacher_id", profile.teacher_id)
@@ -118,6 +120,7 @@ export default async function TeacherPage({ searchParams }: Props) {
         price: lesson.price,
         status: lesson.status,
         lessonNote: lesson.lesson_note,
+        studentNote: lesson.student_note,
       }))}
       selectedDate={selectedDate}
       weekLessonCount={weekLessonCount ?? 0}
