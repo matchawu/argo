@@ -65,6 +65,31 @@ export default function TeacherManager({ initialTeachers }: Props) {
     null,
   );
 
+  const [inviteLink, setInviteLink] = useState<{
+    teacherName: string;
+    url: string;
+  } | null>(null);
+
+  const [copied, setCopied] = useState(false);
+
+  function showInviteLink(teacherName: string, url: string) {
+    setInviteLink({ teacherName, url });
+    setCopied(false);
+  }
+
+  async function copyInviteLink() {
+    if (!inviteLink) {
+      return;
+    }
+
+    try {
+      await navigator.clipboard.writeText(inviteLink.url);
+      setCopied(true);
+    } catch {
+      alert("複製失敗，請手動選取連結");
+    }
+  }
+
   async function parseResponse(response: Response) {
     const text = await response.text();
 
@@ -133,6 +158,8 @@ export default function TeacherManager({ initialTeachers }: Props) {
 
       setTeachers((currentTeachers) => [...currentTeachers, result.teacher]);
 
+      showInviteLink(result.teacher.name, result.inviteUrl);
+
       setName("");
       setEmail("");
       setShare("0.6");
@@ -150,7 +177,7 @@ export default function TeacherManager({ initialTeachers }: Props) {
     setResendingTeacherId(teacher.id);
 
     try {
-      const response = await fetch("/api/admin/teachers/resend-invite", {
+      const response = await fetch("/api/admin/teachers/regenerate-invite", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -163,7 +190,7 @@ export default function TeacherManager({ initialTeachers }: Props) {
       const result = await parseResponse(response);
 
       if (!response.ok) {
-        alert(result.error ?? `重新寄送失敗（HTTP ${response.status}）`);
+        alert(result.error ?? `產生邀請連結失敗（HTTP ${response.status}）`);
         return;
       }
 
@@ -180,7 +207,7 @@ export default function TeacherManager({ initialTeachers }: Props) {
         ),
       );
 
-      alert("邀請信已重新寄出");
+      showInviteLink(teacher.name, result.inviteUrl);
     } finally {
       setResendingTeacherId(null);
     }
@@ -306,10 +333,53 @@ export default function TeacherManager({ initialTeachers }: Props) {
               disabled={saving}
               className="w-full rounded-xl bg-white px-5 py-3 font-medium text-black hover:bg-zinc-200 disabled:cursor-not-allowed disabled:opacity-50"
             >
-              {saving ? "建立並寄送邀請中..." : "＋ 新增老師並寄邀請"}
+              {saving ? "建立中..." : "＋ 新增老師並產生邀請連結"}
             </button>
           </div>
         </form>
+
+        {inviteLink && (
+          <div className="mb-8 rounded-2xl border border-emerald-900 bg-emerald-950/40 p-5">
+            <div className="flex items-start justify-between gap-4">
+              <div className="min-w-0">
+                <div className="font-medium text-emerald-300">
+                  {inviteLink.teacherName} 的邀請連結
+                </div>
+
+                <p className="mt-1 text-xs text-zinc-400">
+                  請把連結傳給老師，老師用 LINE 登入後即完成綁定。連結 7
+                  天內有效、只能使用一次，離開此頁後無法再次查看。
+                </p>
+              </div>
+
+              <button
+                type="button"
+                onClick={() => setInviteLink(null)}
+                className="shrink-0 text-sm text-zinc-500 hover:text-zinc-300"
+              >
+                關閉
+              </button>
+            </div>
+
+            <div className="mt-3 flex flex-wrap gap-2">
+              <input
+                type="text"
+                readOnly
+                value={inviteLink.url}
+                onFocus={(e) => e.target.select()}
+                className="min-w-0 flex-1 rounded-lg bg-zinc-950 px-3 py-2 text-sm text-zinc-300 outline-none ring-1 ring-zinc-700"
+              />
+
+              <button
+                type="button"
+                onClick={copyInviteLink}
+                className="rounded-lg bg-white px-4 py-2 text-sm font-medium text-black hover:bg-zinc-200"
+              >
+                {copied ? "已複製" : "複製"}
+              </button>
+            </div>
+          </div>
+        )}
 
         <div className="space-y-3">
           {teachers.map((teacher) => (
@@ -396,7 +466,7 @@ export default function TeacherManager({ initialTeachers }: Props) {
               </div>
 
               <div className="flex shrink-0 flex-wrap gap-2">
-                {teacher.invite_status !== "active" && teacher.email && (
+                {teacher.email && (
                   <button
                     type="button"
                     onClick={() => resendInvite(teacher)}
@@ -404,8 +474,10 @@ export default function TeacherManager({ initialTeachers }: Props) {
                     className="rounded-xl bg-blue-950 px-4 py-2 text-sm text-blue-300 hover:bg-blue-900 disabled:cursor-not-allowed disabled:opacity-50"
                   >
                     {resendingTeacherId === teacher.id
-                      ? "寄送中..."
-                      : "重新寄送邀請"}
+                      ? "產生中..."
+                      : teacher.invite_status === "active"
+                        ? "重新綁定 LINE"
+                        : "產生邀請連結"}
                   </button>
                 )}
 

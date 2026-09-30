@@ -6,11 +6,18 @@ import {
   createInviteToken,
 } from "@/lib/teacherInvite";
 
+/*
+ * 重新產生老師邀請連結
+ *
+ * 舊連結立即失效。
+ * 已啟用的老師也可以用新連結重新綁定 LINE（例如換手機 / 換帳號）。
+ */
 export async function POST(request: Request) {
   const supabase = await createClient();
+  const admin = createAdminClient();
 
   /*
-   * 確認目前登入者
+   * 1. 確認目前登入者是 admin
    */
   const {
     data: { user },
@@ -23,9 +30,6 @@ export async function POST(request: Request) {
     );
   }
 
-  /*
-   * 確認是 admin
-   */
   const { data: profile } = await supabase
     .from("profiles")
     .select("role")
@@ -40,48 +44,20 @@ export async function POST(request: Request) {
   }
 
   /*
-   * 讀取輸入
+   * 2. 取得 teacherId
    */
   const body = await request.json();
-
-  const name = String(
-    body.name ?? "",
-  ).trim();
-
-  const email = String(
-    body.email ?? "",
-  )
-    .trim()
-    .toLowerCase();
-
-  const teacherShare = Number(
-    body.teacherShare,
-  );
-
-  if (!name || !email) {
-    return NextResponse.json(
-      {
-        error: "姓名與 Email 為必填",
-      },
-      { status: 400 },
-    );
-  }
+  const teacherId = Number(body.teacherId);
 
   if (
-    Number.isNaN(teacherShare) ||
-    teacherShare < 0 ||
-    teacherShare > 1
+    !Number.isInteger(teacherId) ||
+    teacherId <= 0
   ) {
     return NextResponse.json(
-      {
-        error:
-          "老師抽成比例必須介於 0 到 1",
-      },
+      { error: "老師 ID 不正確" },
       { status: 400 },
     );
   }
-
-  const admin = createAdminClient();
 
   const siteUrl =
     process.env.NEXT_PUBLIC_SITE_URL;
@@ -97,46 +73,69 @@ export async function POST(request: Request) {
   }
 
   /*
-   * 建立老師 + 邀請連結
-   *
-   * 不建立 Auth user、不寄信。
-   * 老師打開邀請連結用 LINE 登入時才建立登入身份。
+   * 3. 找老師
    */
-  const invite = createInviteToken();
-
   const {
     data: teacher,
     error: teacherError,
   } = await admin
     .from("teachers")
-    .insert({
-      name,
-      email,
-      teacher_share: teacherShare,
-      active: true,
-      invite_status: "invited",
+    .select("id, email, invite_status")
+    .eq("id", teacherId)
+    .single();
+
+  if (teacherError || !teacher) {
+    return NextResponse.json(
+      { error: "找不到這位老師" },
+      { status: 404 },
+    );
+  }
+
+  if (!teacher.email) {
+    return NextResponse.json(
+      { error: "這位老師沒有 Email" },
+      { status: 400 },
+    );
+  }
+
+  /*
+   * 4. 換新的邀請 token
+   */
+  const invite = createInviteToken();
+
+  const {
+    data: updatedTeacher,
+    error: updateError,
+  } = await admin
+    .from("teachers")
+    .update({
+      invite_status:
+        teacher.invite_status === "active"
+          ? "active"
+          : "invited",
       invited_at: new Date().toISOString(),
       invite_token_hash: invite.tokenHash,
       invite_expires_at: invite.expiresAt,
     })
+    .eq("id", teacher.id)
     .select(
       "id, name, email, teacher_share, active, invite_status, invited_at",
     )
     .single();
 
-  if (teacherError || !teacher) {
+  if (updateError || !updatedTeacher) {
     return NextResponse.json(
       {
         error:
-          teacherError?.message ??
-          "建立老師資料失敗",
+          updateError?.message ??
+          "更新邀請狀態失敗",
       },
-      { status: 400 },
+      { status: 500 },
     );
   }
 
   return NextResponse.json({
-    teacher,
+    teacher: updatedTeacher,
     inviteUrl: buildInviteUrl(siteUrl, invite.token),
   });
 }
