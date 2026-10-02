@@ -1,6 +1,7 @@
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import Navbar from "@/components/Navbar";
+import { homeForRole } from "@/lib/authSession";
 
 export default async function ProtectedLayout({
   children,
@@ -27,8 +28,12 @@ export default async function ProtectedLayout({
     redirect("/login");
   }
 
+  /*
+   * 老師 / 學生打開後台網址（例如從 LINE 圖文選單點「打開 Argo」）
+   * 直接帶到自己的首頁
+   */
   if (profile.role !== "admin") {
-    redirect("/unauthorized");
+    redirect(homeForRole(profile.role));
   }
 
   return (

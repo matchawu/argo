@@ -1,4 +1,7 @@
+import { redirect } from "next/navigation";
 import { isDevLoginEnabled } from "@/lib/devLogin";
+import { homeForRole } from "@/lib/authSession";
+import { createClient } from "@/lib/supabase/server";
 
 const ERROR_MESSAGES: Record<string, string> = {
   line_cancelled: "已取消 LINE 登入",
@@ -22,6 +25,29 @@ type Props = {
 
 export default async function LoginPage({ searchParams }: Props) {
   const { error, line_user_id: lineUserId } = await searchParams;
+
+  /*
+   * 已經登入（而且有身份）就直接進入系統
+   */
+  if (!error) {
+    const supabase = await createClient();
+
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
+
+    if (user) {
+      const { data: profile } = await supabase
+        .from("profiles")
+        .select("role")
+        .eq("id", user.id)
+        .maybeSingle();
+
+      if (profile) {
+        redirect(homeForRole(profile.role));
+      }
+    }
+  }
 
   const errorMessage = error
     ? (ERROR_MESSAGES[error] ?? "登入失敗")

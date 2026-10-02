@@ -62,6 +62,9 @@ export function buildLineAuthorizeUrl({
   url.searchParams.set("scope", "openid profile");
   url.searchParams.set("nonce", nonce);
 
+  // 同意授權後另外跳出「加入官方帳號好友」畫面（官方帳號需已連結此 Login channel）
+  url.searchParams.set("bot_prompt", "aggressive");
+
   return url.toString();
 }
 
