@@ -1,5 +1,6 @@
 "use client";
 
+import { Check, ChevronLeft, ChevronRight } from "lucide-react";
 import { useEffect, useState } from "react";
 import { createClient } from "@/lib/supabase/client";
 import type { Lesson } from "@/types/lesson";
@@ -160,9 +161,10 @@ export default function TeacherTodayView({
           <div className="flex flex-wrap gap-2">
             <Link
               href={`/teacher?date=${previousDate}`}
-              className="rounded-xl bg-fill px-3 py-2 text-sm text-foreground hover:bg-fill-strong"
+              className="inline-flex items-center gap-1 rounded-xl bg-fill px-3 py-2 text-sm text-foreground hover:bg-fill-strong"
             >
-              ← 前一天
+              <ChevronLeft aria-hidden className="h-4 w-4 shrink-0" />
+              前一天
             </Link>
 
             {selectedDate !== today && (
@@ -176,9 +178,10 @@ export default function TeacherTodayView({
 
             <Link
               href={`/teacher?date=${nextDate}`}
-              className="rounded-xl bg-fill px-3 py-2 text-sm text-foreground hover:bg-fill-strong"
+              className="inline-flex items-center gap-1 rounded-xl bg-fill px-3 py-2 text-sm text-foreground hover:bg-fill-strong"
             >
-              後一天 →
+              後一天
+              <ChevronRight aria-hidden className="h-4 w-4 shrink-0" />
             </Link>
           </div>
         </div>
@@ -250,8 +253,9 @@ export default function TeacherTodayView({
                     )}
 
                     {lesson.status === "completed" && (
-                      <span className="rounded-full bg-success-soft px-3 py-1.5 text-sm text-success">
-                        ✓ 已完成
+                      <span className="inline-flex items-center gap-1 rounded-full bg-success-soft px-3 py-1.5 text-sm text-success">
+                        <Check aria-hidden className="h-4 w-4 shrink-0" />
+                        已完成
                       </span>
                     )}
 

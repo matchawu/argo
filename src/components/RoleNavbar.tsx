@@ -1,5 +1,6 @@
 "use client";
 
+import { ChevronRight, Menu, X } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
@@ -95,7 +96,11 @@ export default function RoleNavbar({
             aria-label={menuOpen ? "關閉選單" : "開啟選單"}
             aria-expanded={menuOpen}
           >
-            <span className="text-lg">{menuOpen ? "✕" : "☰"}</span>
+            {menuOpen ? (
+              <X aria-hidden className="h-5 w-5" />
+            ) : (
+              <Menu aria-hidden className="h-5 w-5" />
+            )}
           </button>
         </div>
 
@@ -123,9 +128,10 @@ export default function RoleNavbar({
                   <Link
                     href={switchLink.href}
                     onClick={() => setMenuOpen(false)}
-                    className="rounded-xl px-4 py-3 text-sm text-foreground hover:bg-fill"
+                    className="inline-flex items-center gap-1 rounded-xl px-4 py-3 text-sm text-foreground hover:bg-fill"
                   >
-                    {switchLink.label} →
+                    {switchLink.label}
+                    <ChevronRight aria-hidden className="h-4 w-4 shrink-0" />
                   </Link>
                 )}
 

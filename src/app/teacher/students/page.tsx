@@ -1,3 +1,4 @@
+import { ChevronRight } from "lucide-react";
 import type { Metadata } from "next";
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
@@ -112,7 +113,7 @@ export default async function TeacherStudentsPage() {
                     </div>
                   </div>
 
-                  <span className="text-subtle">→</span>
+                  <ChevronRight aria-hidden className="h-5 w-5 text-subtle" />
                 </div>
               </Link>
             ))}

@@ -1,5 +1,6 @@
 "use client";
 
+import { ChevronRight, Menu, X } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -109,9 +110,9 @@ export default function Navbar({
             aria-expanded={menuOpen}
           >
             {menuOpen ? (
-              <span className="text-xl">✕</span>
+              <X aria-hidden className="h-5 w-5" />
             ) : (
-              <span className="text-xl">☰</span>
+              <Menu aria-hidden className="h-5 w-5" />
             )}
           </button>
         </div>
@@ -145,9 +146,10 @@ export default function Navbar({
                 {showTeacherLink && (
                   <Link
                     href="/teacher"
-                    className="mb-2 block rounded-xl px-4 py-3 text-sm text-foreground hover:bg-fill hover:text-foreground"
+                    className="inline-flex items-center gap-1 mb-2 block rounded-xl px-4 py-3 text-sm text-foreground hover:bg-fill hover:text-foreground"
                   >
-                    老師模式 →
+                    老師模式
+                    <ChevronRight aria-hidden className="h-4 w-4 shrink-0" />
                   </Link>
                 )}
 

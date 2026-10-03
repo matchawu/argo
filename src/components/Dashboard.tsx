@@ -1,5 +1,6 @@
 "use client";
 
+import { ChevronLeft, ChevronRight } from "lucide-react";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import AddLessonForm from "@/components/AddLessonForm";
@@ -267,9 +268,10 @@ export default function Dashboard({ initialLessons, selectedDate }: Props) {
             <div className="flex flex-wrap items-center gap-2">
               <Link
                 href={`/?date=${previousDate}`}
-                className="rounded-xl bg-fill px-3 py-2 text-sm text-foreground transition hover:bg-fill-strong"
+                className="inline-flex items-center gap-1 rounded-xl bg-fill px-3 py-2 text-sm text-foreground transition hover:bg-fill-strong"
               >
-                ← 前一天
+                <ChevronLeft aria-hidden className="h-4 w-4 shrink-0" />
+                前一天
               </Link>
 
               {selectedDate !== today && (
@@ -283,9 +285,10 @@ export default function Dashboard({ initialLessons, selectedDate }: Props) {
 
               <Link
                 href={`/?date=${nextDate}`}
-                className="rounded-xl bg-fill px-3 py-2 text-sm text-foreground transition hover:bg-fill-strong"
+                className="inline-flex items-center gap-1 rounded-xl bg-fill px-3 py-2 text-sm text-foreground transition hover:bg-fill-strong"
               >
-                後一天 →
+                後一天
+                <ChevronRight aria-hidden className="h-4 w-4 shrink-0" />
               </Link>
 
               <button

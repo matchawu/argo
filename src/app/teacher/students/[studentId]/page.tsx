@@ -1,3 +1,4 @@
+import { ChevronLeft } from "lucide-react";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound, redirect } from "next/navigation";
@@ -145,9 +146,10 @@ export default async function TeacherStudentDetailPage({ params }: Props) {
       <div className="mx-auto max-w-3xl px-4 py-10 sm:px-6">
         <Link
           href="/teacher/students"
-          className="text-sm text-muted transition hover:text-foreground"
+          className="inline-flex items-center gap-1 text-sm text-muted transition hover:text-foreground"
         >
-          ← 返回我的學生
+          <ChevronLeft aria-hidden className="h-4 w-4 shrink-0" />
+          返回我的學生
         </Link>
 
         <div className="mt-6">

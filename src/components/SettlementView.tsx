@@ -1,5 +1,6 @@
 "use client";
 
+import { ChevronLeft, ChevronRight } from "lucide-react";
 import Link from "next/link";
 import { useState } from "react";
 
@@ -161,9 +162,10 @@ export default function SettlementView({ lessons, selectedMonth }: Props) {
           <div className="flex flex-wrap gap-2">
             <Link
               href={`/settlement?month=${previousMonth}`}
-              className="rounded-xl bg-fill px-4 py-2 text-sm hover:bg-fill-strong"
+              className="inline-flex items-center gap-1 rounded-xl bg-fill px-4 py-2 text-sm hover:bg-fill-strong"
             >
-              ← 上個月
+              <ChevronLeft aria-hidden className="h-4 w-4 shrink-0" />
+              上個月
             </Link>
 
             <Link
@@ -175,9 +177,10 @@ export default function SettlementView({ lessons, selectedMonth }: Props) {
 
             <Link
               href={`/settlement?month=${nextMonth}`}
-              className="rounded-xl bg-fill px-4 py-2 text-sm hover:bg-fill-strong"
+              className="inline-flex items-center gap-1 rounded-xl bg-fill px-4 py-2 text-sm hover:bg-fill-strong"
             >
-              下個月 →
+              下個月
+              <ChevronRight aria-hidden className="h-4 w-4 shrink-0" />
             </Link>
 
             <button

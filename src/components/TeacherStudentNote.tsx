@@ -1,5 +1,6 @@
 "use client";
 
+import { Check } from "lucide-react";
 import { useState } from "react";
 import { createClient } from "@/lib/supabase/client";
 
@@ -71,8 +72,9 @@ export default function TeacherStudentNote({
         </div>
 
         {saved && (
-          <span className="text-sm text-success">
-            ✓ 已儲存
+          <span className="inline-flex items-center gap-1 text-sm text-success">
+            <Check aria-hidden className="h-4 w-4 shrink-0" />
+            已儲存
           </span>
         )}
       </div>

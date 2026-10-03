@@ -1,3 +1,4 @@
+import { AlertTriangle, CheckCircle2 } from "lucide-react";
 import type { Metadata } from "next";
 import { createClient } from "@/lib/supabase/server";
 
@@ -216,13 +217,21 @@ export default async function HealthPage() {
           <p
             className={
               totalIssues === 0
-                ? "text-lg font-semibold text-success"
-                : "text-lg font-semibold text-warning"
+                ? "flex items-center gap-2 text-lg font-semibold text-success"
+                : "flex items-center gap-2 text-lg font-semibold text-warning"
             }
           >
-            {totalIssues === 0
-              ? "✓ 系統資料目前看起來正常"
-              : `發現 ${totalIssues} 個資料問題`}
+            {totalIssues === 0 ? (
+              <>
+                <CheckCircle2 aria-hidden className="h-5 w-5" />
+                系統資料目前看起來正常
+              </>
+            ) : (
+              <>
+                <AlertTriangle aria-hidden className="h-5 w-5" />
+                發現 {totalIssues} 個資料問題
+              </>
+            )}
           </p>
 
           <p className="mt-2 text-sm text-muted">

@@ -1,3 +1,4 @@
+import { ChevronLeft, ChevronRight } from "lucide-react";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { getCurrentStudent } from "@/lib/currentStudent";
@@ -122,7 +123,10 @@ export default async function StudentWeekPage({ searchParams }: Props) {
             <div className="flex items-center justify-between">
               <p className="text-sm text-muted">剩餘堂數</p>
 
-              <span className="text-xs text-subtle">繳費紀錄 →</span>
+              <span className="inline-flex items-center gap-0.5 text-xs text-subtle">
+                繳費紀錄
+                <ChevronRight aria-hidden className="h-3.5 w-3.5" />
+              </span>
             </div>
 
             <div className="mt-4 space-y-4">
@@ -160,7 +164,7 @@ export default async function StudentWeekPage({ searchParams }: Props) {
             aria-label="上一週"
             className="flex h-10 w-10 items-center justify-center rounded-full border border-line bg-surface text-muted transition hover:text-foreground"
           >
-            ←
+            <ChevronLeft aria-hidden className="h-4 w-4 shrink-0" />
           </Link>
 
           <div className="text-center">
@@ -183,7 +187,7 @@ export default async function StudentWeekPage({ searchParams }: Props) {
             aria-label="下一週"
             className="flex h-10 w-10 items-center justify-center rounded-full border border-line bg-surface text-muted transition hover:text-foreground"
           >
-            →
+            <ChevronRight aria-hidden className="h-4 w-4 shrink-0" />
           </Link>
         </div>
 

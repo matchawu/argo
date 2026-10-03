@@ -1,5 +1,6 @@
 "use client";
 
+import { ChevronLeft, ChevronRight } from "lucide-react";
 import Link from "next/link";
 import {
   addDays,
@@ -85,9 +86,10 @@ export default function TeacherWeekView({
 
             <Link
               href={weekHref(previousWeek)}
-              className="rounded-xl bg-fill px-3 py-2 text-sm text-foreground hover:bg-fill-strong"
+              className="inline-flex items-center gap-1 rounded-xl bg-fill px-3 py-2 text-sm text-foreground hover:bg-fill-strong"
             >
-              ← 上週
+              <ChevronLeft aria-hidden className="h-4 w-4 shrink-0" />
+              上週
             </Link>
 
             <Link
@@ -99,9 +101,10 @@ export default function TeacherWeekView({
 
             <Link
               href={weekHref(nextWeek)}
-              className="rounded-xl bg-fill px-3 py-2 text-sm text-foreground hover:bg-fill-strong"
+              className="inline-flex items-center gap-1 rounded-xl bg-fill px-3 py-2 text-sm text-foreground hover:bg-fill-strong"
             >
-              下週 →
+              下週
+              <ChevronRight aria-hidden className="h-4 w-4 shrink-0" />
             </Link>
           </div>
         </div>
