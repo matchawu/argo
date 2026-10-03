@@ -1,5 +1,6 @@
 "use client";
 
+import { toast } from "sonner";
 import { Check } from "lucide-react";
 import { useState } from "react";
 import { createClient } from "@/lib/supabase/client";
@@ -46,7 +47,7 @@ export default function TeacherStudentNote({
 
     if (error) {
       console.error(error);
-      alert("儲存教學備註失敗");
+      toast.error("儲存教學備註失敗");
       return;
     }
 

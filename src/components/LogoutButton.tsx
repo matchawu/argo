@@ -1,5 +1,6 @@
 "use client";
 
+import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
 
@@ -13,7 +14,7 @@ export default function LogoutButton() {
 
     if (error) {
       console.error(error);
-      alert("登出失敗");
+      toast.error("登出失敗");
       return;
     }
 

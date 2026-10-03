@@ -1,5 +1,6 @@
 "use client";
 
+import { toast } from "sonner";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
@@ -99,7 +100,7 @@ export default function TeacherManager({
       await navigator.clipboard.writeText(inviteLink.url);
       setCopied(true);
     } catch {
-      alert("複製失敗，請手動選取連結");
+      toast.error("複製失敗，請手動選取連結");
     }
   }
 
@@ -126,12 +127,12 @@ export default function TeacherManager({
     const teacherShare = Number(share);
 
     if (!trimmedName || !trimmedEmail) {
-      alert("請輸入老師姓名與 Email");
+      toast.error("請輸入老師姓名與 Email");
       return;
     }
 
     if (Number.isNaN(teacherShare) || teacherShare < 0 || teacherShare > 1) {
-      alert("抽成比例請輸入 0 到 1 之間");
+      toast.error("抽成比例請輸入 0 到 1 之間");
       return;
     }
 
@@ -164,7 +165,7 @@ export default function TeacherManager({
           setShare("0.6");
         }
 
-        alert(result.error ?? `新增老師失敗（HTTP ${response.status}）`);
+        toast.error(result.error ?? `新增老師失敗（HTTP ${response.status}）`);
 
         return;
       }
@@ -183,7 +184,7 @@ export default function TeacherManager({
 
   async function resendInvite(teacher: Teacher) {
     if (!teacher.email) {
-      alert("這位老師沒有 Email");
+      toast.error("這位老師沒有 Email");
       return;
     }
 
@@ -203,7 +204,7 @@ export default function TeacherManager({
       const result = await parseResponse(response);
 
       if (!response.ok) {
-        alert(result.error ?? `產生邀請連結失敗（HTTP ${response.status}）`);
+        toast.error(result.error ?? `產生邀請連結失敗（HTTP ${response.status}）`);
         return;
       }
 
@@ -254,7 +255,7 @@ export default function TeacherManager({
       const result = await parseResponse(response);
 
       if (!response.ok) {
-        alert(result.error ?? `綁定失敗（HTTP ${response.status}）`);
+        toast.error(result.error ?? `綁定失敗（HTTP ${response.status}）`);
         return;
       }
 
@@ -289,7 +290,7 @@ export default function TeacherManager({
 
     if (error) {
       console.error(error);
-      alert("更新老師狀態失敗");
+      toast.error("更新老師狀態失敗");
       return;
     }
 
@@ -309,7 +310,7 @@ export default function TeacherManager({
     const trimmedEmail = editingEmail.trim().toLowerCase();
 
     if (!trimmedEmail) {
-      alert("請輸入 Email");
+      toast.error("請輸入 Email");
       return;
     }
 
@@ -322,7 +323,7 @@ export default function TeacherManager({
 
     if (error) {
       console.error(error);
-      alert("更新 Email 失敗");
+      toast.error("更新 Email 失敗");
       return;
     }
 

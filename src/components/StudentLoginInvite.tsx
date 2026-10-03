@@ -1,5 +1,6 @@
 "use client";
 
+import { toast } from "sonner";
 import { useState } from "react";
 
 type Props = {
@@ -35,7 +36,7 @@ export default function StudentLoginInvite({
       const result = await response.json().catch(() => ({}));
 
       if (!response.ok) {
-        alert(
+        toast.error(
           result.error ??
             `產生登入連結失敗（HTTP ${response.status}）`,
         );
@@ -58,7 +59,7 @@ export default function StudentLoginInvite({
       await navigator.clipboard.writeText(inviteUrl);
       setCopied(true);
     } catch {
-      alert("複製失敗，請手動選取連結");
+      toast.error("複製失敗，請手動選取連結");
     }
   }
 

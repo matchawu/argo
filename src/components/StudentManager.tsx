@@ -1,5 +1,6 @@
 "use client";
 
+import { toast } from "sonner";
 import { useState } from "react";
 import Link from "next/link";
 import { createClient } from "@/lib/supabase/client";
@@ -47,7 +48,7 @@ export default function StudentManager({
 
     if (error) {
       console.error(error);
-      alert("新增學生失敗");
+      toast.error("新增學生失敗");
       return;
     }
 
@@ -73,7 +74,7 @@ export default function StudentManager({
 
     if (error) {
       console.error(error);
-      alert("更新學生狀態失敗");
+      toast.error("更新學生狀態失敗");
       return;
     }
 

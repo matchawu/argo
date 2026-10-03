@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Barlow_Semi_Condensed, Noto_Sans_TC } from "next/font/google";
 import "./globals.css";
+import Toaster from "@/components/ui/Toaster";
 
 /*
  * 中文字體很大，只預載 latin；中文字會依需要分段載入
@@ -36,6 +37,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
     >
       <body className="min-h-screen bg-background font-sans text-foreground">
         {children}
+        <Toaster />
       </body>
     </html>
   );

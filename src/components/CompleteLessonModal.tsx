@@ -1,5 +1,6 @@
 "use client";
 
+import { toast } from "sonner";
 import { useState } from "react";
 import { createClient } from "@/lib/supabase/client";
 
@@ -56,9 +57,11 @@ export default function CompleteLessonModal({
 
     if (error) {
       console.error(error);
-      alert("完成簽到失敗");
+      toast.error("完成簽到失敗");
       return;
     }
+
+    toast.success("已完成簽到");
 
     onCompleted(lesson.id, note, studentNote);
     onClose();

@@ -1,5 +1,6 @@
 "use client";
 
+import { toast } from "sonner";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import {
@@ -110,12 +111,14 @@ export default function StudentPayments({
       const result = await response.json().catch(() => ({}));
 
       if (!response.ok) {
-        alert(
+        toast.error(
           result.error ??
             `新增繳費紀錄失敗（HTTP ${response.status}）`,
         );
         return;
       }
+
+      toast.success("已新增繳費紀錄");
 
       setAmount("");
       setAmountEdited(false);
@@ -151,13 +154,14 @@ export default function StudentPayments({
       const result = await response.json().catch(() => ({}));
 
       if (!response.ok) {
-        alert(
+        toast.error(
           result.error ??
             `刪除繳費紀錄失敗（HTTP ${response.status}）`,
         );
         return;
       }
 
+      toast.success("已刪除繳費紀錄");
       router.refresh();
     } finally {
       setDeletingId(null);

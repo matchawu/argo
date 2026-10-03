@@ -1,5 +1,6 @@
 "use client";
 
+import { toast } from "sonner";
 import { Check, ChevronLeft, ChevronRight } from "lucide-react";
 import { useEffect, useState } from "react";
 import { createClient } from "@/lib/supabase/client";
@@ -96,9 +97,11 @@ export default function TeacherTodayView({
 
     if (error) {
       console.error(error);
-      alert("改期失敗");
+      toast.error("改期失敗");
       return;
     }
+
+    toast.success("已改期");
 
     if (newDate === selectedDate) {
       setLessons((current) =>
@@ -129,9 +132,11 @@ export default function TeacherTodayView({
 
     if (error) {
       console.error(error);
-      alert("取消課程失敗");
+      toast.error("取消課程失敗");
       return;
     }
+
+    toast.success("已取消課程");
 
     setLessons((current) =>
       current.map((lesson) =>

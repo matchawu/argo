@@ -1,5 +1,6 @@
 "use client";
 
+import { toast } from "sonner";
 import { useState } from "react";
 import { createClient } from "@/lib/supabase/client";
 import { generateLessonsForEnrollment } from "@/lib/generateLessons";
@@ -69,7 +70,7 @@ export default function AddEnrollmentForm({
     );
 
     if (!selectedStudent || !selectedTeacher) {
-      alert("學生或老師資料不正確");
+      toast.error("學生或老師資料不正確");
       return;
     }
 
@@ -100,7 +101,7 @@ export default function AddEnrollmentForm({
 
     if (error) {
       console.error(error);
-      alert("新增固定課程失敗");
+      toast.error("新增固定課程失敗");
       return;
     }
 
@@ -108,7 +109,7 @@ export default function AddEnrollmentForm({
       await generateLessonsForEnrollment(data, 4);
     } catch (error) {
       console.error(error);
-      alert("固定課程已建立，但產生未來課程失敗");
+      toast.error("固定課程已建立，但產生未來課程失敗");
       return;
     }
 

@@ -1,5 +1,6 @@
 "use client";
 
+import { toast } from "sonner";
 import { useState } from "react";
 import AddEnrollmentForm from "@/components/AddEnrollmentForm";
 import { generateLessonsForEnrollment } from "@/lib/generateLessons";
@@ -42,14 +43,14 @@ export default function EnrollmentList({
     try {
       const created = await generateLessonsForEnrollment(enrollment, 4);
 
-      alert(
+      toast.success(
         created.length > 0
           ? `已新增 ${created.length} 堂課`
           : "接下來 4 週的課都已經排好了",
       );
     } catch (error) {
       console.error(error);
-      alert("生成課程失敗");
+      toast.error("生成課程失敗");
     }
   }
 
@@ -76,7 +77,7 @@ export default function EnrollmentList({
     );
 
     if (!selectedTeacher) {
-      alert("找不到老師資料");
+      toast.error("找不到老師資料");
       return;
     }
 
@@ -94,7 +95,7 @@ export default function EnrollmentList({
 
     if (error) {
       console.error(error);
-      alert("更新固定課程失敗");
+      toast.error("更新固定課程失敗");
       return;
     }
 
@@ -116,7 +117,7 @@ export default function EnrollmentList({
 
       if (lessonsError) {
         console.error(lessonsError);
-        alert("固定課程已更新，但未來課程同步失敗");
+        toast.error("固定課程已更新，但未來課程同步失敗");
         return;
       }
     }
@@ -141,7 +142,7 @@ export default function EnrollmentList({
 
     if (error) {
       console.error(error);
-      alert("停用固定課程失敗");
+      toast.error("停用固定課程失敗");
       return;
     }
 
@@ -162,7 +163,7 @@ export default function EnrollmentList({
 
       if (lessonsError) {
         console.error(lessonsError);
-        alert("固定課程已停用，但未來課程取消失敗");
+        toast.error("固定課程已停用，但未來課程取消失敗");
         return;
       }
     }

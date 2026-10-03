@@ -1,5 +1,6 @@
 "use client";
 
+import { toast } from "sonner";
 import { FormEvent, useEffect, useState } from "react";
 import { createClient } from "@/lib/supabase/client";
 import type { Lesson } from "@/types/lesson";
@@ -166,7 +167,7 @@ export default function AddLessonForm({
     );
 
     if (!enrollmentId) {
-      alert("請選擇要扣哪一門課的堂數");
+      toast.error("請選擇要扣哪一門課的堂數");
       return;
     }
 
@@ -178,7 +179,7 @@ export default function AddLessonForm({
       !time ||
       !price
     ) {
-      alert("請完整填寫課程資料");
+      toast.error("請完整填寫課程資料");
       return;
     }
 
@@ -188,7 +189,7 @@ export default function AddLessonForm({
       Number.isNaN(numericPrice) ||
       numericPrice < 0
     ) {
-      alert("請輸入正確的學費");
+      toast.error("請輸入正確的學費");
       return;
     }
 

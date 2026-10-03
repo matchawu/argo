@@ -1,5 +1,6 @@
 "use client";
 
+import { toast } from "sonner";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import Link from "next/link";
 import { useEffect, useState } from "react";
@@ -79,7 +80,7 @@ export default function Dashboard({ initialLessons, selectedDate }: Props) {
 
     if (error) {
       console.error(error);
-      alert(
+      toast.error(
         error.code === "23505"
           ? "這門課當天已經有一堂課了，請改其他日期，或直接改期原本那堂"
           : "新增課程失敗",
@@ -117,9 +118,11 @@ export default function Dashboard({ initialLessons, selectedDate }: Props) {
 
     if (error) {
       console.error(error);
-      alert("更新失敗");
+      toast.error("更新失敗");
       return;
     }
+
+    toast.success("已完成簽到");
 
     setLessons((currentLessons) =>
       currentLessons.map((lesson) =>
@@ -136,9 +139,11 @@ export default function Dashboard({ initialLessons, selectedDate }: Props) {
 
     if (error) {
       console.error(error);
-      alert("取消課程失敗");
+      toast.error("取消課程失敗");
       return;
     }
+
+    toast.success("已取消課程");
 
     setLessons((currentLessons) =>
       currentLessons.map((lesson) =>
@@ -155,7 +160,7 @@ export default function Dashboard({ initialLessons, selectedDate }: Props) {
 
     if (error) {
       console.error(error);
-      alert("復原失敗");
+      toast.error("復原失敗");
       return;
     }
 
@@ -174,7 +179,7 @@ export default function Dashboard({ initialLessons, selectedDate }: Props) {
 
     if (error) {
       console.error(error);
-      alert("恢復課程失敗");
+      toast.error("恢復課程失敗");
       return;
     }
 
@@ -200,9 +205,11 @@ export default function Dashboard({ initialLessons, selectedDate }: Props) {
 
     if (error) {
       console.error(error);
-      alert("改期失敗");
+      toast.error("改期失敗");
       return;
     }
+
+    toast.success("已改期");
 
     if (newDate === selectedDate) {
       setLessons((currentLessons) =>

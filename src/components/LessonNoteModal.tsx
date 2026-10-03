@@ -1,5 +1,6 @@
 "use client";
 
+import { toast } from "sonner";
 import { useState } from "react";
 import { createClient } from "@/lib/supabase/client";
 
@@ -45,9 +46,11 @@ export default function LessonNoteModal({
 
     if (error) {
       console.error(error);
-      alert("儲存教學紀錄失敗");
+      toast.error("儲存教學紀錄失敗");
       return;
     }
+
+    toast.success("已儲存教學紀錄");
 
     onSaved(note, studentNote);
     onClose();
