@@ -38,8 +38,12 @@ export default async function ProtectedLayout({
 
   return (
     <>
-      <Navbar showTeacherLink={Boolean(profile.teacher_id)} />
-      {children}
+      <Navbar
+        email={user.email ?? null}
+        showTeacherLink={Boolean(profile.teacher_id)}
+      />
+      {/* 桌面左側欄的寬度 */}
+      <div className="lg:pl-60">{children}</div>
     </>
   );
 }

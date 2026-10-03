@@ -1,7 +1,8 @@
 {
   "permissions": {
     "allow": [
-      "Bash(grep -v \"alert\\($\")"
+      "Bash(grep -v \"alert\\($\")",
+      "Bash(node -e ' *)"
     ]
   }
 }

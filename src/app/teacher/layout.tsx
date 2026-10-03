@@ -23,7 +23,8 @@ export default async function TeacherLayout({
   return (
     <>
       <TeacherNavbar showAdminLink={profile?.role === "admin"} />
-      {children}
+      {/* 手機底部分頁列的空間 */}
+      <div className="pb-24 md:pb-0">{children}</div>
     </>
   );
 }

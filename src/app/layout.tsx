@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Barlow_Semi_Condensed, Noto_Sans_TC } from "next/font/google";
 import "./globals.css";
 import Toaster from "@/components/ui/Toaster";
@@ -27,6 +27,15 @@ export const metadata: Metadata = {
     template: "%s | Argo",
   },
   description: "亞果音樂工作室簽到、課表與月結管理系統",
+};
+
+export const viewport: Viewport = {
+  // 讓底部分頁列可以用 safe-area 避開 iPhone 的 Home 條
+  viewportFit: "cover",
+  themeColor: [
+    { media: "(prefers-color-scheme: light)", color: "#f3f3f1" },
+    { media: "(prefers-color-scheme: dark)", color: "#151515" },
+  ],
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
