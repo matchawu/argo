@@ -1,6 +1,7 @@
 "use client";
 
 import { toast } from "sonner";
+import { confirmDialog } from "@/components/ui/ConfirmDialog";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import {
@@ -133,9 +134,12 @@ export default function StudentPayments({
 
   async function deletePayment(payment: Payment) {
     if (
-      !confirm(
-        `確定要刪除 ${payment.paid_at} 的繳費紀錄（${payment.lesson_count} 堂）嗎？`,
-      )
+      !(await confirmDialog({
+        title: "刪除這筆繳費紀錄？",
+        description: `${payment.paid_at}・${payment.lesson_count} 堂・NT$ ${payment.amount.toLocaleString()}。刪除後剩餘堂數會跟著減少。`,
+        confirmText: "刪除",
+        tone: "danger",
+      }))
     ) {
       return;
     }

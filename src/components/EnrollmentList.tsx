@@ -1,6 +1,7 @@
 "use client";
 
 import { toast } from "sonner";
+import { confirmDialog } from "@/components/ui/ConfirmDialog";
 import { useState } from "react";
 import AddEnrollmentForm from "@/components/AddEnrollmentForm";
 import { generateLessonsForEnrollment } from "@/lib/generateLessons";
@@ -127,9 +128,12 @@ export default function EnrollmentList({
   }
 
   async function deactivateEnrollment(enrollment: Enrollment) {
-    const confirmed = window.confirm(
-      `確定要停用 ${enrollment.students.name} 的 ${enrollment.course} 嗎？`,
-    );
+    const confirmed = await confirmDialog({
+      title: `停用 ${enrollment.students.name} 的${enrollment.course}？`,
+      description: "停用後不會再產生新的課程，已上過的紀錄會保留。",
+      confirmText: "停用",
+      tone: "danger",
+    });
 
     if (!confirmed) return;
 
@@ -146,8 +150,12 @@ export default function EnrollmentList({
       return;
     }
 
-    const cancelFutureLessons =
-      window.confirm("是否一起取消未來尚未完成的課程？");
+    const cancelFutureLessons = await confirmDialog({
+      title: "要一起取消未來的課嗎？",
+      description: "今天以後、還沒上的課會改成「已取消」。",
+      confirmText: "一起取消",
+      cancelText: "保留未來的課",
+    });
 
     if (cancelFutureLessons) {
       const today = getTodayInTaiwan();

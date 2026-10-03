@@ -1,6 +1,7 @@
 "use client";
 
 import { toast } from "sonner";
+import { confirmDialog } from "@/components/ui/ConfirmDialog";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
@@ -232,10 +233,17 @@ export default function TeacherManager({
    */
   async function linkSelf(teacher: Teacher, link: boolean) {
     const message = link
-      ? `把「${teacher.name}」綁定到你的帳號？綁定後可以從上方「老師模式」查看與簽到這位老師的課。`
+      ? `把「${teacher.name}」綁定到你的帳號？綁定後可以從選單的「老師模式」查看與簽到這位老師的課。`
       : `解除「${teacher.name}」與你的帳號的綁定？`;
 
-    if (!confirm(message)) {
+    if (
+      !(await confirmDialog({
+        title: link ? "綁定到你的帳號？" : "解除綁定？",
+        description: message,
+        confirmText: link ? "綁定" : "解除綁定",
+        tone: link ? "default" : "danger",
+      }))
+    ) {
       return;
     }
 

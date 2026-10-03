@@ -1,6 +1,11 @@
 "use client";
 
 import { toast } from "sonner";
+import Dialog, {
+  DialogActions,
+  dialogButtonClassName,
+  textareaClassName,
+} from "@/components/ui/Dialog";
 import { useState } from "react";
 import { createClient } from "@/lib/supabase/client";
 
@@ -68,85 +73,60 @@ export default function CompleteLessonModal({
   }
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm px-4">
-      <div className="w-full max-w-lg rounded-2xl border border-line bg-surface p-6 shadow-2xl">
-        <div className="mb-5">
-          <p className="text-sm text-muted">
-            {lesson.date} · {lesson.time}
-          </p>
+    <Dialog
+      onClose={onClose}
+      size="lg"
+      eyebrow={`${lesson.date.replaceAll("-", ".")}・${lesson.time}`}
+      title="完成簽到"
+      description={`${lesson.student}・${lesson.course}`}
+    >
+      <label className="mb-2 block text-sm text-muted">
+        本堂教學紀錄（內部，學生看不到）
+      </label>
 
-          <h2 className="mt-1 text-xl font-semibold">
-            完成簽到
-          </h2>
+      <textarea
+        value={note}
+        onChange={(event) => setNote(event.target.value)}
+        rows={6}
+        placeholder="例如：今天練 Back in Black 主歌 riff，節拍比上週穩定；下次繼續練推弦..."
+        className={textareaClassName}
+      />
 
-          <p className="mt-2 text-sm text-muted">
-            {lesson.student} · {lesson.course}
-          </p>
-        </div>
+      <label className="mb-2 mt-4 block text-sm text-muted">
+        給學生的紀錄（學生登入後看得到）
+      </label>
 
-        <div>
-          <label className="mb-2 block text-sm text-muted">
-            本堂教學紀錄（內部，學生看不到）
-          </label>
+      <textarea
+        value={studentNote}
+        onChange={(event) => setStudentNote(event.target.value)}
+        rows={4}
+        placeholder="例如：今天進度很好！回家請練習主歌 riff，每天 15 分鐘。"
+        className={textareaClassName}
+      />
 
-          <textarea
-            value={note}
-            onChange={(event) =>
-              setNote(event.target.value)
-            }
-            rows={7}
-            placeholder="例如：今天練 Back in Black 主歌 riff，節拍比上週穩定；下次繼續練推弦..."
-            className="w-full resize-y rounded-xl border border-line-strong bg-background px-4 py-3 text-sm leading-6 text-foreground outline-none placeholder:text-subtle focus:border-foreground/40"
-          />
+      <p className="mt-2 text-xs text-subtle">
+        兩個紀錄都可以留空，之後也能在學生頁補寫。
+      </p>
 
-        </div>
+      <DialogActions>
+        <button
+          type="button"
+          onClick={onClose}
+          disabled={saving}
+          className={dialogButtonClassName.secondary}
+        >
+          返回
+        </button>
 
-        <div className="mt-4">
-          <label className="mb-2 block text-sm text-muted">
-            給學生的紀錄（學生登入後看得到）
-          </label>
-
-          <textarea
-            value={studentNote}
-            onChange={(event) =>
-              setStudentNote(event.target.value)
-            }
-            rows={4}
-            placeholder="例如：今天進度很好！回家請練習主歌 riff，每天 15 分鐘。"
-            className="w-full resize-y rounded-xl border border-line-strong bg-background px-4 py-3 text-sm leading-6 text-foreground outline-none placeholder:text-subtle focus:border-foreground/40"
-          />
-
-          <p className="mt-2 text-xs text-subtle">
-            兩個紀錄都可以留空，之後也能在學生頁補寫。
-          </p>
-        </div>
-
-        <div className="mt-6 flex items-center justify-between gap-4">
-          <span />
-
-          <div className="flex gap-2">
-            <button
-              type="button"
-              onClick={onClose}
-              disabled={saving}
-              className="rounded-xl px-4 py-2 text-sm text-muted hover:bg-fill-strong hover:text-foreground"
-            >
-              返回
-            </button>
-
-            <button
-              type="button"
-              onClick={handleComplete}
-              disabled={saving}
-              className="rounded-xl bg-primary px-4 py-2 text-sm font-medium text-on-primary hover:bg-primary-hover disabled:cursor-not-allowed disabled:opacity-50"
-            >
-              {saving
-                ? "儲存中..."
-                : "完成簽到"}
-            </button>
-          </div>
-        </div>
-      </div>
-    </div>
+        <button
+          type="button"
+          onClick={handleComplete}
+          disabled={saving}
+          className={dialogButtonClassName.primary}
+        >
+          {saving ? "儲存中..." : "完成簽到"}
+        </button>
+      </DialogActions>
+    </Dialog>
   );
 }

@@ -111,3 +111,44 @@ body {
   background: var(--background);
   color: var(--foreground);
 }
+
+/*
+ * Dialog 進場動畫
+ *
+ * 手機：從底部滑上來（bottom sheet）；桌面：淡入 + 微放大。
+ * 系統設定「減少動態效果」時不播放。
+ */
+@keyframes argo-fade-in {
+  from {
+    opacity: 0;
+  }
+}
+
+@keyframes argo-sheet-in {
+  from {
+    transform: translateY(100%);
+  }
+}
+
+@keyframes argo-pop-in {
+  from {
+    opacity: 0;
+    transform: scale(0.97);
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .argo-overlay[data-state="open"] {
+    animation: argo-fade-in 0.15s ease-out;
+  }
+
+  .argo-dialog[data-state="open"] {
+    animation: argo-sheet-in 0.28s cubic-bezier(0.2, 0.8, 0.2, 1);
+  }
+
+  @media (min-width: 640px) {
+    .argo-dialog[data-state="open"] {
+      animation: argo-pop-in 0.18s ease-out;
+    }
+  }
+}
