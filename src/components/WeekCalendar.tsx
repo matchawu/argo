@@ -26,9 +26,9 @@ const HOUR_HEIGHT = 64;
 const weekdayNames = ["日", "一", "二", "三", "四", "五", "六"];
 
 const statusBlockClassName: Record<LessonStatus, string> = {
-  scheduled: "border-amber-500/40 bg-amber-500/15 text-amber-100",
-  completed: "border-emerald-500/40 bg-emerald-500/15 text-emerald-100",
-  cancelled: "border-zinc-700 bg-zinc-800/60 text-zinc-500 line-through",
+  scheduled: "border-primary bg-primary text-on-primary",
+  completed: "border-success/25 bg-success-soft text-success",
+  cancelled: "border-line bg-fill text-subtle line-through",
 };
 
 function toMinutes(time: string) {
@@ -119,10 +119,10 @@ export default function WeekCalendar({ lessons, startDate }: Props) {
   const gridHeight = hours.length * HOUR_HEIGHT;
 
   return (
-    <div className="overflow-x-auto rounded-2xl border border-zinc-800 bg-zinc-900">
+    <div className="overflow-x-auto rounded-3xl border border-line bg-surface shadow-card">
       <div className="min-w-[720px]">
         {/* 星期列 */}
-        <div className="grid grid-cols-[3.5rem_repeat(7,minmax(0,1fr))] border-b border-zinc-800">
+        <div className="grid grid-cols-[3.5rem_repeat(7,minmax(0,1fr))] border-b border-line">
           <div />
 
           {days.map((date) => {
@@ -131,17 +131,17 @@ export default function WeekCalendar({ lessons, startDate }: Props) {
             return (
               <div
                 key={date}
-                className="border-l border-zinc-800 px-2 py-3 text-center"
+                className="border-l border-line px-2 py-3 text-center"
               >
-                <div className="text-xs text-zinc-500">
+                <div className="text-xs text-muted">
                   週{weekdayNames[parseLocalDate(date).getDay()]}
                 </div>
 
                 <div
                   className={
                     isToday
-                      ? "mx-auto mt-1 flex h-7 w-7 items-center justify-center rounded-full bg-white text-sm font-semibold text-black"
-                      : "mt-1 text-sm font-semibold"
+                      ? "mx-auto mt-1 flex h-8 w-8 items-center justify-center rounded-full bg-primary font-display text-base font-bold text-on-primary"
+                      : "mt-1 flex h-8 items-center justify-center font-display text-base font-bold"
                   }
                 >
                   {Number(date.slice(8))}
@@ -160,7 +160,7 @@ export default function WeekCalendar({ lessons, startDate }: Props) {
             {hours.map((hour, index) => (
               <div
                 key={hour}
-                className="absolute right-2 -translate-y-1/2 text-xs text-zinc-600"
+                className="absolute right-2 -translate-y-1/2 font-display text-xs font-medium text-subtle"
                 style={{ top: index * HOUR_HEIGHT }}
               >
                 {index === 0 ? "" : `${hour}:00`}
@@ -171,14 +171,14 @@ export default function WeekCalendar({ lessons, startDate }: Props) {
           {days.map((date) => (
             <div
               key={date}
-              className={`relative border-l border-zinc-800 ${
-                date === today ? "bg-white/[0.02]" : ""
+              className={`relative border-l border-line ${
+                date === today ? "bg-fill/50" : ""
               }`}
             >
               {hours.map((hour, index) => (
                 <div
                   key={hour}
-                  className="absolute inset-x-0 border-t border-zinc-800/70"
+                  className="absolute inset-x-0 border-t border-line"
                   style={{ top: index * HOUR_HEIGHT }}
                 />
               ))}
@@ -208,7 +208,7 @@ export default function WeekCalendar({ lessons, startDate }: Props) {
 
                 const className = `absolute overflow-hidden rounded-lg border px-1.5 py-1 ${
                   statusBlockClassName[lesson.status]
-                } ${lesson.href ? "transition hover:brightness-125" : ""}`;
+                } ${lesson.href ? "transition hover:opacity-85" : ""}`;
 
                 const style = {
                   top: top + 1,
@@ -283,15 +283,15 @@ export function WeekViewToggle({
   }
 
   return (
-    <div className="inline-flex rounded-xl bg-zinc-800 p-1">
+    <div className="inline-flex rounded-full border border-line bg-surface p-1">
       {(["list", "calendar"] as const).map((option) => (
         <Link
           key={option}
           href={href(option)}
           className={
             view === option
-              ? "rounded-lg bg-white px-3 py-1.5 text-sm font-medium text-black"
-              : "rounded-lg px-3 py-1.5 text-sm text-zinc-400 hover:text-white"
+              ? "rounded-full bg-primary px-4 py-1.5 text-sm font-medium text-on-primary"
+              : "rounded-full px-4 py-1.5 text-sm text-muted transition hover:text-foreground"
           }
         >
           {option === "list" ? "列表" : "行事曆"}

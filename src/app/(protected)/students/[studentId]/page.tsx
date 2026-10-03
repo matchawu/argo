@@ -54,11 +54,11 @@ export default async function StudentDetailPage({ params }: Props) {
   const balance = await getLessonBalance(admin, numericStudentId);
 
   return (
-    <main className="min-h-screen text-zinc-100">
+    <main className="min-h-screen text-foreground">
       <div className="mx-auto max-w-4xl px-6 py-10">
         <Link
           href="/students"
-          className="text-sm text-zinc-500 transition hover:text-zinc-300"
+          className="text-sm text-muted transition hover:text-foreground"
         >
           ← 返回學生管理
         </Link>
@@ -67,7 +67,7 @@ export default async function StudentDetailPage({ params }: Props) {
           <h1 className="text-3xl font-bold">{student.name}</h1>
 
           {!student.active && (
-            <span className="rounded-full bg-zinc-800 px-2.5 py-1 text-xs text-zinc-500">
+            <span className="rounded-full bg-fill px-2.5 py-1 text-xs text-muted">
               已停用
             </span>
           )}

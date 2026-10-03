@@ -44,14 +44,14 @@ export default function RescheduleModal({
   }
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 px-4">
-      <div className="w-full max-w-md rounded-2xl border border-zinc-800 bg-zinc-900 p-6 shadow-2xl">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm px-4">
+      <div className="w-full max-w-md rounded-2xl border border-line bg-surface p-6 shadow-2xl">
         <div className="mb-6">
-          <h2 className="text-xl font-semibold text-white">
+          <h2 className="text-xl font-semibold text-foreground">
             課程改期
           </h2>
 
-          <p className="mt-1 text-sm text-zinc-500">
+          <p className="mt-1 text-sm text-muted">
             {lesson.student} · {lesson.course}
           </p>
         </div>
@@ -63,7 +63,7 @@ export default function RescheduleModal({
           <div>
             <label
               htmlFor="reschedule-date"
-              className="mb-2 block text-sm text-zinc-400"
+              className="mb-2 block text-sm text-muted"
             >
               上課日期
             </label>
@@ -75,14 +75,14 @@ export default function RescheduleModal({
               onChange={(event) =>
                 setDate(event.target.value)
               }
-              className="w-full rounded-xl border border-zinc-700 bg-zinc-950 px-4 py-3 text-white outline-none focus:border-zinc-500"
+              className="w-full rounded-xl border border-line-strong bg-background px-4 py-3 text-foreground outline-none focus:border-foreground/40"
             />
           </div>
 
           <div>
             <label
               htmlFor="reschedule-time"
-              className="mb-2 block text-sm text-zinc-400"
+              className="mb-2 block text-sm text-muted"
             >
               上課時間
             </label>
@@ -94,7 +94,7 @@ export default function RescheduleModal({
               onChange={(event) =>
                 setTime(event.target.value)
               }
-              className="w-full rounded-xl border border-zinc-700 bg-zinc-950 px-4 py-3 text-white outline-none focus:border-zinc-500"
+              className="w-full rounded-xl border border-line-strong bg-background px-4 py-3 text-foreground outline-none focus:border-foreground/40"
             />
           </div>
 
@@ -103,7 +103,7 @@ export default function RescheduleModal({
               type="button"
               onClick={onClose}
               disabled={saving}
-              className="rounded-xl px-4 py-2 text-sm text-zinc-400 hover:bg-zinc-800 hover:text-white"
+              className="rounded-xl px-4 py-2 text-sm text-muted hover:bg-fill-strong hover:text-foreground"
             >
               取消
             </button>
@@ -111,7 +111,7 @@ export default function RescheduleModal({
             <button
               type="submit"
               disabled={saving}
-              className="rounded-xl bg-white px-4 py-2 text-sm font-medium text-black hover:bg-zinc-200 disabled:cursor-not-allowed disabled:opacity-50"
+              className="rounded-xl bg-primary px-4 py-2 text-sm font-medium text-on-primary hover:bg-primary-hover disabled:cursor-not-allowed disabled:opacity-50"
             >
               {saving ? "儲存中..." : "儲存改期"}
             </button>

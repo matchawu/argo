@@ -65,10 +65,10 @@ export default function CompleteLessonModal({
   }
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 px-4">
-      <div className="w-full max-w-lg rounded-2xl border border-zinc-800 bg-zinc-900 p-6 shadow-2xl">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm px-4">
+      <div className="w-full max-w-lg rounded-2xl border border-line bg-surface p-6 shadow-2xl">
         <div className="mb-5">
-          <p className="text-sm text-zinc-500">
+          <p className="text-sm text-muted">
             {lesson.date} · {lesson.time}
           </p>
 
@@ -76,13 +76,13 @@ export default function CompleteLessonModal({
             完成簽到
           </h2>
 
-          <p className="mt-2 text-sm text-zinc-400">
+          <p className="mt-2 text-sm text-muted">
             {lesson.student} · {lesson.course}
           </p>
         </div>
 
         <div>
-          <label className="mb-2 block text-sm text-zinc-400">
+          <label className="mb-2 block text-sm text-muted">
             本堂教學紀錄（內部，學生看不到）
           </label>
 
@@ -93,13 +93,13 @@ export default function CompleteLessonModal({
             }
             rows={7}
             placeholder="例如：今天練 Back in Black 主歌 riff，節拍比上週穩定；下次繼續練推弦..."
-            className="w-full resize-y rounded-xl border border-zinc-700 bg-zinc-950 px-4 py-3 text-sm leading-6 text-zinc-100 outline-none placeholder:text-zinc-600 focus:border-zinc-500"
+            className="w-full resize-y rounded-xl border border-line-strong bg-background px-4 py-3 text-sm leading-6 text-foreground outline-none placeholder:text-subtle focus:border-foreground/40"
           />
 
         </div>
 
         <div className="mt-4">
-          <label className="mb-2 block text-sm text-zinc-400">
+          <label className="mb-2 block text-sm text-muted">
             給學生的紀錄（學生登入後看得到）
           </label>
 
@@ -110,10 +110,10 @@ export default function CompleteLessonModal({
             }
             rows={4}
             placeholder="例如：今天進度很好！回家請練習主歌 riff，每天 15 分鐘。"
-            className="w-full resize-y rounded-xl border border-zinc-700 bg-zinc-950 px-4 py-3 text-sm leading-6 text-zinc-100 outline-none placeholder:text-zinc-600 focus:border-zinc-500"
+            className="w-full resize-y rounded-xl border border-line-strong bg-background px-4 py-3 text-sm leading-6 text-foreground outline-none placeholder:text-subtle focus:border-foreground/40"
           />
 
-          <p className="mt-2 text-xs text-zinc-600">
+          <p className="mt-2 text-xs text-subtle">
             兩個紀錄都可以留空，之後也能在學生頁補寫。
           </p>
         </div>
@@ -126,7 +126,7 @@ export default function CompleteLessonModal({
               type="button"
               onClick={onClose}
               disabled={saving}
-              className="rounded-xl px-4 py-2 text-sm text-zinc-400 hover:bg-zinc-800 hover:text-white"
+              className="rounded-xl px-4 py-2 text-sm text-muted hover:bg-fill-strong hover:text-foreground"
             >
               返回
             </button>
@@ -135,7 +135,7 @@ export default function CompleteLessonModal({
               type="button"
               onClick={handleComplete}
               disabled={saving}
-              className="rounded-xl bg-emerald-600 px-4 py-2 text-sm font-medium text-white hover:bg-emerald-500 disabled:cursor-not-allowed disabled:opacity-50"
+              className="rounded-xl bg-primary px-4 py-2 text-sm font-medium text-on-primary hover:bg-primary-hover disabled:cursor-not-allowed disabled:opacity-50"
             >
               {saving
                 ? "儲存中..."

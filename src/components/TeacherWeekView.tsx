@@ -34,9 +34,9 @@ const statusLabel = {
 };
 
 const statusClassName = {
-  scheduled: "border border-amber-500/30 bg-amber-500/10 text-amber-300",
-  completed: "border border-emerald-500/30 bg-emerald-500/10 text-emerald-300",
-  cancelled: "border border-zinc-700 bg-zinc-800 text-zinc-500",
+  scheduled: "border border-warning/30 bg-warning-soft text-warning",
+  completed: "border border-success/30 bg-success-soft text-success",
+  cancelled: "border border-line-strong bg-fill text-muted",
 };
 
 export default function TeacherWeekView({
@@ -65,13 +65,13 @@ export default function TeacherWeekView({
   const today = getTodayInTaiwan();
 
   return (
-    <main className="min-h-screen text-zinc-100">
+    <main className="min-h-screen text-foreground">
       <div className="mx-auto max-w-3xl px-4 py-10 sm:px-6">
         <div className="mb-8 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
           <div>
             <h1 className="text-3xl font-bold">我的本週課表</h1>
 
-            <p className="mt-2 text-sm text-zinc-500">
+            <p className="mt-2 text-sm text-muted">
               {startDate} ～ {endDate}
             </p>
           </div>
@@ -85,21 +85,21 @@ export default function TeacherWeekView({
 
             <Link
               href={weekHref(previousWeek)}
-              className="rounded-xl bg-zinc-800 px-3 py-2 text-sm text-zinc-300 hover:bg-zinc-700"
+              className="rounded-xl bg-fill px-3 py-2 text-sm text-foreground hover:bg-fill-strong"
             >
               ← 上週
             </Link>
 
             <Link
               href={weekHref()}
-              className="rounded-xl bg-zinc-800 px-3 py-2 text-sm text-zinc-300 hover:bg-zinc-700"
+              className="rounded-xl bg-fill px-3 py-2 text-sm text-foreground hover:bg-fill-strong"
             >
               本週
             </Link>
 
             <Link
               href={weekHref(nextWeek)}
-              className="rounded-xl bg-zinc-800 px-3 py-2 text-sm text-zinc-300 hover:bg-zinc-700"
+              className="rounded-xl bg-fill px-3 py-2 text-sm text-foreground hover:bg-fill-strong"
             >
               下週 →
             </Link>
@@ -135,8 +135,8 @@ export default function TeacherWeekView({
                 key={date}
                 className={
                   isToday
-                    ? "rounded-2xl border border-zinc-600 bg-zinc-900 p-5"
-                    : "rounded-2xl border border-zinc-800 bg-zinc-900 p-5"
+                    ? "rounded-2xl border border-line-strong bg-surface p-5"
+                    : "rounded-2xl border border-line bg-surface p-5"
                 }
               >
                 <div className="mb-4 flex items-center gap-3">
@@ -144,21 +144,21 @@ export default function TeacherWeekView({
                     {weekdayNames[parsedDate.getDay()]}
                   </h2>
 
-                  <span className="text-sm text-zinc-500">{date}</span>
+                  <span className="text-sm text-muted">{date}</span>
 
                   {isToday && (
-                    <span className="rounded-full bg-white px-2 py-0.5 text-xs font-medium text-black">
+                    <span className="rounded-full bg-primary px-2 py-0.5 text-xs font-medium text-on-primary">
                       今天
                     </span>
                   )}
 
-                  <span className="ml-auto text-xs text-zinc-600">
+                  <span className="ml-auto text-xs text-subtle">
                     {lessonsForDay.length} 堂
                   </span>
                 </div>
 
                 {lessonsForDay.length === 0 ? (
-                  <div className="rounded-xl border border-dashed border-zinc-800 px-4 py-5 text-sm text-zinc-600">
+                  <div className="rounded-xl border border-dashed border-line px-4 py-5 text-sm text-subtle">
                     這天沒有課程
                   </div>
                 ) : (
@@ -169,15 +169,15 @@ export default function TeacherWeekView({
                         href={`/teacher?date=${lesson.date}`}
                         className={
                           lesson.status === "cancelled"
-                            ? "flex items-center justify-between gap-4 rounded-xl bg-zinc-950/50 px-4 py-3 opacity-60 transition hover:bg-zinc-800"
-                            : "flex items-center justify-between gap-4 rounded-xl bg-zinc-950 px-4 py-3 transition hover:bg-zinc-800"
+                            ? "flex items-center justify-between gap-4 rounded-xl bg-fill/50 px-4 py-3 opacity-60 transition hover:bg-fill-strong"
+                            : "flex items-center justify-between gap-4 rounded-xl bg-background px-4 py-3 transition hover:bg-fill-strong"
                         }
                       >
                         <div className="flex min-w-0 items-center gap-4">
                           <span
                             className={
                               lesson.status === "cancelled"
-                                ? "w-14 shrink-0 font-medium text-zinc-600 line-through"
+                                ? "w-14 shrink-0 font-medium text-subtle line-through"
                                 : "w-14 shrink-0 font-medium"
                             }
                           >
@@ -188,14 +188,14 @@ export default function TeacherWeekView({
                             <div
                               className={
                                 lesson.status === "cancelled"
-                                  ? "truncate text-zinc-500 line-through"
+                                  ? "truncate text-muted line-through"
                                   : "truncate"
                               }
                             >
                               {lesson.student}
                             </div>
 
-                            <div className="mt-1 truncate text-sm text-zinc-500">
+                            <div className="mt-1 truncate text-sm text-muted">
                               {lesson.course}
                             </div>
                           </div>

@@ -1,26 +1,113 @@
 @import "tailwindcss";
 
-:root {
-  --background: #09090b;
-  --foreground: #171717;
-}
+/*
+ * Argo 設計 token
+ *
+ * 元件只使用語意化的顏色名稱（bg-surface、text-muted…），
+ * 淺色 / 深色的實際色值都在這裡，跟著系統設定自動切換。
+ *
+ * 品牌：跟官網一致的黑白單色系，沒有強調色；
+ * 只有課程狀態（完成 / 待上課 / 取消 / 不足）使用低彩度的顏色。
+ */
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+:root {
+  /* 背景層次：頁面 < 卡片 < 填色（輸入框、hover） */
+  --background: #f3f3f1;
+  --surface: #ffffff;
+  --fill: #ececea;
+  --fill-strong: #e0e0dd;
+
+  /* 文字 */
+  --foreground: #141414;
+  --muted: #6b6b68;
+  --subtle: #a1a19c;
+
+  /* 線條 */
+  --line: #e2e2de;
+  --line-strong: #cfcfca;
+
+  /* 主要動作：黑底白字（深色模式反轉） */
+  --primary: #141414;
+  --primary-hover: #333333;
+  --on-primary: #ffffff;
+
+  /* 狀態色（低彩度） */
+  --success: #1e7a47;
+  --success-soft: #e6f2ea;
+  --warning: #965f00;
+  --warning-soft: #f8eedb;
+  --danger: #b3321f;
+  --danger-soft: #f8e6e3;
+
+  --shadow-card: 0 1px 2px rgb(0 0 0 / 0.04), 0 1px 3px rgb(0 0 0 / 0.04);
+
+  color-scheme: light;
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+    /* 深炭灰，不用純黑 */
+    --background: #151515;
+    --surface: #1e1e1e;
+    --fill: #282828;
+    --fill-strong: #333333;
+
+    --foreground: #f1f1ef;
+    --muted: #a3a39f;
+    --subtle: #6f6f6b;
+
+    --line: #2c2c2c;
+    --line-strong: #3a3a3a;
+
+    --primary: #f1f1ef;
+    --primary-hover: #d6d6d3;
+    --on-primary: #141414;
+
+    --success: #6fcf97;
+    --success-soft: rgb(111 207 151 / 0.12);
+    --warning: #f0c36b;
+    --warning-soft: rgb(240 195 107 / 0.13);
+    --danger: #f0998c;
+    --danger-soft: rgb(240 153 140 / 0.13);
+
+    --shadow-card: 0 1px 2px rgb(0 0 0 / 0.3);
+
+    color-scheme: dark;
   }
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-surface: var(--surface);
+  --color-fill: var(--fill);
+  --color-fill-strong: var(--fill-strong);
+
+  --color-foreground: var(--foreground);
+  --color-muted: var(--muted);
+  --color-subtle: var(--subtle);
+
+  --color-line: var(--line);
+  --color-line-strong: var(--line-strong);
+
+  --color-primary: var(--primary);
+  --color-primary-hover: var(--primary-hover);
+  --color-on-primary: var(--on-primary);
+
+  --color-success: var(--success);
+  --color-success-soft: var(--success-soft);
+  --color-warning: var(--warning);
+  --color-warning-soft: var(--warning-soft);
+  --color-danger: var(--danger);
+  --color-danger-soft: var(--danger-soft);
+
+  --shadow-card: var(--shadow-card);
+
+  /* 內文：Noto Sans TC；標題 / 數字 / 品牌字：偏窄的粗體無襯線字 */
+  --font-sans: var(--font-noto-sans-tc), system-ui, sans-serif;
+  --font-display: var(--font-barlow), var(--font-noto-sans-tc), sans-serif;
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
 }

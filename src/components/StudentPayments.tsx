@@ -19,7 +19,7 @@ type Props = {
  * 固定高度，讓 date / number / select 在各瀏覽器都對齊
  */
 const inputClassName =
-  "block h-12 w-full rounded-xl bg-zinc-950 px-4 text-zinc-100 outline-none ring-1 ring-zinc-800 focus:ring-zinc-600 [color-scheme:dark]";
+  "block h-12 w-full rounded-xl bg-background px-4 text-foreground outline-none ring-1 ring-line focus:ring-foreground/30 [color-scheme:dark]";
 
 function Field({
   label,
@@ -32,7 +32,7 @@ function Field({
 }) {
   return (
     <div className={className}>
-      <label className="mb-2 block text-sm text-zinc-400">{label}</label>
+      <label className="mb-2 block text-sm text-muted">{label}</label>
       {children}
     </div>
   );
@@ -177,13 +177,13 @@ export default function StudentPayments({
       <h2 className="mb-4 text-xl font-semibold">繳費紀錄</h2>
 
       {activeEnrollments.length === 0 ? (
-        <div className="mb-6 rounded-2xl border border-dashed border-zinc-800 p-5 text-sm text-zinc-500">
+        <div className="mb-6 rounded-2xl border border-dashed border-line p-5 text-sm text-muted">
           這位學生還沒有固定課程，請先到「固定課程」建立後再登記繳費。
         </div>
       ) : (
         <form
           onSubmit={addPayment}
-          className="mb-6 grid gap-x-3 gap-y-4 rounded-2xl border border-zinc-800 bg-zinc-900 p-5 sm:grid-cols-2"
+          className="mb-6 grid gap-x-3 gap-y-4 rounded-2xl border border-line bg-surface p-5 sm:grid-cols-2"
         >
           <Field label="固定課程" className="sm:col-span-2">
             <select
@@ -266,7 +266,7 @@ export default function StudentPayments({
             amount !== "" &&
             Number(amount) !==
               selectedEnrollment.price * Number(lessonCount) && (
-              <p className="rounded-xl bg-amber-500/10 px-4 py-3 text-xs leading-5 text-amber-300 sm:col-span-2">
+              <p className="rounded-xl bg-warning-soft px-4 py-3 text-xs leading-5 text-warning sm:col-span-2">
                 金額和單堂價格 × 堂數（$
                 {selectedEnrollment.price * Number(lessonCount)}
                 ）不同。月結是用單堂價格計算，如果是套票折扣，建議把固定課程的單堂價格改成實際每堂金額。
@@ -276,7 +276,7 @@ export default function StudentPayments({
           <button
             type="submit"
             disabled={saving}
-            className="h-12 w-full rounded-xl bg-white px-5 font-medium text-black hover:bg-zinc-200 disabled:cursor-not-allowed disabled:opacity-50 sm:col-span-2"
+            className="h-12 w-full rounded-xl bg-primary px-5 font-medium text-on-primary hover:bg-primary-hover disabled:cursor-not-allowed disabled:opacity-50 sm:col-span-2"
           >
             {saving ? "儲存中..." : "＋ 新增繳費紀錄"}
           </button>
@@ -284,27 +284,27 @@ export default function StudentPayments({
       )}
 
       {payments.length === 0 ? (
-        <div className="rounded-2xl border border-dashed border-zinc-800 p-10 text-center text-sm text-zinc-500">
+        <div className="rounded-2xl border border-dashed border-line p-10 text-center text-sm text-muted">
           目前沒有繳費紀錄
         </div>
       ) : (
-        <div className="overflow-hidden rounded-2xl border border-zinc-800">
+        <div className="overflow-hidden rounded-2xl border border-line">
           {payments.map((payment) => {
             const label = paymentEnrollmentLabel(payment);
 
             return (
               <div
                 key={payment.id}
-                className="flex items-center justify-between gap-4 border-b border-zinc-800 p-5 last:border-b-0"
+                className="flex items-center justify-between gap-4 border-b border-line p-5 last:border-b-0"
               >
                 <div>
                   <div className="font-medium">
                     {payment.paid_at} · {payment.lesson_count} 堂
                   </div>
 
-                  <div className="mt-1 text-sm text-zinc-500">
+                  <div className="mt-1 text-sm text-muted">
                     {label ?? (
-                      <span className="text-amber-300">未指定課程</span>
+                      <span className="text-warning">未指定課程</span>
                     )}
                     {" · "}NT$ {payment.amount.toLocaleString()}
                     {payment.note && ` · ${payment.note}`}
@@ -315,7 +315,7 @@ export default function StudentPayments({
                   type="button"
                   onClick={() => deletePayment(payment)}
                   disabled={deletingId === payment.id}
-                  className="rounded-xl px-3 py-2 text-sm text-zinc-500 hover:bg-zinc-800 hover:text-red-400 disabled:opacity-50"
+                  className="rounded-xl px-3 py-2 text-sm text-muted hover:bg-fill-strong hover:text-danger disabled:opacity-50"
                 >
                   {deletingId === payment.id ? "刪除中..." : "刪除"}
                 </button>

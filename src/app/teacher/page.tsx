@@ -100,7 +100,7 @@ export default async function TeacherPage({ searchParams }: Props) {
 
   if (lessonsError || weekError) {
     return (
-      <main className="p-10 text-zinc-100">
+      <main className="p-10 text-foreground">
         <h1>讀取課程失敗</h1>
 
         <p>{lessonsError?.message ?? weekError?.message}</p>

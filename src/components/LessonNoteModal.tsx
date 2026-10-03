@@ -54,19 +54,19 @@ export default function LessonNoteModal({
   }
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 px-4">
-      <div className="w-full max-w-lg rounded-2xl border border-zinc-800 bg-zinc-900 p-6 shadow-2xl">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm px-4">
+      <div className="w-full max-w-lg rounded-2xl border border-line bg-surface p-6 shadow-2xl">
         <div className="mb-5">
           <h2 className="text-xl font-semibold">
             教學紀錄
           </h2>
 
-          <p className="mt-1 text-sm text-zinc-500">
+          <p className="mt-1 text-sm text-muted">
             {studentName} · {course}
           </p>
         </div>
 
-        <label className="mb-2 block text-sm text-zinc-400">
+        <label className="mb-2 block text-sm text-muted">
           教學紀錄（內部，學生看不到）
         </label>
 
@@ -77,10 +77,10 @@ export default function LessonNoteModal({
           }
           rows={6}
           placeholder="例如：今天練主歌 riff，節拍還會飄；下次繼續練 palm mute..."
-          className="w-full resize-y rounded-xl border border-zinc-700 bg-zinc-950 px-4 py-3 text-sm leading-6 text-zinc-100 outline-none placeholder:text-zinc-600 focus:border-zinc-500"
+          className="w-full resize-y rounded-xl border border-line-strong bg-background px-4 py-3 text-sm leading-6 text-foreground outline-none placeholder:text-subtle focus:border-foreground/40"
         />
 
-        <label className="mb-2 mt-4 block text-sm text-zinc-400">
+        <label className="mb-2 mt-4 block text-sm text-muted">
           給學生的紀錄（學生登入後看得到）
         </label>
 
@@ -91,7 +91,7 @@ export default function LessonNoteModal({
           }
           rows={4}
           placeholder="例如：今天進度很好！回家請練習主歌 riff，每天 15 分鐘。"
-          className="w-full resize-y rounded-xl border border-zinc-700 bg-zinc-950 px-4 py-3 text-sm leading-6 text-zinc-100 outline-none placeholder:text-zinc-600 focus:border-zinc-500"
+          className="w-full resize-y rounded-xl border border-line-strong bg-background px-4 py-3 text-sm leading-6 text-foreground outline-none placeholder:text-subtle focus:border-foreground/40"
         />
 
         <div className="mt-5 flex items-center justify-end gap-4">
@@ -101,7 +101,7 @@ export default function LessonNoteModal({
               type="button"
               onClick={onClose}
               disabled={saving}
-              className="rounded-xl px-4 py-2 text-sm text-zinc-400 hover:bg-zinc-800 hover:text-white"
+              className="rounded-xl px-4 py-2 text-sm text-muted hover:bg-fill-strong hover:text-foreground"
             >
               取消
             </button>
@@ -110,7 +110,7 @@ export default function LessonNoteModal({
               type="button"
               onClick={handleSave}
               disabled={saving}
-              className="rounded-xl bg-white px-4 py-2 text-sm font-medium text-black hover:bg-zinc-200 disabled:cursor-not-allowed disabled:opacity-50"
+              className="rounded-xl bg-primary px-4 py-2 text-sm font-medium text-on-primary hover:bg-primary-hover disabled:cursor-not-allowed disabled:opacity-50"
             >
               {saving ? "儲存中..." : "儲存紀錄"}
             </button>

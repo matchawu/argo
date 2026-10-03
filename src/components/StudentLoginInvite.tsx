@@ -63,7 +63,7 @@ export default function StudentLoginInvite({
   }
 
   return (
-    <section className="mt-10 rounded-2xl border border-zinc-800 bg-zinc-900 p-5">
+    <section className="mt-10 rounded-2xl border border-line bg-surface p-5">
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
           <h2 className="text-lg font-semibold">學生登入</h2>
@@ -72,8 +72,8 @@ export default function StudentLoginInvite({
             <span
               className={
                 lineBound
-                  ? "rounded-full bg-emerald-950 px-2.5 py-1 text-xs text-emerald-400"
-                  : "rounded-full bg-zinc-800 px-2.5 py-1 text-xs text-zinc-400"
+                  ? "rounded-full bg-success-soft px-2.5 py-1 text-xs text-success"
+                  : "rounded-full bg-fill px-2.5 py-1 text-xs text-muted"
               }
             >
               {lineBound ? "已綁定 LINE" : "尚未綁定"}
@@ -85,7 +85,7 @@ export default function StudentLoginInvite({
           type="button"
           onClick={generateInvite}
           disabled={loading}
-          className="rounded-xl bg-blue-950 px-4 py-2 text-sm text-blue-300 hover:bg-blue-900 disabled:cursor-not-allowed disabled:opacity-50"
+          className="rounded-xl bg-fill px-4 py-2 text-sm text-foreground hover:bg-fill-strong disabled:cursor-not-allowed disabled:opacity-50"
         >
           {loading
             ? "產生中..."
@@ -96,8 +96,8 @@ export default function StudentLoginInvite({
       </div>
 
       {inviteUrl && (
-        <div className="mt-4 rounded-xl border border-emerald-900 bg-emerald-950/40 p-4">
-          <p className="text-xs text-zinc-400">
+        <div className="mt-4 rounded-xl border border-success/30 bg-success-soft p-4">
+          <p className="text-xs text-muted">
             請把連結傳給 {studentName}，用 LINE 登入後即完成綁定。連結 7
             天內有效、只能使用一次，離開此頁後無法再次查看。
           </p>
@@ -108,13 +108,13 @@ export default function StudentLoginInvite({
               readOnly
               value={inviteUrl}
               onFocus={(e) => e.target.select()}
-              className="min-w-0 flex-1 rounded-lg bg-zinc-950 px-3 py-2 text-sm text-zinc-300 outline-none ring-1 ring-zinc-700"
+              className="min-w-0 flex-1 rounded-lg bg-background px-3 py-2 text-sm text-foreground outline-none ring-1 ring-line-strong"
             />
 
             <button
               type="button"
               onClick={copyInviteUrl}
-              className="rounded-lg bg-white px-4 py-2 text-sm font-medium text-black hover:bg-zinc-200"
+              className="rounded-lg bg-primary px-4 py-2 text-sm font-medium text-on-primary hover:bg-primary-hover"
             >
               {copied ? "已複製" : "複製"}
             </button>

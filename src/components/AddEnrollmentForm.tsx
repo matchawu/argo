@@ -129,7 +129,7 @@ export default function AddEnrollmentForm({
   return (
     <form
       onSubmit={handleSubmit}
-      className="mb-8 grid gap-4 rounded-2xl border border-zinc-800 bg-zinc-900 p-5 md:grid-cols-2"
+      className="mb-8 grid gap-4 rounded-2xl border border-line bg-surface p-5 md:grid-cols-2"
     >
       <select
         value={form.studentId}
@@ -139,7 +139,7 @@ export default function AddEnrollmentForm({
             studentId: e.target.value,
           })
         }
-        className="rounded-xl bg-zinc-800 px-4 py-3"
+        className="rounded-xl bg-fill px-4 py-3"
         required
       >
         <option value="">選擇學生</option>
@@ -159,7 +159,7 @@ export default function AddEnrollmentForm({
             teacherId: e.target.value,
           })
         }
-        className="rounded-xl bg-zinc-800 px-4 py-3"
+        className="rounded-xl bg-fill px-4 py-3"
         required
       >
         <option value="">選擇老師</option>
@@ -181,7 +181,7 @@ export default function AddEnrollmentForm({
             course: e.target.value,
           })
         }
-        className="rounded-xl bg-zinc-800 px-4 py-3"
+        className="rounded-xl bg-fill px-4 py-3"
         required
       />
 
@@ -195,7 +195,7 @@ export default function AddEnrollmentForm({
             price: e.target.value,
           })
         }
-        className="rounded-xl bg-zinc-800 px-4 py-3"
+        className="rounded-xl bg-fill px-4 py-3"
         required
       />
 
@@ -207,7 +207,7 @@ export default function AddEnrollmentForm({
             weekday: e.target.value,
           })
         }
-        className="rounded-xl bg-zinc-800 px-4 py-3"
+        className="rounded-xl bg-fill px-4 py-3"
       >
         {weekdayOptions.map((option) => (
           <option key={option.value} value={option.value}>
@@ -224,7 +224,7 @@ export default function AddEnrollmentForm({
             intervalWeeks: e.target.value,
           })
         }
-        className="rounded-xl bg-zinc-800 px-4 py-3"
+        className="rounded-xl bg-fill px-4 py-3"
       >
         {intervalOptions.map((option) => (
           <option key={option.value} value={option.value}>
@@ -242,7 +242,7 @@ export default function AddEnrollmentForm({
             time: e.target.value,
           })
         }
-        className="rounded-xl bg-zinc-800 px-4 py-3"
+        className="rounded-xl bg-fill px-4 py-3"
         required
       />
 
@@ -256,13 +256,13 @@ export default function AddEnrollmentForm({
             startDate: e.target.value,
           })
         }
-        className="rounded-xl bg-zinc-800 px-4 py-3"
+        className="rounded-xl bg-fill px-4 py-3"
         required
       />
 
       <button
         type="submit"
-        className="rounded-xl bg-white px-4 py-3 font-medium text-black hover:bg-zinc-200"
+        className="rounded-xl bg-primary px-4 py-3 font-medium text-on-primary hover:bg-primary-hover"
       >
         建立固定課程
       </button>

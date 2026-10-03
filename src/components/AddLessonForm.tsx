@@ -222,7 +222,7 @@ export default function AddLessonForm({
 
   if (loading) {
     return (
-      <div className="mb-6 rounded-2xl border border-zinc-800 bg-zinc-900 p-5 text-sm text-zinc-500">
+      <div className="mb-6 rounded-2xl border border-line bg-surface p-5 text-sm text-muted">
         載入學生與老師資料中...
       </div>
     );
@@ -231,7 +231,7 @@ export default function AddLessonForm({
   return (
     <form
       onSubmit={handleSubmit}
-      className="mb-6 rounded-2xl border border-zinc-800 bg-zinc-900 p-5"
+      className="mb-6 rounded-2xl border border-line bg-surface p-5"
     >
       <h3 className="mb-5 text-lg font-semibold">
         新增課程
@@ -239,7 +239,7 @@ export default function AddLessonForm({
 
       <div className="grid gap-4 md:grid-cols-2">
         <div>
-          <label className="mb-2 block text-sm text-zinc-400">
+          <label className="mb-2 block text-sm text-muted">
             學生
           </label>
 
@@ -248,7 +248,7 @@ export default function AddLessonForm({
             onChange={(event) =>
               selectStudent(event.target.value)
             }
-            className="w-full rounded-xl border border-zinc-700 bg-zinc-950 px-4 py-3 text-zinc-100 outline-none focus:border-zinc-500"
+            className="w-full rounded-xl border border-line-strong bg-background px-4 py-3 text-foreground outline-none focus:border-foreground/40"
           >
             <option value="">
               請選擇學生
@@ -266,7 +266,7 @@ export default function AddLessonForm({
         </div>
 
         <div>
-          <label className="mb-2 block text-sm text-zinc-400">
+          <label className="mb-2 block text-sm text-muted">
             扣堂數
           </label>
 
@@ -276,7 +276,7 @@ export default function AddLessonForm({
               selectEnrollment(event.target.value)
             }
             disabled={!studentId}
-            className="w-full rounded-xl border border-zinc-700 bg-zinc-950 px-4 py-3 text-zinc-100 outline-none focus:border-zinc-500 disabled:opacity-50"
+            className="w-full rounded-xl border border-line-strong bg-background px-4 py-3 text-foreground outline-none focus:border-foreground/40 disabled:opacity-50"
           >
             <option value="">
               {studentId
@@ -305,7 +305,7 @@ export default function AddLessonForm({
         </div>
 
         <div>
-          <label className="mb-2 block text-sm text-zinc-400">
+          <label className="mb-2 block text-sm text-muted">
             老師
           </label>
 
@@ -314,7 +314,7 @@ export default function AddLessonForm({
             onChange={(event) =>
               setTeacherId(event.target.value)
             }
-            className="w-full rounded-xl border border-zinc-700 bg-zinc-950 px-4 py-3 text-zinc-100 outline-none focus:border-zinc-500"
+            className="w-full rounded-xl border border-line-strong bg-background px-4 py-3 text-foreground outline-none focus:border-foreground/40"
           >
             <option value="">
               請選擇老師
@@ -332,7 +332,7 @@ export default function AddLessonForm({
         </div>
 
         <div>
-          <label className="mb-2 block text-sm text-zinc-400">
+          <label className="mb-2 block text-sm text-muted">
             課程
           </label>
 
@@ -343,12 +343,12 @@ export default function AddLessonForm({
               setCourse(event.target.value)
             }
             placeholder="例如：電吉他"
-            className="w-full rounded-xl border border-zinc-700 bg-zinc-950 px-4 py-3 text-zinc-100 outline-none focus:border-zinc-500"
+            className="w-full rounded-xl border border-line-strong bg-background px-4 py-3 text-foreground outline-none focus:border-foreground/40"
           />
         </div>
 
         <div>
-          <label className="mb-2 block text-sm text-zinc-400">
+          <label className="mb-2 block text-sm text-muted">
             學費
           </label>
 
@@ -360,12 +360,12 @@ export default function AddLessonForm({
               setPrice(event.target.value)
             }
             placeholder="例如：750"
-            className="w-full rounded-xl border border-zinc-700 bg-zinc-950 px-4 py-3 text-zinc-100 outline-none focus:border-zinc-500"
+            className="w-full rounded-xl border border-line-strong bg-background px-4 py-3 text-foreground outline-none focus:border-foreground/40"
           />
         </div>
 
         <div>
-          <label className="mb-2 block text-sm text-zinc-400">
+          <label className="mb-2 block text-sm text-muted">
             日期
           </label>
 
@@ -375,12 +375,12 @@ export default function AddLessonForm({
             onChange={(event) =>
               setDate(event.target.value)
             }
-            className="w-full rounded-xl border border-zinc-700 bg-zinc-950 px-4 py-3 text-zinc-100 outline-none focus:border-zinc-500"
+            className="w-full rounded-xl border border-line-strong bg-background px-4 py-3 text-foreground outline-none focus:border-foreground/40"
           />
         </div>
 
         <div>
-          <label className="mb-2 block text-sm text-zinc-400">
+          <label className="mb-2 block text-sm text-muted">
             時間
           </label>
 
@@ -390,7 +390,7 @@ export default function AddLessonForm({
             onChange={(event) =>
               setTime(event.target.value)
             }
-            className="w-full rounded-xl border border-zinc-700 bg-zinc-950 px-4 py-3 text-zinc-100 outline-none focus:border-zinc-500"
+            className="w-full rounded-xl border border-line-strong bg-background px-4 py-3 text-foreground outline-none focus:border-foreground/40"
           />
         </div>
       </div>
@@ -400,7 +400,7 @@ export default function AddLessonForm({
           type="button"
           onClick={onCancel}
           disabled={saving}
-          className="rounded-xl px-4 py-2 text-sm text-zinc-400 hover:bg-zinc-800 hover:text-white"
+          className="rounded-xl px-4 py-2 text-sm text-muted hover:bg-fill-strong hover:text-foreground"
         >
           取消
         </button>
@@ -408,7 +408,7 @@ export default function AddLessonForm({
         <button
           type="submit"
           disabled={saving}
-          className="rounded-xl bg-white px-4 py-2 text-sm font-medium text-black hover:bg-zinc-200 disabled:cursor-not-allowed disabled:opacity-50"
+          className="rounded-xl bg-primary px-4 py-2 text-sm font-medium text-on-primary hover:bg-primary-hover disabled:cursor-not-allowed disabled:opacity-50"
         >
           {saving ? "新增中..." : "新增課程"}
         </button>

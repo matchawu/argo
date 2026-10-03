@@ -171,14 +171,14 @@ export default function EnrollmentList({
   }
 
   return (
-    <main className="min-h-screen text-zinc-100">
+    <main className="min-h-screen text-foreground">
       <div className="mx-auto max-w-4xl px-6 py-10">
         <div className="mb-8 flex items-center justify-between">
           <h1 className="text-3xl font-bold">固定課程</h1>
 
           <button
             onClick={() => setShowForm(true)}
-            className="rounded-xl bg-white px-4 py-2 text-sm font-medium text-black hover:bg-zinc-200"
+            className="rounded-xl bg-primary px-4 py-2 text-sm font-medium text-on-primary hover:bg-primary-hover"
           >
             ＋ 新增固定課程
           </button>
@@ -196,7 +196,7 @@ export default function EnrollmentList({
           {enrollments.map((enrollment) => (
             <div
               key={enrollment.id}
-              className="rounded-2xl border border-zinc-800 bg-zinc-900 p-5"
+              className="rounded-2xl border border-line bg-surface p-5"
             >
               <div className="flex items-center justify-between">
                 <div>
@@ -204,13 +204,13 @@ export default function EnrollmentList({
                     {enrollment.students.name}
                   </div>
 
-                  <div className="mt-1 text-sm text-zinc-400">
+                  <div className="mt-1 text-sm text-muted">
                     {enrollment.course}
                     {" · "}
                     {enrollment.teachers.name}
                   </div>
 
-                  <div className="mt-2 text-sm text-zinc-500">
+                  <div className="mt-2 text-sm text-muted">
                     {enrollment.interval_weeks === 2 ? "隔週" : "每週"}
                     {weekdayLabels[enrollment.default_weekday]}{" "}
                     {enrollment.default_time.slice(0, 5)}
@@ -221,7 +221,7 @@ export default function EnrollmentList({
                 <div className="flex gap-2">
                   <button
                     onClick={() => handleGenerate(enrollment)}
-                    className="rounded-xl bg-white px-4 py-2 text-sm font-medium text-black hover:bg-zinc-200"
+                    className="rounded-xl bg-primary px-4 py-2 text-sm font-medium text-on-primary hover:bg-primary-hover"
                   >
                     生成未來 4 週
                   </button>
@@ -232,14 +232,14 @@ export default function EnrollmentList({
                         editingId === enrollment.id ? null : enrollment.id,
                       )
                     }
-                    className="rounded-xl bg-blue-950 px-4 py-2 text-sm text-blue-400 hover:bg-blue-900"
+                    className="rounded-xl bg-fill px-4 py-2 text-sm text-foreground hover:bg-fill-strong"
                   >
                     {editingId === enrollment.id ? "收起" : "編輯"}
                   </button>
 
                   <button
                     onClick={() => deactivateEnrollment(enrollment)}
-                    className="rounded-xl bg-red-950 px-4 py-2 text-sm text-red-400 hover:bg-red-900"
+                    className="rounded-xl bg-danger-soft px-4 py-2 text-sm text-danger hover:opacity-80"
                   >
                     停用
                   </button>

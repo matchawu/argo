@@ -342,39 +342,39 @@ export default function TeacherManager({
   }
 
   return (
-    <main className="min-h-screen text-zinc-100">
+    <main className="min-h-screen text-foreground">
       <div className="mx-auto max-w-4xl px-6 py-10">
         <h1 className="mb-8 text-3xl font-bold">老師管理</h1>
 
         <form onSubmit={addTeacher} className="mb-8 grid gap-3 md:grid-cols-2">
           <div>
-            <label className="mb-2 block text-sm text-zinc-400">老師姓名</label>
+            <label className="mb-2 block text-sm text-muted">老師姓名</label>
 
             <input
               type="text"
               placeholder="老師姓名"
               value={name}
               onChange={(e) => setName(e.target.value)}
-              className="w-full rounded-xl bg-zinc-900 px-4 py-3 outline-none ring-1 ring-zinc-800 focus:ring-zinc-600"
+              className="w-full rounded-xl bg-surface px-4 py-3 outline-none ring-1 ring-line focus:ring-foreground/30"
               required
             />
           </div>
 
           <div>
-            <label className="mb-2 block text-sm text-zinc-400">Email</label>
+            <label className="mb-2 block text-sm text-muted">Email</label>
 
             <input
               type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               placeholder="teacher@example.com"
-              className="w-full rounded-xl bg-zinc-900 px-4 py-3 outline-none ring-1 ring-zinc-800 focus:ring-zinc-600"
+              className="w-full rounded-xl bg-surface px-4 py-3 outline-none ring-1 ring-line focus:ring-foreground/30"
               required
             />
           </div>
 
           <div>
-            <label className="mb-2 block text-sm text-zinc-400">
+            <label className="mb-2 block text-sm text-muted">
               老師抽成比例
             </label>
 
@@ -386,7 +386,7 @@ export default function TeacherManager({
               placeholder="例如 0.6"
               value={share}
               onChange={(e) => setShare(e.target.value)}
-              className="w-full rounded-xl bg-zinc-900 px-4 py-3 outline-none ring-1 ring-zinc-800 focus:ring-zinc-600"
+              className="w-full rounded-xl bg-surface px-4 py-3 outline-none ring-1 ring-line focus:ring-foreground/30"
               required
             />
           </div>
@@ -395,7 +395,7 @@ export default function TeacherManager({
             <button
               type="submit"
               disabled={saving}
-              className="w-full rounded-xl bg-white px-5 py-3 font-medium text-black hover:bg-zinc-200 disabled:cursor-not-allowed disabled:opacity-50"
+              className="w-full rounded-xl bg-primary px-5 py-3 font-medium text-on-primary hover:bg-primary-hover disabled:cursor-not-allowed disabled:opacity-50"
             >
               {saving ? "建立中..." : "＋ 新增老師並產生邀請連結"}
             </button>
@@ -403,14 +403,14 @@ export default function TeacherManager({
         </form>
 
         {inviteLink && (
-          <div className="mb-8 rounded-2xl border border-emerald-900 bg-emerald-950/40 p-5">
+          <div className="mb-8 rounded-2xl border border-success/30 bg-success-soft p-5">
             <div className="flex items-start justify-between gap-4">
               <div className="min-w-0">
-                <div className="font-medium text-emerald-300">
+                <div className="font-medium text-success">
                   {inviteLink.teacherName} 的邀請連結
                 </div>
 
-                <p className="mt-1 text-xs text-zinc-400">
+                <p className="mt-1 text-xs text-muted">
                   請把連結傳給老師，老師用 LINE 登入後即完成綁定。連結 7
                   天內有效、只能使用一次，離開此頁後無法再次查看。
                 </p>
@@ -419,7 +419,7 @@ export default function TeacherManager({
               <button
                 type="button"
                 onClick={() => setInviteLink(null)}
-                className="shrink-0 text-sm text-zinc-500 hover:text-zinc-300"
+                className="shrink-0 text-sm text-muted hover:text-foreground"
               >
                 關閉
               </button>
@@ -431,13 +431,13 @@ export default function TeacherManager({
                 readOnly
                 value={inviteLink.url}
                 onFocus={(e) => e.target.select()}
-                className="min-w-0 flex-1 rounded-lg bg-zinc-950 px-3 py-2 text-sm text-zinc-300 outline-none ring-1 ring-zinc-700"
+                className="min-w-0 flex-1 rounded-lg bg-background px-3 py-2 text-sm text-foreground outline-none ring-1 ring-line-strong"
               />
 
               <button
                 type="button"
                 onClick={copyInviteLink}
-                className="rounded-lg bg-white px-4 py-2 text-sm font-medium text-black hover:bg-zinc-200"
+                className="rounded-lg bg-primary px-4 py-2 text-sm font-medium text-on-primary hover:bg-primary-hover"
               >
                 {copied ? "已複製" : "複製"}
               </button>
@@ -449,7 +449,7 @@ export default function TeacherManager({
           {teachers.map((teacher) => (
             <div
               key={teacher.id}
-              className="flex flex-col gap-4 rounded-2xl border border-zinc-800 bg-zinc-900 p-5 sm:flex-row sm:items-center sm:justify-between"
+              className="flex flex-col gap-4 rounded-2xl border border-line bg-surface p-5 sm:flex-row sm:items-center sm:justify-between"
             >
               <div className="min-w-0">
                 <div className="font-medium">{teacher.name}</div>
@@ -461,13 +461,13 @@ export default function TeacherManager({
                       value={editingEmail}
                       onChange={(e) => setEditingEmail(e.target.value)}
                       placeholder="teacher@example.com"
-                      className="min-w-0 flex-1 rounded-lg bg-zinc-950 px-3 py-2 text-sm outline-none ring-1 ring-zinc-700 focus:ring-zinc-500"
+                      className="min-w-0 flex-1 rounded-lg bg-background px-3 py-2 text-sm outline-none ring-1 ring-line-strong focus:ring-foreground/30"
                     />
 
                     <button
                       type="button"
                       onClick={() => saveTeacherEmail(teacher)}
-                      className="rounded-lg bg-white px-3 py-2 text-sm font-medium text-black hover:bg-zinc-200"
+                      className="rounded-lg bg-primary px-3 py-2 text-sm font-medium text-on-primary hover:bg-primary-hover"
                     >
                       儲存
                     </button>
@@ -478,14 +478,14 @@ export default function TeacherManager({
                         setEditingTeacherId(null);
                         setEditingEmail("");
                       }}
-                      className="rounded-lg bg-zinc-800 px-3 py-2 text-sm text-zinc-300 hover:bg-zinc-700"
+                      className="rounded-lg bg-fill px-3 py-2 text-sm text-foreground hover:bg-fill-strong"
                     >
                       取消
                     </button>
                   </div>
                 ) : (
                   <div className="mt-1 flex flex-wrap items-center gap-2">
-                    <span className="truncate text-sm text-zinc-500">
+                    <span className="truncate text-sm text-muted">
                       {teacher.email ?? "尚未設定 Email"}
                     </span>
 
@@ -495,14 +495,14 @@ export default function TeacherManager({
                         setEditingTeacherId(teacher.id);
                         setEditingEmail(teacher.email ?? "");
                       }}
-                      className="text-xs text-zinc-400 underline hover:text-zinc-200"
+                      className="text-xs text-muted underline hover:text-foreground"
                     >
                       {teacher.email ? "修改 Email" : "新增 Email"}
                     </button>
                   </div>
                 )}
 
-                <div className="mt-1 text-sm text-zinc-500">
+                <div className="mt-1 text-sm text-muted">
                   老師抽成 {(teacher.teacher_share * 100).toFixed(0)}%{" · "}
                   {teacher.active ? "使用中" : "已停用"}
                 </div>
@@ -511,23 +511,23 @@ export default function TeacherManager({
                   <span
                     className={
                       teacher.invite_status === "active"
-                        ? "rounded-full bg-emerald-950 px-2.5 py-1 text-xs text-emerald-400"
+                        ? "rounded-full bg-success-soft px-2.5 py-1 text-xs text-success"
                         : teacher.invite_status === "invited"
-                          ? "rounded-full bg-blue-950 px-2.5 py-1 text-xs text-blue-400"
-                          : "rounded-full bg-zinc-800 px-2.5 py-1 text-xs text-zinc-400"
+                          ? "rounded-full bg-fill px-2.5 py-1 text-xs text-foreground"
+                          : "rounded-full bg-fill px-2.5 py-1 text-xs text-muted"
                     }
                   >
                     {getInviteStatusLabel(teacher.invite_status)}
                   </span>
 
                   {teacher.id === myTeacherId && (
-                    <span className="rounded-full bg-purple-950 px-2.5 py-1 text-xs text-purple-300">
+                    <span className="rounded-full bg-fill px-2.5 py-1 text-xs text-foreground">
                       你的帳號
                     </span>
                   )}
 
                   {teacher.invited_at && teacher.id !== myTeacherId && (
-                    <span className="text-xs text-zinc-600">
+                    <span className="text-xs text-subtle">
                       最近邀請：
                       {formatTaiwanDateTime(teacher.invited_at)}
                     </span>
@@ -541,7 +541,7 @@ export default function TeacherManager({
                     type="button"
                     onClick={() => linkSelf(teacher, false)}
                     disabled={linkingTeacherId === teacher.id}
-                    className="rounded-xl bg-zinc-800 px-4 py-2 text-sm text-zinc-300 hover:bg-zinc-700 disabled:cursor-not-allowed disabled:opacity-50"
+                    className="rounded-xl bg-fill px-4 py-2 text-sm text-foreground hover:bg-fill-strong disabled:cursor-not-allowed disabled:opacity-50"
                   >
                     解除綁定
                   </button>
@@ -552,7 +552,7 @@ export default function TeacherManager({
                       type="button"
                       onClick={() => linkSelf(teacher, true)}
                       disabled={linkingTeacherId === teacher.id}
-                      className="rounded-xl bg-purple-950 px-4 py-2 text-sm text-purple-300 hover:bg-purple-900 disabled:cursor-not-allowed disabled:opacity-50"
+                      className="rounded-xl bg-fill px-4 py-2 text-sm text-foreground hover:bg-fill-strong disabled:cursor-not-allowed disabled:opacity-50"
                     >
                       綁定到我的帳號
                     </button>
@@ -564,7 +564,7 @@ export default function TeacherManager({
                     type="button"
                     onClick={() => resendInvite(teacher)}
                     disabled={resendingTeacherId === teacher.id}
-                    className="rounded-xl bg-blue-950 px-4 py-2 text-sm text-blue-300 hover:bg-blue-900 disabled:cursor-not-allowed disabled:opacity-50"
+                    className="rounded-xl bg-fill px-4 py-2 text-sm text-foreground hover:bg-fill-strong disabled:cursor-not-allowed disabled:opacity-50"
                   >
                     {resendingTeacherId === teacher.id
                       ? "產生中..."
@@ -579,8 +579,8 @@ export default function TeacherManager({
                   onClick={() => toggleTeacherActive(teacher)}
                   className={
                     teacher.active
-                      ? "rounded-xl bg-zinc-800 px-4 py-2 text-sm text-zinc-300 hover:bg-zinc-700"
-                      : "rounded-xl bg-emerald-950 px-4 py-2 text-sm text-emerald-400 hover:bg-emerald-900"
+                      ? "rounded-xl bg-fill px-4 py-2 text-sm text-foreground hover:bg-fill-strong"
+                      : "rounded-xl bg-success-soft px-4 py-2 text-sm text-success hover:opacity-80"
                   }
                 >
                   {teacher.active ? "停用" : "重新啟用"}

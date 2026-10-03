@@ -22,7 +22,7 @@ export default function TeacherNavbar({
 }) {
   return (
     <RoleNavbar
-      brand="Argo Teacher"
+      roleLabel="Teacher"
       homeHref="/teacher"
       items={navItems}
       switchLink={

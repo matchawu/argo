@@ -1,5 +1,6 @@
 import { redirect } from "next/navigation";
 import { isDevLoginEnabled } from "@/lib/devLogin";
+import BrandScreen, { BrandCard, LineButton } from "@/components/BrandScreen";
 import { homeForRole } from "@/lib/authSession";
 import { createClient } from "@/lib/supabase/server";
 
@@ -54,42 +55,39 @@ export default async function LoginPage({ searchParams }: Props) {
     : null;
 
   return (
-    <main className="flex min-h-screen items-center justify-center bg-zinc-950 px-6 text-zinc-100">
-      <div className="w-full max-w-sm rounded-2xl border border-zinc-800 bg-zinc-900 p-6">
-        <h1 className="mb-2 text-3xl font-bold">Argo</h1>
+    <BrandScreen>
+      <BrandCard>
+        <h1 className="text-center text-lg font-medium">工作室管理系統</h1>
 
-        <p className="mb-6 text-sm text-zinc-500">工作室管理系統登入</p>
+        <p className="mt-1 text-center text-sm text-muted">
+          老師、學生與工作室夥伴請用 LINE 登入
+        </p>
 
-        <div className="space-y-4">
-          {errorMessage && (
-            <div className="text-sm text-red-400">
-              <p>{errorMessage}</p>
+        {errorMessage && (
+          <div className="mt-6 rounded-2xl bg-danger-soft px-4 py-3 text-sm text-danger">
+            <p>{errorMessage}</p>
 
-              {error === "not_bound" && lineUserId && (
-                <p className="mt-2 break-all text-xs text-zinc-500">
-                  LINE User ID：{lineUserId}
-                </p>
-              )}
-            </div>
-          )}
+            {error === "not_bound" && lineUserId && (
+              <p className="mt-2 break-all text-xs opacity-75">
+                LINE User ID：{lineUserId}
+              </p>
+            )}
+          </div>
+        )}
 
-          <a
-            href="/auth/line"
-            className="block w-full rounded-xl bg-[#06C755] px-4 py-3 text-center font-medium text-white hover:bg-[#05b34c]"
-          >
-            使用 LINE 登入
-          </a>
-
-          {isDevLoginEnabled() && (
-            <a
-              href="/dev/login"
-              className="block text-center text-xs text-amber-300 underline"
-            >
-              開發用：切換身份登入
-            </a>
-          )}
+        <div className="mt-6">
+          <LineButton href="/auth/line">使用 LINE 登入</LineButton>
         </div>
-      </div>
-    </main>
+
+        {isDevLoginEnabled() && (
+          <a
+            href="/dev/login"
+            className="mt-4 block text-center text-xs text-warning underline"
+          >
+            開發用：切換身份登入
+          </a>
+        )}
+      </BrandCard>
+    </BrandScreen>
   );
 }

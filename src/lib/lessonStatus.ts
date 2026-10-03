@@ -7,10 +7,7 @@ export const lessonStatusLabel: Record<LessonStatus, string> = {
 };
 
 export const lessonStatusClassName: Record<LessonStatus, string> = {
-  scheduled:
-    "border border-amber-500/30 bg-amber-500/10 text-amber-300",
-  completed:
-    "border border-emerald-500/30 bg-emerald-500/10 text-emerald-300",
-  cancelled:
-    "border border-zinc-700 bg-zinc-800 text-zinc-500",
+  scheduled: "bg-warning-soft text-warning",
+  completed: "bg-success-soft text-success",
+  cancelled: "bg-fill text-subtle",
 };

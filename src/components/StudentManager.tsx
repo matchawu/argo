@@ -90,7 +90,7 @@ export default function StudentManager({
   }
 
   return (
-    <main className="min-h-screen text-zinc-100">
+    <main className="min-h-screen text-foreground">
       <div className="mx-auto max-w-4xl px-6 py-10">
         <h1 className="mb-8 text-3xl font-bold">
           學生管理
@@ -107,12 +107,12 @@ export default function StudentManager({
             onChange={(e) =>
               setName(e.target.value)
             }
-            className="flex-1 rounded-xl bg-zinc-900 px-4 py-3 outline-none ring-1 ring-zinc-800 focus:ring-zinc-600"
+            className="flex-1 rounded-xl bg-surface px-4 py-3 outline-none ring-1 ring-line focus:ring-foreground/30"
           />
 
           <button
             type="submit"
-            className="rounded-xl bg-white px-5 py-3 font-medium text-black hover:bg-zinc-200"
+            className="rounded-xl bg-primary px-5 py-3 font-medium text-on-primary hover:bg-primary-hover"
           >
             ＋ 新增學生
           </button>
@@ -122,7 +122,7 @@ export default function StudentManager({
           {students.map((student) => (
             <div
               key={student.id}
-              className="flex items-center justify-between rounded-2xl border border-zinc-800 bg-zinc-900 p-5"
+              className="flex items-center justify-between rounded-2xl border border-line bg-surface p-5"
             >
               <div>
                 <Link
@@ -132,14 +132,14 @@ export default function StudentManager({
                   {student.name}
                 </Link>
 
-                <div className="mt-1 text-sm text-zinc-500">
+                <div className="mt-1 text-sm text-muted">
                   {student.active
                     ? "使用中"
                     : "已停用"}
                   {" · "}
                   <Link
                     href={`/students/${student.id}`}
-                    className="text-zinc-400 underline hover:text-zinc-200"
+                    className="text-muted underline hover:text-foreground"
                   >
                     繳費 / 登入設定
                   </Link>
@@ -152,8 +152,8 @@ export default function StudentManager({
                 }
                 className={
                   student.active
-                    ? "rounded-xl bg-zinc-800 px-4 py-2 text-sm text-zinc-300 hover:bg-zinc-700"
-                    : "rounded-xl bg-emerald-950 px-4 py-2 text-sm text-emerald-400 hover:bg-emerald-900"
+                    ? "rounded-xl bg-fill px-4 py-2 text-sm text-foreground hover:bg-fill-strong"
+                    : "rounded-xl bg-success-soft px-4 py-2 text-sm text-success hover:opacity-80"
                 }
               >
                 {student.active

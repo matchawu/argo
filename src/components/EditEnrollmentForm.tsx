@@ -83,12 +83,12 @@ export default function EditEnrollmentForm({
   return (
     <form
       onSubmit={handleSubmit}
-      className="mt-4 grid gap-4 rounded-xl border border-zinc-700 bg-zinc-950 p-4 md:grid-cols-2"
+      className="mt-4 grid gap-4 rounded-xl border border-line-strong bg-background p-4 md:grid-cols-2"
     >
       <select
         value={teacherId}
         onChange={(e) => setTeacherId(e.target.value)}
-        className="rounded-xl bg-zinc-800 px-4 py-3"
+        className="rounded-xl bg-fill px-4 py-3"
       >
         {teachers.map((teacher) => (
           <option
@@ -105,7 +105,7 @@ export default function EditEnrollmentForm({
         value={course}
         onChange={(e) => setCourse(e.target.value)}
         placeholder="課程"
-        className="rounded-xl bg-zinc-800 px-4 py-3"
+        className="rounded-xl bg-fill px-4 py-3"
       />
 
       <input
@@ -113,13 +113,13 @@ export default function EditEnrollmentForm({
         value={price}
         onChange={(e) => setPrice(e.target.value)}
         placeholder="單堂價格"
-        className="rounded-xl bg-zinc-800 px-4 py-3"
+        className="rounded-xl bg-fill px-4 py-3"
       />
 
       <select
         value={weekday}
         onChange={(e) => setWeekday(e.target.value)}
-        className="rounded-xl bg-zinc-800 px-4 py-3"
+        className="rounded-xl bg-fill px-4 py-3"
       >
         {weekdayOptions.map((option) => (
           <option
@@ -134,7 +134,7 @@ export default function EditEnrollmentForm({
       <select
         value={intervalWeeks}
         onChange={(e) => setIntervalWeeks(e.target.value)}
-        className="rounded-xl bg-zinc-800 px-4 py-3"
+        className="rounded-xl bg-fill px-4 py-3"
       >
         {intervalOptions.map((option) => (
           <option
@@ -150,10 +150,10 @@ export default function EditEnrollmentForm({
         type="time"
         value={time}
         onChange={(e) => setTime(e.target.value)}
-        className="rounded-xl bg-zinc-800 px-4 py-3"
+        className="rounded-xl bg-fill px-4 py-3"
       />
 
-      <label className="flex items-center gap-2 text-sm text-zinc-300">
+      <label className="flex items-center gap-2 text-sm text-foreground">
         <input
           type="checkbox"
           checked={updateFutureLessons}
@@ -167,7 +167,7 @@ export default function EditEnrollmentForm({
 
       {Number(intervalWeeks) !==
         (enrollment.interval_weeks ?? 1) && (
-        <p className="text-xs text-amber-300 md:col-span-2">
+        <p className="text-xs text-warning md:col-span-2">
           已經產生的未來課程不會因為改頻率而自動增減，請到課表手動取消多出來的課；之後按「生成未來
           4 週」會用新的頻率產生。
         </p>
@@ -176,7 +176,7 @@ export default function EditEnrollmentForm({
       <div className="flex gap-3 md:col-span-2">
         <button
           type="submit"
-          className="rounded-xl bg-white px-4 py-2 text-sm font-medium text-black"
+          className="rounded-xl bg-primary px-4 py-2 text-sm font-medium text-on-primary"
         >
           儲存
         </button>
@@ -184,7 +184,7 @@ export default function EditEnrollmentForm({
         <button
           type="button"
           onClick={onCancel}
-          className="rounded-xl bg-zinc-800 px-4 py-2 text-sm text-zinc-300"
+          className="rounded-xl bg-fill px-4 py-2 text-sm text-foreground"
         >
           取消
         </button>

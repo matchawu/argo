@@ -5,6 +5,7 @@ import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import { createClient } from "@/lib/supabase/client";
 import LogoutButton from "@/components/LogoutButton";
+import Logo from "@/components/Logo";
 
 const navItems = [
   { label: "今日課程", href: "/" },
@@ -44,14 +45,18 @@ export default function Navbar({
   }, [pathname]);
 
   return (
-    <nav className="border-b border-zinc-800 bg-zinc-950 text-zinc-100">
+    <nav className="sticky top-0 z-40 border-b border-line bg-surface/90 text-foreground backdrop-blur">
       <div className="mx-auto max-w-5xl px-4 sm:px-6">
-        <div className="flex items-center justify-between py-4">
+        <div className="flex h-16 items-center justify-between">
           <Link
             href="/"
-            className="shrink-0 text-xl font-bold tracking-tight"
+            className="flex shrink-0 items-baseline gap-3"
           >
-            Argo
+            <Logo size="sm" />
+
+            <span className="font-display text-xs font-semibold uppercase tracking-[0.2em] text-subtle">
+              Admin
+            </span>
           </Link>
 
           {/* Desktop */}
@@ -68,8 +73,8 @@ export default function Navbar({
                   href={item.href}
                   className={
                     isActive
-                      ? "rounded-xl bg-white px-4 py-2 text-sm font-medium text-black"
-                      : "rounded-xl px-4 py-2 text-sm text-zinc-400 hover:bg-zinc-900 hover:text-white"
+                      ? "whitespace-nowrap rounded-full bg-primary px-4 py-2 text-sm font-medium text-on-primary"
+                      : "whitespace-nowrap rounded-full px-4 py-2 text-sm text-muted transition hover:bg-fill hover:text-foreground"
                   }
                 >
                   {item.label}
@@ -80,14 +85,14 @@ export default function Navbar({
             {showTeacherLink && (
               <Link
                 href="/teacher"
-                className="ml-2 whitespace-nowrap rounded-xl border border-zinc-700 px-4 py-2 text-sm text-zinc-300 hover:bg-zinc-900 hover:text-white"
+                className="ml-2 whitespace-nowrap rounded-xl border border-line-strong px-4 py-2 text-sm text-foreground hover:bg-fill hover:text-foreground"
               >
                 老師模式
               </Link>
             )}
 
             {email && (
-              <span className="ml-2 max-w-40 truncate text-xs text-zinc-500">
+              <span className="ml-2 max-w-40 truncate text-xs text-muted">
                 {email}
               </span>
             )}
@@ -99,7 +104,7 @@ export default function Navbar({
           <button
             type="button"
             onClick={() => setMenuOpen((open) => !open)}
-            className="flex h-10 w-10 items-center justify-center rounded-xl border border-zinc-800 text-zinc-300 hover:bg-zinc-900 lg:hidden"
+            className="flex h-10 w-10 items-center justify-center rounded-xl border border-line text-foreground hover:bg-fill lg:hidden"
             aria-label={menuOpen ? "關閉選單" : "開啟選單"}
             aria-expanded={menuOpen}
           >
@@ -113,7 +118,7 @@ export default function Navbar({
 
         {/* Mobile menu */}
         {menuOpen && (
-          <div className="border-t border-zinc-800 pb-4 pt-3 lg:hidden">
+          <div className="border-t border-line pb-4 pt-3 lg:hidden">
             <div className="flex flex-col gap-1">
               {navItems.map((item) => {
                 const isActive =
@@ -127,8 +132,8 @@ export default function Navbar({
                     href={item.href}
                     className={
                       isActive
-                        ? "rounded-xl bg-white px-4 py-3 text-sm font-medium text-black"
-                        : "rounded-xl px-4 py-3 text-sm text-zinc-400 hover:bg-zinc-900 hover:text-white"
+                        ? "rounded-xl bg-primary px-4 py-3 text-sm font-medium text-on-primary"
+                        : "rounded-xl px-4 py-3 text-sm text-muted hover:bg-fill hover:text-foreground"
                     }
                   >
                     {item.label}
@@ -136,18 +141,18 @@ export default function Navbar({
                 );
               })}
 
-              <div className="mt-3 border-t border-zinc-800 pt-3">
+              <div className="mt-3 border-t border-line pt-3">
                 {showTeacherLink && (
                   <Link
                     href="/teacher"
-                    className="mb-2 block rounded-xl px-4 py-3 text-sm text-zinc-300 hover:bg-zinc-900 hover:text-white"
+                    className="mb-2 block rounded-xl px-4 py-3 text-sm text-foreground hover:bg-fill hover:text-foreground"
                   >
                     老師模式 →
                   </Link>
                 )}
 
                 {email && (
-                  <p className="mb-2 truncate px-4 text-xs text-zinc-500">
+                  <p className="mb-2 truncate px-4 text-xs text-muted">
                     {email}
                   </p>
                 )}

@@ -145,11 +145,11 @@ export default function TeacherTodayView({
   }
 
   return (
-    <main className="min-h-screen bg-zinc-950 text-zinc-100">
+    <main className="min-h-screen bg-background text-foreground">
       <div className="mx-auto max-w-3xl px-4 py-10 sm:px-6">
         <div className="mb-8 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
           <div>
-            <p className="text-sm text-zinc-500">
+            <p className="text-sm text-muted">
               {selectedDate} · {selectedWeekday}
             </p>
             <h1 className="mt-2 text-3xl font-bold">
@@ -160,7 +160,7 @@ export default function TeacherTodayView({
           <div className="flex flex-wrap gap-2">
             <Link
               href={`/teacher?date=${previousDate}`}
-              className="rounded-xl bg-zinc-800 px-3 py-2 text-sm text-zinc-300 hover:bg-zinc-700"
+              className="rounded-xl bg-fill px-3 py-2 text-sm text-foreground hover:bg-fill-strong"
             >
               ← 前一天
             </Link>
@@ -168,7 +168,7 @@ export default function TeacherTodayView({
             {selectedDate !== today && (
               <Link
                 href="/teacher"
-                className="rounded-xl bg-zinc-800 px-3 py-2 text-sm text-zinc-300 hover:bg-zinc-700"
+                className="rounded-xl bg-fill px-3 py-2 text-sm text-foreground hover:bg-fill-strong"
               >
                 今天
               </Link>
@@ -176,7 +176,7 @@ export default function TeacherTodayView({
 
             <Link
               href={`/teacher?date=${nextDate}`}
-              className="rounded-xl bg-zinc-800 px-3 py-2 text-sm text-zinc-300 hover:bg-zinc-700"
+              className="rounded-xl bg-fill px-3 py-2 text-sm text-foreground hover:bg-fill-strong"
             >
               後一天 →
             </Link>
@@ -195,7 +195,7 @@ export default function TeacherTodayView({
         </section>
 
         {lessons.length === 0 ? (
-          <div className="rounded-2xl border border-dashed border-zinc-800 p-10 text-center text-sm text-zinc-500">
+          <div className="rounded-2xl border border-dashed border-line p-10 text-center text-sm text-muted">
             這天沒有安排課程
           </div>
         ) : (
@@ -205,8 +205,8 @@ export default function TeacherTodayView({
                 key={lesson.id}
                 className={
                   lesson.status === "cancelled"
-                    ? "rounded-2xl border border-zinc-800 bg-zinc-900/50 p-5 opacity-60"
-                    : "rounded-2xl border border-zinc-800 bg-zinc-900 p-5"
+                    ? "rounded-2xl border border-line bg-fill/50 p-5 opacity-60"
+                    : "rounded-2xl border border-line bg-surface p-5"
                 }
               >
                 <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
@@ -215,7 +215,7 @@ export default function TeacherTodayView({
 
                     <div className="mt-3 font-medium">{lesson.student}</div>
 
-                    <div className="mt-1 text-sm text-zinc-500">
+                    <div className="mt-1 text-sm text-muted">
                       {lesson.course}
                     </div>
                   </div>
@@ -226,7 +226,7 @@ export default function TeacherTodayView({
                         <button
                           type="button"
                           onClick={() => setCompletingLesson(lesson)}
-                          className="rounded-xl bg-emerald-600 px-4 py-2 text-sm font-medium text-white hover:bg-emerald-500"
+                          className="rounded-xl bg-primary px-4 py-2 text-sm font-medium text-on-primary hover:bg-primary-hover"
                         >
                           完成簽到
                         </button>
@@ -234,7 +234,7 @@ export default function TeacherTodayView({
                         <button
                           type="button"
                           onClick={() => setReschedulingLesson(lesson)}
-                          className="rounded-xl bg-blue-950 px-4 py-2 text-sm text-blue-400 hover:bg-blue-900"
+                          className="rounded-xl bg-fill px-4 py-2 text-sm text-foreground hover:bg-fill-strong"
                         >
                           改期
                         </button>
@@ -242,7 +242,7 @@ export default function TeacherTodayView({
                         <button
                           type="button"
                           onClick={() => setCancellingLesson(lesson)}
-                          className="rounded-xl bg-red-950 px-4 py-2 text-sm text-red-400 hover:bg-red-900"
+                          className="rounded-xl bg-danger-soft px-4 py-2 text-sm text-danger hover:opacity-80"
                         >
                           取消
                         </button>
@@ -250,13 +250,13 @@ export default function TeacherTodayView({
                     )}
 
                     {lesson.status === "completed" && (
-                      <span className="rounded-full bg-emerald-950 px-3 py-1.5 text-sm text-emerald-400">
+                      <span className="rounded-full bg-success-soft px-3 py-1.5 text-sm text-success">
                         ✓ 已完成
                       </span>
                     )}
 
                     {lesson.status === "cancelled" && (
-                      <span className="rounded-full bg-zinc-800 px-3 py-1.5 text-sm text-zinc-500">
+                      <span className="rounded-full bg-fill px-3 py-1.5 text-sm text-muted">
                         已取消
                       </span>
                     )}
@@ -264,24 +264,24 @@ export default function TeacherTodayView({
                 </div>
 
                 {lesson.lessonNote && (
-                  <div className="mt-4 rounded-xl bg-zinc-950 px-4 py-3">
-                    <p className="text-xs font-medium text-zinc-600">
+                  <div className="mt-4 rounded-xl bg-background px-4 py-3">
+                    <p className="text-xs font-medium text-subtle">
                       教學紀錄（內部）
                     </p>
 
-                    <p className="mt-2 whitespace-pre-wrap text-sm leading-6 text-zinc-300">
+                    <p className="mt-2 whitespace-pre-wrap text-sm leading-6 text-foreground">
                       {lesson.lessonNote}
                     </p>
                   </div>
                 )}
 
                 {lesson.studentNote && (
-                  <div className="mt-3 rounded-xl bg-zinc-950 px-4 py-3">
-                    <p className="text-xs font-medium text-zinc-600">
+                  <div className="mt-3 rounded-xl bg-background px-4 py-3">
+                    <p className="text-xs font-medium text-subtle">
                       給學生的紀錄
                     </p>
 
-                    <p className="mt-2 whitespace-pre-wrap text-sm leading-6 text-zinc-300">
+                    <p className="mt-2 whitespace-pre-wrap text-sm leading-6 text-foreground">
                       {lesson.studentNote}
                     </p>
                   </div>
@@ -321,8 +321,8 @@ export default function TeacherTodayView({
 
 function TeacherStatCard({ title, value }: { title: string; value: number }) {
   return (
-    <div className="rounded-2xl border border-zinc-800 bg-zinc-900 p-5">
-      <p className="text-sm text-zinc-500">{title}</p>
+    <div className="rounded-2xl border border-line bg-surface p-5">
+      <p className="text-sm text-muted">{title}</p>
 
       <p className="mt-2 text-3xl font-semibold">{value}</p>
     </div>

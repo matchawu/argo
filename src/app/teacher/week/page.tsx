@@ -120,7 +120,7 @@ export default async function TeacherWeekPage({
 
   if (error) {
     return (
-      <main className="p-10 text-zinc-100">
+      <main className="p-10 text-foreground">
         <h1>
           讀取本週課程失敗
         </h1>

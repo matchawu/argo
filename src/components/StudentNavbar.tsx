@@ -18,7 +18,7 @@ const navItems = [
 export default function StudentNavbar() {
   return (
     <RoleNavbar
-      brand="Argo Student"
+      roleLabel="Student"
       homeHref="/student"
       items={navItems}
     />

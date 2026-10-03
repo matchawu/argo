@@ -26,23 +26,23 @@ export default function CancelLessonModal({
   }
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 px-4">
-      <div className="w-full max-w-md rounded-2xl border border-zinc-800 bg-zinc-900 p-6 shadow-2xl">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm px-4">
+      <div className="w-full max-w-md rounded-2xl border border-line bg-surface p-6 shadow-2xl">
         <div className="mb-6">
-          <h2 className="text-xl font-semibold text-white">
+          <h2 className="text-xl font-semibold text-foreground">
             確定取消這堂課？
           </h2>
 
-          <p className="mt-2 text-sm text-zinc-400">
+          <p className="mt-2 text-sm text-muted">
             {lesson.student} · {lesson.course}
           </p>
 
-          <p className="mt-1 text-sm text-zinc-500">
+          <p className="mt-1 text-sm text-muted">
             {lesson.date} {lesson.time}
           </p>
         </div>
 
-        <div className="rounded-xl border border-red-900/50 bg-red-950/30 p-4 text-sm text-red-300">
+        <div className="rounded-xl border border-danger/30 bg-danger-soft p-4 text-sm text-danger">
           取消後這堂課會保留在紀錄中，但狀態會改成「已取消」。
         </div>
 
@@ -51,7 +51,7 @@ export default function CancelLessonModal({
             type="button"
             onClick={onClose}
             disabled={saving}
-            className="rounded-xl px-4 py-2 text-sm text-zinc-400 hover:bg-zinc-800 hover:text-white"
+            className="rounded-xl px-4 py-2 text-sm text-muted hover:bg-fill-strong hover:text-foreground"
           >
             返回
           </button>
@@ -60,7 +60,7 @@ export default function CancelLessonModal({
             type="button"
             onClick={handleConfirm}
             disabled={saving}
-            className="rounded-xl bg-red-600 px-4 py-2 text-sm font-medium text-white hover:bg-red-500 disabled:cursor-not-allowed disabled:opacity-50"
+            className="rounded-xl bg-danger px-4 py-2 text-sm font-medium text-on-primary hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-50"
           >
             {saving ? "取消中..." : "確定取消"}
           </button>

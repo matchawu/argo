@@ -27,11 +27,11 @@ const statusLabel = {
 
 const statusClassName = {
   scheduled:
-    "border border-amber-500/30 bg-amber-500/10 text-amber-300",
+    "border border-warning/30 bg-warning-soft text-warning",
   completed:
-    "border border-emerald-500/30 bg-emerald-500/10 text-emerald-300",
+    "border border-success/30 bg-success-soft text-success",
   cancelled:
-    "border border-zinc-700 bg-zinc-800 text-zinc-500",
+    "border border-line-strong bg-fill text-muted",
 };
 
 export default function TeacherLessonHistory({
@@ -64,14 +64,14 @@ export default function TeacherLessonHistory({
 
   return (
     <>
-      <div className="overflow-hidden rounded-2xl border border-zinc-800">
+      <div className="overflow-hidden rounded-2xl border border-line">
         {lessons.map((lesson) => (
           <div
             key={lesson.id}
             className={
               lesson.status === "cancelled"
-                ? "border-b border-zinc-800 bg-zinc-950/40 p-5 opacity-60 last:border-b-0"
-                : "border-b border-zinc-800 p-5 last:border-b-0"
+                ? "border-b border-line bg-fill/50 p-5 opacity-60 last:border-b-0"
+                : "border-b border-line p-5 last:border-b-0"
             }
           >
             <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
@@ -81,12 +81,12 @@ export default function TeacherLessonHistory({
                     {lesson.lesson_date}
                   </span>
 
-                  <span className="text-sm text-zinc-400">
+                  <span className="text-sm text-muted">
                     {lesson.lesson_time.slice(0, 5)}
                   </span>
                 </div>
 
-                <div className="mt-1 text-sm text-zinc-500">
+                <div className="mt-1 text-sm text-muted">
                   {lesson.course}
                 </div>
               </div>
@@ -105,7 +105,7 @@ export default function TeacherLessonHistory({
                   onClick={() =>
                     setEditingLesson(lesson)
                   }
-                  className="rounded-xl bg-zinc-800 px-3 py-2 text-sm text-zinc-300 hover:bg-zinc-700 hover:text-white"
+                  className="rounded-xl bg-fill px-3 py-2 text-sm text-foreground hover:bg-fill-strong hover:text-foreground"
                 >
                   {lesson.lesson_note || lesson.student_note
                     ? "編輯教學紀錄"
@@ -115,24 +115,24 @@ export default function TeacherLessonHistory({
             </div>
 
             {lesson.lesson_note && (
-              <div className="mt-4 rounded-xl bg-zinc-950 px-4 py-3">
-                <p className="text-xs font-medium text-zinc-600">
+              <div className="mt-4 rounded-xl bg-background px-4 py-3">
+                <p className="text-xs font-medium text-subtle">
                   教學紀錄（內部）
                 </p>
 
-                <p className="mt-2 whitespace-pre-wrap text-sm leading-6 text-zinc-300">
+                <p className="mt-2 whitespace-pre-wrap text-sm leading-6 text-foreground">
                   {lesson.lesson_note}
                 </p>
               </div>
             )}
 
             {lesson.student_note && (
-              <div className="mt-3 rounded-xl bg-zinc-950 px-4 py-3">
-                <p className="text-xs font-medium text-zinc-600">
+              <div className="mt-3 rounded-xl bg-background px-4 py-3">
+                <p className="text-xs font-medium text-subtle">
                   給學生的紀錄
                 </p>
 
-                <p className="mt-2 whitespace-pre-wrap text-sm leading-6 text-zinc-300">
+                <p className="mt-2 whitespace-pre-wrap text-sm leading-6 text-foreground">
                   {lesson.student_note}
                 </p>
               </div>

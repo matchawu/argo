@@ -55,18 +55,18 @@ export default async function HealthPage() {
 
   if (queryErrors.length > 0) {
     return (
-      <main className="min-h-screen text-zinc-100">
+      <main className="min-h-screen text-foreground">
         <div className="mx-auto max-w-5xl px-4 py-10 sm:px-6">
           <h1 className="text-3xl font-bold">
             系統健檢
           </h1>
 
-          <div className="mt-8 rounded-2xl border border-red-900 bg-red-950/30 p-5">
-            <p className="font-medium text-red-300">
+          <div className="mt-8 rounded-2xl border border-danger/30 bg-danger-soft p-5">
+            <p className="font-medium text-danger">
               健檢資料讀取失敗
             </p>
 
-            <div className="mt-3 space-y-2 text-sm text-red-400">
+            <div className="mt-3 space-y-2 text-sm text-danger">
               {queryErrors.map((error, index) => (
                 <p key={index}>
                   {error?.message}
@@ -194,14 +194,14 @@ export default async function HealthPage() {
   );
 
   return (
-    <main className="min-h-screen text-zinc-100">
+    <main className="min-h-screen text-foreground">
       <div className="mx-auto max-w-5xl px-4 py-8 sm:px-6 sm:py-10">
         <div className="mb-8">
           <h1 className="text-3xl font-bold">
             系統健檢
           </h1>
 
-          <p className="mt-2 text-sm text-zinc-500">
+          <p className="mt-2 text-sm text-muted">
             檢查 Argo 目前的資料完整性
           </p>
         </div>
@@ -209,15 +209,15 @@ export default async function HealthPage() {
         <div
           className={
             totalIssues === 0
-              ? "mb-8 rounded-2xl border border-emerald-900 bg-emerald-950/30 p-6"
-              : "mb-8 rounded-2xl border border-amber-900 bg-amber-950/30 p-6"
+              ? "mb-8 rounded-2xl border border-success/30 bg-success-soft p-6"
+              : "mb-8 rounded-2xl border border-warning/30 bg-warning-soft p-6"
           }
         >
           <p
             className={
               totalIssues === 0
-                ? "text-lg font-semibold text-emerald-300"
-                : "text-lg font-semibold text-amber-300"
+                ? "text-lg font-semibold text-success"
+                : "text-lg font-semibold text-warning"
             }
           >
             {totalIssues === 0
@@ -225,7 +225,7 @@ export default async function HealthPage() {
               : `發現 ${totalIssues} 個資料問題`}
           </p>
 
-          <p className="mt-2 text-sm text-zinc-400">
+          <p className="mt-2 text-sm text-muted">
             這頁只做檢查，不會自動修改任何資料。
           </p>
         </div>
@@ -242,18 +242,18 @@ export default async function HealthPage() {
 
         {(duplicateStudentNames.length > 0 ||
           duplicateTeacherNames.length > 0) && (
-          <section className="mt-8 rounded-2xl border border-zinc-800 bg-zinc-900 p-5">
+          <section className="mt-8 rounded-2xl border border-line bg-surface p-5">
             <h2 className="text-lg font-semibold">
               重複姓名
             </h2>
 
             {duplicateStudentNames.length > 0 && (
               <div className="mt-4">
-                <p className="text-sm font-medium text-zinc-400">
+                <p className="text-sm font-medium text-muted">
                   學生
                 </p>
 
-                <div className="mt-2 space-y-1 text-sm text-zinc-300">
+                <div className="mt-2 space-y-1 text-sm text-foreground">
                   {duplicateStudentNames.map(
                     ([name, count]) => (
                       <p key={name}>
@@ -267,11 +267,11 @@ export default async function HealthPage() {
 
             {duplicateTeacherNames.length > 0 && (
               <div className="mt-4">
-                <p className="text-sm font-medium text-zinc-400">
+                <p className="text-sm font-medium text-muted">
                   老師
                 </p>
 
-                <div className="mt-2 space-y-1 text-sm text-zinc-300">
+                <div className="mt-2 space-y-1 text-sm text-foreground">
                   {duplicateTeacherNames.map(
                     ([name, count]) => (
                       <p key={name}>
@@ -299,17 +299,17 @@ function HealthCard({
   const healthy = count === 0;
 
   return (
-    <div className="rounded-2xl border border-zinc-800 bg-zinc-900 p-5">
+    <div className="rounded-2xl border border-line bg-surface p-5">
       <div className="flex items-start justify-between gap-4">
-        <p className="text-sm text-zinc-400">
+        <p className="text-sm text-muted">
           {label}
         </p>
 
         <span
           className={
             healthy
-              ? "rounded-full bg-emerald-950 px-2.5 py-1 text-xs font-medium text-emerald-400"
-              : "rounded-full bg-amber-950 px-2.5 py-1 text-xs font-medium text-amber-300"
+              ? "rounded-full bg-success-soft px-2.5 py-1 text-xs font-medium text-success"
+              : "rounded-full bg-warning-soft px-2.5 py-1 text-xs font-medium text-warning"
           }
         >
           {healthy ? "正常" : "注意"}

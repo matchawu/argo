@@ -22,9 +22,9 @@ const statusLabel = {
 };
 
 const statusClassName = {
-  scheduled: "border border-amber-500/30 bg-amber-500/10 text-amber-300",
-  completed: "border border-emerald-500/30 bg-emerald-500/10 text-emerald-300",
-  cancelled: "border border-zinc-700 bg-zinc-800 text-zinc-500",
+  scheduled: "border border-warning/30 bg-warning-soft text-warning",
+  completed: "border border-success/30 bg-success-soft text-success",
+  cancelled: "border border-line-strong bg-fill text-muted",
 };
 
 export default async function TeacherStudentDetailPage({ params }: Props) {
@@ -110,11 +110,11 @@ export default async function TeacherStudentDetailPage({ params }: Props) {
 
   if (lessonsError) {
     return (
-      <main className="min-h-screen text-zinc-100">
+      <main className="min-h-screen text-foreground">
         <div className="mx-auto max-w-3xl px-4 py-10 sm:px-6">
           <h1 className="text-3xl font-bold">{student.name}</h1>
 
-          <div className="mt-8 rounded-2xl border border-red-900 bg-red-950/30 p-5 text-red-300">
+          <div className="mt-8 rounded-2xl border border-danger/30 bg-danger-soft p-5 text-danger">
             讀取課程紀錄失敗：{lessonsError.message}
           </div>
         </div>
@@ -141,11 +141,11 @@ export default async function TeacherStudentDetailPage({ params }: Props) {
   ).length;
 
   return (
-    <main className="min-h-screen text-zinc-100">
+    <main className="min-h-screen text-foreground">
       <div className="mx-auto max-w-3xl px-4 py-10 sm:px-6">
         <Link
           href="/teacher/students"
-          className="text-sm text-zinc-500 transition hover:text-zinc-300"
+          className="text-sm text-muted transition hover:text-foreground"
         >
           ← 返回我的學生
         </Link>
@@ -155,13 +155,13 @@ export default async function TeacherStudentDetailPage({ params }: Props) {
             <h1 className="text-3xl font-bold">{student.name}</h1>
 
             {!student.active && (
-              <span className="rounded-full bg-zinc-800 px-2.5 py-1 text-xs text-zinc-500">
+              <span className="rounded-full bg-fill px-2.5 py-1 text-xs text-muted">
                 已停用
               </span>
             )}
           </div>
 
-          <p className="mt-2 text-sm text-zinc-500">我和這位學生的上課紀錄</p>
+          <p className="mt-2 text-sm text-muted">我和這位學生的上課紀錄</p>
         </div>
 
         <section className="mt-8 grid gap-3 sm:grid-cols-3">
@@ -181,13 +181,13 @@ export default async function TeacherStudentDetailPage({ params }: Props) {
           <div className="mb-4 flex items-center justify-between">
             <h2 className="text-xl font-semibold">課程紀錄</h2>
 
-            <span className="text-sm text-zinc-500">
+            <span className="text-sm text-muted">
               共 {studentLessons.length} 堂
             </span>
           </div>
 
           {studentLessons.length === 0 ? (
-            <div className="rounded-2xl border border-dashed border-zinc-800 p-10 text-center text-sm text-zinc-500">
+            <div className="rounded-2xl border border-dashed border-line p-10 text-center text-sm text-muted">
               目前沒有課程紀錄
             </div>
           ) : (
@@ -204,8 +204,8 @@ export default async function TeacherStudentDetailPage({ params }: Props) {
 
 function StatCard({ title, value }: { title: string; value: number }) {
   return (
-    <div className="rounded-2xl border border-zinc-800 bg-zinc-900 p-5">
-      <p className="text-sm text-zinc-500">{title}</p>
+    <div className="rounded-2xl border border-line bg-surface p-5">
+      <p className="text-sm text-muted">{title}</p>
 
       <p className="mt-2 text-3xl font-semibold">{value}</p>
     </div>

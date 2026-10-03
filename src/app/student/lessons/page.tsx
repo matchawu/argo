@@ -29,7 +29,7 @@ export default async function StudentLessonsPage() {
 
   if (error) {
     return (
-      <main className="p-10 text-zinc-100">
+      <main className="p-10">
         <h1>讀取上課紀錄失敗</h1>
         <p>{error.message}</p>
       </main>
@@ -38,45 +38,55 @@ export default async function StudentLessonsPage() {
 
   const history = lessons ?? [];
 
-  return (
-    <main className="min-h-screen text-zinc-100">
-      <div className="mx-auto max-w-3xl px-4 py-8 sm:px-6">
-        <div className="flex items-center justify-between">
-          <h1 className="text-2xl font-bold">上課紀錄</h1>
+  const completedCount = history.filter(
+    (lesson) => lesson.status === "completed",
+  ).length;
 
-          <span className="text-sm text-zinc-500">
-            已上課{" "}
-            {history.filter((lesson) => lesson.status === "completed").length}{" "}
+  return (
+    <main className="min-h-screen">
+      <div className="mx-auto max-w-3xl px-4 py-8 sm:px-6 sm:py-10">
+        <p className="font-display text-xs font-semibold uppercase tracking-[0.25em] text-subtle">
+          History
+        </p>
+
+        <div className="mt-2 flex items-end justify-between gap-4">
+          <h1 className="text-2xl font-semibold sm:text-3xl">上課紀錄</h1>
+
+          <span className="text-sm text-muted">
+            已上課
+            <span className="mx-1 font-display text-2xl font-bold text-foreground">
+              {completedCount}
+            </span>
             堂
           </span>
         </div>
 
         {history.length === 0 ? (
-          <div className="mt-6 rounded-2xl border border-dashed border-zinc-800 p-10 text-center text-sm text-zinc-500">
+          <div className="mt-6 rounded-3xl border border-dashed border-line-strong p-10 text-center text-sm text-muted">
             目前沒有上課紀錄
           </div>
         ) : (
-          <div className="mt-6 overflow-hidden rounded-2xl border border-zinc-800">
+          <div className="mt-6 space-y-3">
             {history.map((lesson) => (
-              <div
+              <article
                 key={lesson.id}
-                className={
-                  lesson.status === "cancelled"
-                    ? "border-b border-zinc-800 bg-zinc-950/40 p-5 opacity-60 last:border-b-0"
-                    : "border-b border-zinc-800 p-5 last:border-b-0"
-                }
+                className={`rounded-3xl border border-line bg-surface p-5 shadow-card ${
+                  lesson.status === "cancelled" ? "opacity-60" : ""
+                }`}
               >
                 <div className="flex items-start justify-between gap-4">
                   <div>
-                    <div className="flex items-center gap-3">
-                      <span className="font-medium">{lesson.lesson_date}</span>
+                    <div className="flex items-baseline gap-3">
+                      <span className="font-display text-lg font-bold">
+                        {lesson.lesson_date.replaceAll("-", ".")}
+                      </span>
 
-                      <span className="text-sm text-zinc-400">
+                      <span className="font-display text-sm font-semibold text-muted">
                         {lesson.lesson_time.slice(0, 5)}
                       </span>
                     </div>
 
-                    <div className="mt-1 text-sm text-zinc-500">
+                    <div className="mt-0.5 text-sm text-muted">
                       {lesson.course} · {lesson.teacher} 老師
                     </div>
                   </div>
@@ -91,17 +101,15 @@ export default async function StudentLessonsPage() {
                 </div>
 
                 {lesson.student_note && (
-                  <div className="mt-4 rounded-xl bg-zinc-950 px-4 py-3">
-                    <p className="text-xs font-medium text-zinc-600">
-                      老師的紀錄
-                    </p>
+                  <blockquote className="mt-4 border-l-2 border-foreground pl-4">
+                    <p className="text-xs font-medium text-subtle">老師的紀錄</p>
 
-                    <p className="mt-2 whitespace-pre-wrap text-sm leading-6 text-zinc-300">
+                    <p className="mt-1.5 whitespace-pre-wrap text-sm leading-6 text-foreground">
                       {lesson.student_note}
                     </p>
-                  </div>
+                  </blockquote>
                 )}
-              </div>
+              </article>
             ))}
           </div>
         )}

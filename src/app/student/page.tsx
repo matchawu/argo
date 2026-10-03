@@ -75,7 +75,7 @@ export default async function StudentWeekPage({ searchParams }: Props) {
 
   if (error) {
     return (
-      <main className="p-10 text-zinc-100">
+      <main className="p-10">
         <h1>讀取課表失敗</h1>
         <p>{error.message}</p>
       </main>
@@ -97,34 +97,55 @@ export default async function StudentWeekPage({ searchParams }: Props) {
     }))
     .filter((day) => day.lessons.length > 0);
 
+  const weekLabel = `${weekStart.slice(5).replace("-", "/")} – ${weekEnd
+    .slice(5)
+    .replace("-", "/")}`;
+
+  const isThisWeek = today >= weekStart && today <= weekEnd;
+
   return (
-    <main className="min-h-screen text-zinc-100">
-      <div className="mx-auto max-w-3xl px-4 py-8 sm:px-6">
+    <main className="min-h-screen">
+      <div className="mx-auto max-w-3xl px-4 py-8 sm:px-6 sm:py-10">
+        <p className="font-display text-xs font-semibold uppercase tracking-[0.25em] text-subtle">
+          {isThisWeek ? "This Week" : "Schedule"}
+        </p>
+
+        <h1 className="mt-2 text-2xl font-semibold sm:text-3xl">
+          {student.name}，你好
+        </h1>
+
         {activeBalances.length > 0 && (
           <Link
             href="/student/payments"
-            className="block rounded-2xl border border-zinc-800 bg-zinc-900 p-5 transition hover:border-zinc-700"
+            className="mt-6 block rounded-3xl border border-line bg-surface p-5 shadow-card transition hover:border-line-strong sm:p-6"
           >
-            <p className="text-sm text-zinc-500">剩餘堂數</p>
+            <div className="flex items-center justify-between">
+              <p className="text-sm text-muted">剩餘堂數</p>
 
-            <div className="mt-2 space-y-2">
+              <span className="text-xs text-subtle">繳費紀錄 →</span>
+            </div>
+
+            <div className="mt-4 space-y-4">
               {activeBalances.map((enrollment) => (
                 <div
                   key={enrollment.enrollmentId}
-                  className="flex items-baseline justify-between gap-4"
+                  className="flex items-end justify-between gap-4"
                 >
-                  <span className="text-sm text-zinc-300">
+                  <span className="text-sm text-foreground">
                     {enrollmentLabel(enrollment)}
                   </span>
 
-                  <span
-                    className={`shrink-0 text-2xl font-semibold ${remainingClassName(
-                      enrollment.remaining,
-                    )}`}
-                  >
-                    {enrollment.remaining}
-                    <span className="ml-1 text-sm font-normal text-zinc-500">
-                      / {enrollment.purchased} 堂
+                  <span className="shrink-0 font-display leading-none">
+                    <span
+                      className={`text-4xl font-bold ${remainingClassName(
+                        enrollment.remaining,
+                      )}`}
+                    >
+                      {enrollment.remaining}
+                    </span>
+
+                    <span className="ml-1 text-base font-medium text-subtle">
+                      / {enrollment.purchased}
                     </span>
                   </span>
                 </div>
@@ -133,24 +154,24 @@ export default async function StudentWeekPage({ searchParams }: Props) {
           </Link>
         )}
 
-        <div className="mt-8 flex items-center justify-between gap-3">
+        <div className="mt-10 flex items-center justify-between gap-3">
           <Link
             href={weekHref(addDays(weekStart, -7))}
-            className="rounded-xl px-3 py-2 text-sm text-zinc-400 hover:bg-zinc-900 hover:text-white"
+            aria-label="上一週"
+            className="flex h-10 w-10 items-center justify-center rounded-full border border-line bg-surface text-muted transition hover:text-foreground"
           >
-            ← 上週
+            ←
           </Link>
 
           <div className="text-center">
-            <h1 className="text-xl font-semibold">
-              {weekStart.slice(5).replace("-", "/")} –{" "}
-              {weekEnd.slice(5).replace("-", "/")}
-            </h1>
+            <h2 className="font-display text-xl font-bold tracking-wide">
+              {weekLabel}
+            </h2>
 
-            {!(today >= weekStart && today <= weekEnd) && (
+            {!isThisWeek && (
               <Link
                 href={weekHref()}
-                className="text-xs text-zinc-500 underline hover:text-zinc-300"
+                className="text-xs text-muted underline hover:text-foreground"
               >
                 回到本週
               </Link>
@@ -159,13 +180,14 @@ export default async function StudentWeekPage({ searchParams }: Props) {
 
           <Link
             href={weekHref(addDays(weekStart, 7))}
-            className="rounded-xl px-3 py-2 text-sm text-zinc-400 hover:bg-zinc-900 hover:text-white"
+            aria-label="下一週"
+            className="flex h-10 w-10 items-center justify-center rounded-full border border-line bg-surface text-muted transition hover:text-foreground"
           >
-            下週 →
+            →
           </Link>
         </div>
 
-        <div className="mt-4 flex justify-center">
+        <div className="mt-5 flex justify-center">
           <WeekViewToggle basePath="/student" date={weekStart} view={view} />
         </div>
 
@@ -184,38 +206,50 @@ export default async function StudentWeekPage({ searchParams }: Props) {
             />
           </div>
         ) : days.length === 0 ? (
-          <div className="mt-6 rounded-2xl border border-dashed border-zinc-800 p-10 text-center text-sm text-zinc-500">
+          <div className="mt-6 rounded-3xl border border-dashed border-line-strong p-10 text-center text-sm text-muted">
             這週沒有排課
           </div>
         ) : (
           <div className="mt-6 space-y-6">
             {days.map((day) => (
               <section key={day.date}>
-                <h2
-                  className={`mb-2 text-sm font-medium ${
-                    day.date === today ? "text-white" : "text-zinc-500"
+                <h3
+                  className={`mb-2 flex items-center gap-2 text-sm ${
+                    day.date === today
+                      ? "font-semibold text-foreground"
+                      : "text-muted"
                   }`}
                 >
-                  {day.date.slice(5).replace("-", "/")}{" "}
+                  <span className="font-display font-semibold">
+                    {day.date.slice(5).replace("-", "/")}
+                  </span>
                   {weekdayNames[parseLocalDate(day.date).getDay()]}
-                  {day.date === today && " · 今天"}
-                </h2>
+                  {day.date === today && (
+                    <span className="rounded-full bg-primary px-2 py-0.5 text-[11px] font-medium text-on-primary">
+                      今天
+                    </span>
+                  )}
+                </h3>
 
                 <div className="space-y-2">
                   {day.lessons.map((lesson) => (
                     <div
                       key={lesson.id}
-                      className={`flex items-center justify-between gap-4 rounded-2xl border border-zinc-800 bg-zinc-900 p-4 ${
+                      className={`flex items-center justify-between gap-4 rounded-2xl border border-line bg-surface p-4 shadow-card ${
                         lesson.status === "cancelled" ? "opacity-60" : ""
                       }`}
                     >
-                      <div>
-                        <div className="font-medium">
-                          {lesson.lesson_time.slice(0, 5)} · {lesson.course}
-                        </div>
+                      <div className="flex items-center gap-4">
+                        <span className="font-display text-lg font-bold">
+                          {lesson.lesson_time.slice(0, 5)}
+                        </span>
 
-                        <div className="mt-1 text-sm text-zinc-500">
-                          {lesson.teacher} 老師
+                        <div>
+                          <div className="font-medium">{lesson.course}</div>
+
+                          <div className="mt-0.5 text-sm text-muted">
+                            {lesson.teacher} 老師
+                          </div>
                         </div>
                       </div>
 

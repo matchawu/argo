@@ -147,13 +147,13 @@ export default function SettlementView({ lessons, selectedMonth }: Props) {
   }
 
   return (
-    <main className="min-h-screen text-zinc-100">
+    <main className="min-h-screen text-foreground">
       <div className="mx-auto max-w-5xl px-6 py-10">
         <div className="mb-8 flex items-center justify-between">
           <div>
             <h1 className="text-3xl font-bold">月結報表</h1>
 
-            <p className="mt-2 text-zinc-500">
+            <p className="mt-2 text-muted">
               {selectedMonth.replace("-", " / ")}
             </p>
           </div>
@@ -161,28 +161,28 @@ export default function SettlementView({ lessons, selectedMonth }: Props) {
           <div className="flex flex-wrap gap-2">
             <Link
               href={`/settlement?month=${previousMonth}`}
-              className="rounded-xl bg-zinc-800 px-4 py-2 text-sm hover:bg-zinc-700"
+              className="rounded-xl bg-fill px-4 py-2 text-sm hover:bg-fill-strong"
             >
               ← 上個月
             </Link>
 
             <Link
               href="/settlement"
-              className="rounded-xl bg-zinc-800 px-4 py-2 text-sm hover:bg-zinc-700"
+              className="rounded-xl bg-fill px-4 py-2 text-sm hover:bg-fill-strong"
             >
               本月
             </Link>
 
             <Link
               href={`/settlement?month=${nextMonth}`}
-              className="rounded-xl bg-zinc-800 px-4 py-2 text-sm hover:bg-zinc-700"
+              className="rounded-xl bg-fill px-4 py-2 text-sm hover:bg-fill-strong"
             >
               下個月 →
             </Link>
 
             <button
               onClick={exportCsv}
-              className="rounded-xl bg-white px-4 py-2 text-sm font-medium text-black hover:bg-zinc-200"
+              className="rounded-xl bg-primary px-4 py-2 text-sm font-medium text-on-primary hover:bg-primary-hover"
             >
               匯出 CSV
             </button>
@@ -206,8 +206,8 @@ export default function SettlementView({ lessons, selectedMonth }: Props) {
           />
         </section>
 
-        <div className="overflow-hidden rounded-2xl border border-zinc-800">
-          <div className="grid grid-cols-5 bg-zinc-900 px-5 py-3 text-sm text-zinc-500">
+        <div className="overflow-hidden rounded-2xl border border-line">
+          <div className="grid grid-cols-5 bg-surface px-5 py-3 text-sm text-muted">
             <div>老師</div>
             <div>完成堂數</div>
             <div>總學費</div>
@@ -216,19 +216,19 @@ export default function SettlementView({ lessons, selectedMonth }: Props) {
           </div>
 
           {rows.length === 0 ? (
-            <div className="p-8 text-center text-zinc-500">
+            <div className="p-8 text-center text-muted">
               這個月還沒有已完成課程
             </div>
           ) : (
             rows.map((row) => (
-              <div key={row.teacher} className="border-t border-zinc-800">
+              <div key={row.teacher} className="border-t border-line">
                 <button
                   onClick={() =>
                     setExpandedTeacher(
                       expandedTeacher === row.teacher ? null : row.teacher,
                     )
                   }
-                  className="grid w-full grid-cols-5 px-5 py-4 text-left hover:bg-zinc-900"
+                  className="grid w-full grid-cols-5 px-5 py-4 text-left hover:bg-fill"
                 >
                   <div className="font-medium">{row.teacher}</div>
 
@@ -243,15 +243,15 @@ export default function SettlementView({ lessons, selectedMonth }: Props) {
                       ${Math.round(row.studioAmount).toLocaleString()}
                     </span>
 
-                    <span className="text-zinc-500">
+                    <span className="text-muted">
                       {expandedTeacher === row.teacher ? "▲" : "▼"}
                     </span>
                   </div>
                 </button>
 
                 {expandedTeacher === row.teacher && (
-                  <div className="bg-zinc-950 px-5 py-4">
-                    <div className="mb-3 text-sm font-medium text-zinc-400">
+                  <div className="bg-background px-5 py-4">
+                    <div className="mb-3 text-sm font-medium text-muted">
                       本月課程明細
                     </div>
 
@@ -266,16 +266,16 @@ export default function SettlementView({ lessons, selectedMonth }: Props) {
                         return (
                           <div
                             key={lesson.id}
-                            className="grid grid-cols-[120px_1fr_120px_120px_120px] gap-4 rounded-xl bg-zinc-900 px-4 py-3 text-sm"
+                            className="grid grid-cols-[120px_1fr_120px_120px_120px] gap-4 rounded-xl bg-surface px-4 py-3 text-sm"
                           >
-                            <div className="text-zinc-400">
+                            <div className="text-muted">
                               {lesson.lesson_date}
                             </div>
 
                             <div>
                               <div>{lesson.student}</div>
 
-                              <div className="text-zinc-500">
+                              <div className="text-muted">
                                 {lesson.course}
                               </div>
                             </div>
@@ -306,8 +306,8 @@ export default function SettlementView({ lessons, selectedMonth }: Props) {
 
 function StatCard({ title, value }: { title: string; value: string }) {
   return (
-    <div className="rounded-2xl border border-zinc-800 bg-zinc-900 p-5">
-      <p className="text-sm text-zinc-500">{title}</p>
+    <div className="rounded-2xl border border-line bg-surface p-5">
+      <p className="text-sm text-muted">{title}</p>
 
       <p className="mt-2 text-3xl font-semibold">{value}</p>
     </div>

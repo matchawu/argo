@@ -58,7 +58,7 @@ export default function WeekView({
   const today = getTodayInTaiwan();
 
   return (
-    <main className="min-h-screen text-zinc-100">
+    <main className="min-h-screen text-foreground">
       <div className="mx-auto max-w-5xl px-4 py-8 sm:px-6 sm:py-10">
         <div className="mb-8 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
           <div>
@@ -66,7 +66,7 @@ export default function WeekView({
               本週課表
             </h1>
 
-            <p className="mt-2 text-sm text-zinc-500">
+            <p className="mt-2 text-sm text-muted">
               {startDate} ～ {endDate}
             </p>
           </div>
@@ -80,21 +80,21 @@ export default function WeekView({
 
             <Link
               href={weekHref(previousWeek)}
-              className="rounded-xl bg-zinc-800 px-4 py-2 text-sm transition hover:bg-zinc-700"
+              className="rounded-xl bg-fill px-4 py-2 text-sm transition hover:bg-fill-strong"
             >
               ← 上週
             </Link>
 
             <Link
               href={weekHref()}
-              className="rounded-xl bg-zinc-800 px-4 py-2 text-sm transition hover:bg-zinc-700"
+              className="rounded-xl bg-fill px-4 py-2 text-sm transition hover:bg-fill-strong"
             >
               本週
             </Link>
 
             <Link
               href={weekHref(nextWeek)}
-              className="rounded-xl bg-zinc-800 px-4 py-2 text-sm transition hover:bg-zinc-700"
+              className="rounded-xl bg-fill px-4 py-2 text-sm transition hover:bg-fill-strong"
             >
               下週 →
             </Link>
@@ -129,8 +129,8 @@ export default function WeekView({
                 key={date}
                 className={
                   isToday
-                    ? "rounded-2xl border border-zinc-600 bg-zinc-900 p-5"
-                    : "rounded-2xl border border-zinc-800 bg-zinc-900 p-5"
+                    ? "rounded-2xl border border-line-strong bg-surface p-5"
+                    : "rounded-2xl border border-line bg-surface p-5"
                 }
               >
                 <div className="mb-4 flex items-center gap-3">
@@ -142,19 +142,19 @@ export default function WeekView({
                     }
                   </h2>
 
-                  <span className="text-sm text-zinc-500">
+                  <span className="text-sm text-muted">
                     {date}
                   </span>
 
                   {isToday && (
-                    <span className="rounded-full bg-white px-2 py-0.5 text-xs font-medium text-black">
+                    <span className="rounded-full bg-primary px-2 py-0.5 text-xs font-medium text-on-primary">
                       今天
                     </span>
                   )}
                 </div>
 
                 {lessonsForDay.length === 0 ? (
-                  <div className="rounded-xl border border-dashed border-zinc-800 px-4 py-5 text-sm text-zinc-600">
+                  <div className="rounded-xl border border-dashed border-line px-4 py-5 text-sm text-subtle">
                     今天沒有課程
                   </div>
                 ) : (
@@ -168,15 +168,15 @@ export default function WeekView({
                           key={lesson.id}
                           className={
                             isCancelled
-                              ? "flex items-center justify-between gap-4 rounded-xl bg-zinc-950/50 px-4 py-3 opacity-60"
-                              : "flex items-center justify-between gap-4 rounded-xl bg-zinc-950 px-4 py-3"
+                              ? "flex items-center justify-between gap-4 rounded-xl bg-fill/50 px-4 py-3 opacity-60"
+                              : "flex items-center justify-between gap-4 rounded-xl bg-background px-4 py-3"
                           }
                         >
                           <div className="flex min-w-0 items-center gap-4">
                             <span
                               className={
                                 isCancelled
-                                  ? "w-14 shrink-0 font-medium text-zinc-600 line-through"
+                                  ? "w-14 shrink-0 font-medium text-subtle line-through"
                                   : "w-14 shrink-0 font-medium"
                               }
                             >
@@ -187,14 +187,14 @@ export default function WeekView({
                               <div
                                 className={
                                   isCancelled
-                                    ? "truncate text-zinc-500 line-through"
+                                    ? "truncate text-muted line-through"
                                     : "truncate"
                                 }
                               >
                                 {lesson.student}
                               </div>
 
-                              <div className="truncate text-sm text-zinc-500">
+                              <div className="truncate text-sm text-muted">
                                 {lesson.course}
                                 {" · "}
                                 {lesson.teacher}

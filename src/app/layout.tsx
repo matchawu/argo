@@ -1,16 +1,23 @@
-import Navbar from "@/components/Navbar";
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Barlow_Semi_Condensed, Noto_Sans_TC } from "next/font/google";
 import "./globals.css";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+/*
+ * 中文字體很大，只預載 latin；中文字會依需要分段載入
+ */
+const notoSansTC = Noto_Sans_TC({
+  variable: "--font-noto-sans-tc",
   subsets: ["latin"],
+  preload: false,
 });
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
+/*
+ * 品牌字：接近 logo「ARGO MUSIC STUDIO」的偏窄粗體
+ */
+const barlow = Barlow_Semi_Condensed({
+  variable: "--font-barlow",
   subsets: ["latin"],
+  weight: ["500", "600", "700"],
 });
 
 export const metadata: Metadata = {
@@ -24,10 +31,10 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html
-      lang="en"
-      className={`${geistSans.variable} ${geistMono.variable} h-full bg-zinc-950 antialiased`}
+      lang="zh-Hant"
+      className={`${notoSansTC.variable} ${barlow.variable} h-full antialiased`}
     >
-      <body className="min-h-screen bg-zinc-950 text-zinc-100">
+      <body className="min-h-screen bg-background font-sans text-foreground">
         {children}
       </body>
     </html>

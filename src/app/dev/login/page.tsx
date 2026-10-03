@@ -68,17 +68,17 @@ export default async function DevLoginPage({ searchParams }: Props) {
   );
 
   return (
-    <main className="min-h-screen bg-zinc-950 px-4 py-10 text-zinc-100">
+    <main className="min-h-screen bg-background px-4 py-10 text-foreground">
       <div className="mx-auto max-w-3xl">
         <h1 className="text-2xl font-bold">開發用登入</h1>
 
-        <p className="mt-2 text-sm text-amber-300">
+        <p className="mt-2 text-sm text-warning">
           只在 next dev + DEV_LOGIN=true 時可用。連的是 .env.local
           設定的 Supabase，還沒有登入身份的老師 / 學生會自動建立（不綁 LINE）。
         </p>
 
         {error && (
-          <p className="mt-4 rounded-xl border border-red-900 bg-red-950/40 px-4 py-3 text-sm text-red-300">
+          <p className="mt-4 rounded-xl border border-danger/30 bg-danger-soft px-4 py-3 text-sm text-danger">
             {error}
           </p>
         )}
@@ -136,7 +136,7 @@ function Section({
 }) {
   return (
     <section className="mt-8">
-      <h2 className="mb-3 text-sm font-medium text-zinc-500">{title}</h2>
+      <h2 className="mb-3 text-sm font-medium text-muted">{title}</h2>
 
       <div className="flex flex-wrap gap-2">{children}</div>
     </section>
@@ -155,10 +155,10 @@ function LoginLink({
   return (
     <a
       href={href}
-      className="rounded-xl border border-zinc-800 bg-zinc-900 px-4 py-2 text-sm hover:border-zinc-600"
+      className="rounded-xl border border-line bg-surface px-4 py-2 text-sm hover:border-line-strong"
     >
       {label}
-      {hint && <span className="ml-2 text-xs text-zinc-500">{hint}</span>}
+      {hint && <span className="ml-2 text-xs text-muted">{hint}</span>}
     </a>
   );
 }
